@@ -98,7 +98,7 @@ export default function Projects() {
           <div className="relative flex h-full flex-col px-[clamp(1.25rem,6vw,6rem)] pt-8 [text-shadow:0_1px_14px_rgb(0_0_0/0.45)] sm:pt-10">
             {/* Top row */}
             <div className="flex items-start justify-between gap-8">
-              <div>
+              <div data-reveal>
                 <p className="flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.14em] sm:text-sm">
                   <span aria-hidden="true" className="size-1.5 rotate-45 bg-current" />
                   {projects.eyebrow}
@@ -107,7 +107,7 @@ export default function Projects() {
                   {projects.imageNote}
                 </p>
               </div>
-              <p className="hidden max-w-sm text-right text-base leading-relaxed text-white/75 md:block">{projects.intro}</p>
+              <p data-reveal className="hidden max-w-sm text-right text-base leading-relaxed text-white/75 md:block">{projects.intro}</p>
             </div>
 
             {/* Active project, re-mounted per project so it animates in */}

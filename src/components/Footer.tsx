@@ -19,6 +19,7 @@ export default function Footer() {
       {/* Oversized wordmark along the bottom, behind the card */}
       <p
         aria-hidden="true"
+        data-reveal
         className="pointer-events-none absolute inset-x-0 bottom-[clamp(2.5rem,6vw,4.5rem)] -z-10 select-none text-center text-[clamp(6rem,30vw,28rem)] font-medium uppercase leading-[0.75] tracking-[-0.04em] text-white/15"
       >
         {footer.wordmark}
@@ -27,10 +28,10 @@ export default function Footer() {
       {/* Menu card */}
       <div className="flex flex-1 items-center justify-center px-4 py-24">
         <nav aria-label="Footer" className="w-full max-w-md bg-ink-deep/90 p-8 backdrop-blur-sm sm:p-10">
-          <p className="font-mono text-xs uppercase tracking-[0.14em] text-white/55">Menu</p>
+          <p data-reveal className="font-mono text-xs uppercase tracking-[0.14em] text-white/55">Menu</p>
           <ul className="mt-5 space-y-1">
             {footer.primaryLinks.map((link) => (
-              <li key={link.href}>
+              <li data-reveal key={link.href}>
                 <Link
                   href={link.href}
                   className="text-3xl leading-tight tracking-[-0.02em] transition-colors hover:text-white/60 sm:text-4xl"
@@ -41,7 +42,7 @@ export default function Footer() {
             ))}
           </ul>
 
-          <div className="mt-10 grid grid-cols-[auto_1fr] gap-x-10 gap-y-2 text-sm">
+          <div data-reveal className="mt-10 grid grid-cols-[auto_1fr] gap-x-10 gap-y-2 text-sm">
             <ul className="space-y-2">
               {footer.secondaryLinks.map((link) => (
                 <li key={link.href}>
@@ -68,10 +69,12 @@ export default function Footer() {
             </ul>
           </div>
 
-          <p className="mt-10 text-sm leading-relaxed text-white/70">{footer.prompt}</p>
-          <Button href={footer.cta.href} variant="light" className="mt-5 w-full justify-center">
-            {footer.cta.label}
-          </Button>
+          <p data-reveal className="mt-10 text-sm leading-relaxed text-white/70">{footer.prompt}</p>
+          <div data-reveal className="mt-5">
+            <Button href={footer.cta.href} variant="light" className="w-full justify-center">
+              {footer.cta.label}
+            </Button>
+          </div>
         </nav>
       </div>
 

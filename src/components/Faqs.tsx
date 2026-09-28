@@ -3,6 +3,7 @@
 import { useId, useState } from "react";
 import Button from "@/components/Button";
 import { faqs } from "@/content/home";
+import RevealWords from "@/components/RevealWords";
 
 export default function Faqs() {
   const [open, setOpen] = useState<number | null>(0);
@@ -13,17 +14,17 @@ export default function Faqs() {
       <div className="grid gap-y-12 md:grid-cols-12 md:gap-x-6">
         {/* Intro, pinned while the list scrolls on desktop */}
         <div className="md:sticky md:top-16 md:col-span-4 md:self-start">
-          <p className="flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.14em] sm:text-sm">
+          <p data-reveal className="flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.14em] sm:text-sm">
             <span aria-hidden="true" className="size-1.5 rotate-45 bg-current" />
             {faqs.eyebrow}
           </p>
-          <h2 className="mt-6 text-balance text-[clamp(2.25rem,4.4vw,4rem)] leading-[1.08] tracking-[-0.02em]">
-            {faqs.title}
+          <h2 data-reveal="words" className="mt-6 text-balance text-[clamp(2.25rem,4.4vw,4rem)] leading-[1.08] tracking-[-0.02em]">
+            <RevealWords text={faqs.title} />
           </h2>
-          <p className="mt-6 max-w-sm text-base leading-relaxed text-ink/70 sm:text-lg">{faqs.intro}</p>
-          <Button href={faqs.cta.href} className="mt-8">
-            {faqs.cta.label}
-          </Button>
+          <p data-reveal className="mt-6 max-w-sm text-base leading-relaxed text-ink/70 sm:text-lg">{faqs.intro}</p>
+          <div data-reveal className="mt-8">
+            <Button href={faqs.cta.href}>{faqs.cta.label}</Button>
+          </div>
         </div>
 
         {/* Accordion: one answer open at a time */}
@@ -33,7 +34,7 @@ export default function Faqs() {
             const panelId = `${baseId}-panel-${i}`;
             const buttonId = `${baseId}-button-${i}`;
             return (
-              <li key={item.question} className="border-b border-ink/15">
+              <li data-reveal key={item.question} className="border-b border-ink/15">
                 <h3>
                   <button
                     id={buttonId}

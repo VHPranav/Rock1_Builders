@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import Button from "@/components/Button";
 import { gateway } from "@/content/home";
+import RevealWords from "@/components/RevealWords";
 
 // Scattered collection layout on a 12-column grid (desktop). Each tile has its own column,
 // offset, parallax speed and download size; text blocks fill the gaps between them.
@@ -19,7 +20,7 @@ const tileLayout = [
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.14em] sm:text-sm">
+    <p data-reveal className="flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.14em] sm:text-sm">
       <span aria-hidden="true" className="size-1.5 rotate-45 bg-current" />
       {children}
     </p>
@@ -28,7 +29,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 
 function Stat({ value, suffix, label }: { value: string; suffix: string; label: string }) {
   return (
-    <div>
+    <div data-reveal>
       <p className="text-[clamp(2.5rem,5vw,4.5rem)] font-light leading-none tracking-[-0.03em]">
         {value}
         <span className="text-ink/40">{suffix}</span>
@@ -87,7 +88,7 @@ export default function Gateway() {
 
       <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-12 md:mt-8 md:grid-cols-12 md:gap-x-6 md:gap-y-0">
         {/* Intro beside the lead tile */}
-        <div className="col-span-2 max-w-md md:col-start-9 md:col-span-4 md:row-start-1 md:mt-[4vw] md:self-start">
+        <div data-reveal className="col-span-2 max-w-md md:col-start-9 md:col-span-4 md:row-start-1 md:mt-[4vw] md:self-start">
           <p className="text-lg leading-relaxed sm:text-xl lg:text-2xl lg:leading-snug">
             <strong className="font-semibold">{gateway.intro.lead}</strong>
             {gateway.intro.rest}
@@ -107,7 +108,7 @@ export default function Gateway() {
             }}
             className={`${tileLayout[i].place} ${i % 2 ? "max-md:mt-16" : ""} will-change-transform`}
           >
-            <figure className={`group relative ${tileLayout[i].aspect} overflow-hidden`}>
+            <figure data-reveal="image" className={`group relative ${tileLayout[i].aspect} overflow-hidden`}>
               {/* Parallax layer: taller than the frame so the photo can slide inside it */}
               <div
                 ref={(el) => {
@@ -136,12 +137,12 @@ export default function Gateway() {
                 {tile.label}
               </figcaption>
             </figure>
-            <p className="mt-4 max-w-[34ch] text-sm leading-relaxed text-ink/70 sm:text-base">{tile.caption}</p>
+            <p data-reveal className="mt-4 max-w-[34ch] text-sm leading-relaxed text-ink/70 sm:text-base">{tile.caption}</p>
           </div>
         ))}
 
         {/* Longer description in the gap between the scattered tiles */}
-        <div className="col-span-2 max-w-lg md:col-start-6 md:col-span-4 md:row-start-3 md:mt-[10vw] md:pl-[2vw]">
+        <div data-reveal className="col-span-2 max-w-lg md:col-start-6 md:col-span-4 md:row-start-3 md:mt-[10vw] md:pl-[2vw]">
           <p className="text-base leading-relaxed text-ink/75 sm:text-lg">{gateway.body}</p>
           <Link
             href={gateway.readMore.href}
@@ -157,12 +158,12 @@ export default function Gateway() {
 
         {/* Closing prompt */}
         <div className="col-span-2 flex flex-col items-center pt-16 text-center md:col-span-12 md:row-start-4 md:pt-[10vw]">
-          <h2 className="text-balance text-3xl leading-[1.12] tracking-[-0.02em] sm:text-5xl lg:text-[4rem]">
-            {gateway.question}
+          <h2 data-reveal="words" className="text-balance text-3xl leading-[1.12] tracking-[-0.02em] sm:text-5xl lg:text-[4rem]">
+            <RevealWords text={gateway.question} />
           </h2>
-          <Button href={gateway.cta.href} className="mt-10 sm:mt-12">
-            {gateway.cta.label}
-          </Button>
+          <div data-reveal className="mt-10 sm:mt-12">
+            <Button href={gateway.cta.href}>{gateway.cta.label}</Button>
+          </div>
         </div>
       </div>
     </section>

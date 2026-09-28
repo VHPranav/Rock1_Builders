@@ -3,6 +3,77 @@
 :root {
   --background: #ffffff;
   --foreground: #1c1917;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/*
+ * Intro animations. Elements marked [data-reveal] start hidden and animate in when
+ * RevealOnScroll sets [data-revealed]; it also sets --reveal-delay to stagger a batch.
+ * Hidden states only apply once JS is running (html.js), so content never stays invisible.
+ */
+:root.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition:
+    opacity 900ms var(--ease-out-expo) var(--reveal-delay, 0ms),
+    transform 1100ms var(--ease-out-expo) var(--reveal-delay, 0ms);
+}
+:root.js [data-reveal][data-revealed] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Headings: each word rises out of a mask (markup from RevealWords) */
+.reveal-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* room for ascenders and descenders inside the mask, without changing the line box */
+  padding-block: 0.08em 0.12em;
+  margin-block: -0.08em -0.12em;
+}
+.reveal-word > span {
+  display: inline-block;
+}
+:root.js [data-reveal="words"] {
+  opacity: 1;
+  transform: none;
+}
+:root.js [data-reveal="words"] .reveal-word > span {
+  transform: translateY(110%);
+  transition: transform 1100ms var(--ease-out-expo);
+  transition-delay: calc(var(--reveal-delay, 0ms) + var(--i, 0) * 40ms);
+}
+:root.js [data-reveal="words"][data-revealed] .reveal-word > span {
+  transform: none;
+}
+
+/* Images: the card rises and fades in while the photo settles from a slight zoom */
+:root.js [data-reveal="image"] {
+  transform: translateY(3rem);
+  transition:
+    opacity 1200ms var(--ease-out-expo) var(--reveal-delay, 0ms),
+    transform 1400ms var(--ease-out-expo) var(--reveal-delay, 0ms);
+}
+:root.js [data-reveal="image"] img {
+  transform: scale(1.15);
+  /* keep the hover zoom (Tailwind's `scale` property) transitioning too */
+  transition:
+    transform 1800ms var(--ease-out-expo) var(--reveal-delay, 0ms),
+    scale 700ms ease-out;
+}
+:root.js [data-reveal="image"][data-revealed] img {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root.js [data-reveal],
+  :root.js [data-reveal] .reveal-word > span,
+  :root.js [data-reveal="image"] img {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 @theme inline {

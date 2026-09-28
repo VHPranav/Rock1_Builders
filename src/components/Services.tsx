@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import Button from "@/components/Button";
 import { services } from "@/content/home";
+import RevealWords from "@/components/RevealWords";
 
 const items = services.items;
 // Portion of each transition spent holding still, so every slide rests before the next wipe.
@@ -69,15 +70,17 @@ export default function Services() {
   return (
     <section className="bg-linen text-ink">
       <div className="mx-auto flex max-w-4xl flex-col items-center px-4 pb-20 pt-4 text-center sm:px-8 sm:pb-28">
-        <p className="flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.14em] sm:text-sm">
+        <p data-reveal className="flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.14em] sm:text-sm">
           <span aria-hidden="true" className="size-1.5 rotate-45 bg-current" />
           {services.eyebrow}
         </p>
-        <h2 className="mt-8 text-balance text-3xl leading-[1.12] tracking-[-0.02em] sm:mt-10 sm:text-5xl lg:text-[4rem]">{services.title}</h2>
-        <p className="mt-6 max-w-xl text-balance text-base leading-relaxed text-ink/70 sm:text-lg">{services.intro}</p>
-        <Button href={services.cta.href} className="mt-10">
-          {services.cta.label}
-        </Button>
+        <h2 data-reveal="words" className="mt-8 text-balance text-3xl leading-[1.12] tracking-[-0.02em] sm:mt-10 sm:text-5xl lg:text-[4rem]">
+          <RevealWords text={services.title} />
+        </h2>
+        <p data-reveal className="mt-6 max-w-xl text-balance text-base leading-relaxed text-ink/70 sm:text-lg">{services.intro}</p>
+        <div data-reveal className="mt-10">
+          <Button href={services.cta.href}>{services.cta.label}</Button>
+        </div>
       </div>
 
       {/* Pinned split-screen: one viewport of scroll per service */}

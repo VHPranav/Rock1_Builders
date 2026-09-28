@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import { contactCta } from "@/content/home";
+import RevealWords from "@/components/RevealWords";
 
 // Thin-line drawing of a stepped hillside building in perspective (decorative). It stretches to fill the
 // frame's right side; non-scaling strokes keep every line 1px however it stretches.
@@ -37,16 +38,16 @@ export default function ContactCta() {
         </div>
 
         <div className="relative px-[clamp(1.5rem,5vw,5rem)] pb-12 pt-[clamp(4rem,9vw,8rem)] md:w-[72%]">
-          <p className="flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.14em] sm:text-sm">
+          <p data-reveal className="flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.14em] sm:text-sm">
             <span aria-hidden="true" className="size-1.5 rotate-45 bg-current" />
             {contactCta.eyebrow}
           </p>
-          <h2 className="mt-6 max-w-[22ch] text-balance text-[clamp(2.25rem,4.6vw,4.25rem)] leading-[1.08] tracking-[-0.02em]">
-            {contactCta.title}
+          <h2 data-reveal="words" className="mt-6 max-w-[22ch] text-balance text-[clamp(2.25rem,4.6vw,4.25rem)] leading-[1.08] tracking-[-0.02em]">
+            <RevealWords text={contactCta.title} />
           </h2>
-          <p className="mt-6 max-w-md text-base leading-relaxed text-ink/70 sm:text-lg">{contactCta.intro}</p>
+          <p data-reveal className="mt-6 max-w-md text-base leading-relaxed text-ink/70 sm:text-lg">{contactCta.intro}</p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-2">
+          <div data-reveal className="mt-10 flex flex-wrap items-center gap-2">
             <Button href={contactCta.primary.href}>{contactCta.primary.label}</Button>
             {contactCta.secondary.map((link) => (
               <Button key={link.label} href={link.href} variant="ghost">
@@ -58,7 +59,7 @@ export default function ContactCta() {
           <dl className="mt-[clamp(4rem,8vw,7rem)] grid gap-6 border-t border-ink/15 pt-8 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-x-12">
             {contactCta.details.map((item, i) => (
               // Phone and email share a row; the longer head office address gets its own.
-              <div key={item.label} className={i === 2 ? "sm:col-span-2" : undefined}>
+              <div data-reveal key={item.label} className={i === 2 ? "sm:col-span-2" : undefined}>
                 <dt className="font-mono text-xs uppercase tracking-[0.14em] text-ink/55">{item.label}</dt>
                 <dd className="mt-2 text-base leading-snug">
                   {item.href ? (

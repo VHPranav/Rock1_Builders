@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Button from "@/components/Button";
 import { hero } from "@/content/home";
+import RevealWords from "@/components/RevealWords";
 
 export default function Hero() {
   const [videoReady, setVideoReady] = useState(false);
@@ -27,16 +28,18 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black/20" />
 
       <div className="relative z-10 flex h-full flex-col items-center justify-end px-4 pb-14 text-center sm:pb-20">
-        <p className="text-[0.7rem] uppercase tracking-[0.12em] text-white/85 sm:text-xs">
+        <p data-reveal className="text-[0.7rem] uppercase tracking-[0.12em] text-white/85 sm:text-xs">
           {hero.eyebrow.join(" - ")}
         </p>
-        <h1 className="mt-3 max-w-5xl text-4xl font-medium uppercase leading-[1.05] tracking-[-0.01em] sm:text-5xl lg:text-7xl">
-          {hero.title}
+        <h1 data-reveal="words" className="mt-3 max-w-5xl text-4xl font-medium uppercase leading-[1.05] tracking-[-0.01em] sm:text-5xl lg:text-7xl">
+          <RevealWords text={hero.title} />
         </h1>
-        <p className="mt-4 max-w-md text-sm font-light text-white/80 sm:text-base">{hero.subtitle}</p>
-        <Button href={hero.cta.href} variant="light" className="mt-7">
-          {hero.cta.label}
-        </Button>
+        <p data-reveal className="mt-4 max-w-md text-sm font-light text-white/80 sm:text-base">{hero.subtitle}</p>
+        <div data-reveal className="mt-7">
+          <Button href={hero.cta.href} variant="light">
+            {hero.cta.label}
+          </Button>
+        </div>
       </div>
     </section>
   );
