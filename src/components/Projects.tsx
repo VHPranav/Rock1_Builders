@@ -92,8 +92,9 @@ export default function Projects() {
               )}
             </div>
           ))}
-          {/* Legibility: heavy through the lower half where the details sit, light at the top */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/10 via-45% to-black/35" />
+          {/* Legibility: 90% black at the bottom, still 65% at mid-screen where the description starts, clear at the top */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/65 via-50% to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-black/60 to-transparent" />
 
           <div className="relative flex h-full flex-col px-[clamp(1.25rem,6vw,6rem)] pt-8 [text-shadow:0_1px_14px_rgb(0_0_0/0.45)] sm:pt-10">
             {/* Top row */}
