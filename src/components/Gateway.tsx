@@ -156,11 +156,13 @@ export default function Gateway() {
           <Stat {...stat2} />
         </div>
 
-        {/* Closing prompt */}
         <div className="col-span-2 flex flex-col items-center pt-16 text-center md:col-span-12 md:row-start-4 md:pt-[10vw]">
           <h2 data-reveal="words" className="text-balance text-3xl leading-[1.12] tracking-[-0.02em] sm:text-5xl lg:text-[4rem]">
             <RevealWords text={gateway.question} />
           </h2>
+          <p data-reveal className="mt-6 max-w-[50ch] text-balance text-base leading-relaxed text-ink/65 sm:text-lg">
+            {gateway.questionSub}
+          </p>
           <div data-reveal className="mt-10 sm:mt-12">
             <Button href={gateway.cta.href}>{gateway.cta.label}</Button>
           </div>

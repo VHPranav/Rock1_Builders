@@ -11,15 +11,23 @@ export const hero = {
 
 export const story = {
   eyebrow: "Our Story",
+  // Large heading shown above the body copy in the two-column layout.
+  heading: "The Most Beautiful Encounter Between Land and Sea.",
+  // Legacy one-liner kept for any component still referencing `statement`.
   statement:
     "For over 25 years and 50+ projects, we've shaped skylines across South India. Now we bring that same care to Europe with Life Bay Montenegro.",
-  cta: { label: "Get to know us", href: "/about-us" },
+  body1:
+    "For over 25 years, Rock Builders has been shaping skylines across South India. With more than fifty completed projects, the company blends thoughtful design with community focus. Every development reflects quality, trust, and care, creating spaces where people can live, work, and thrive with pride and comfort.",
+  body2:
+    "Now, Rock Builders is taking its expertise to the global stage with Life Bay Montenegro. The project features luxury apartments alongside Europe's first Ayurvedic wellness resort. Residents gain a beautiful home in one of Europe's most scenic locations, plus European residency and strong rental potential. Rock Builders continues to build with purpose, blending luxury living with lasting value.",
+  cta: { label: "Explore", href: "/about-us" },
 };
 
 // Full "Gateway to Europe" block from the old homepage (content/raw/home.md:54-86).
 export const gateway = {
   eyebrow: "Gateway to Europe",
   question: "Are you planning to build?",
+  questionSub: "With 25+ years of trust and a proven portfolio across South India and Europe, Rock Builders is ready to turn your vision into a home, an investment, and a legacy.",
   cta: { label: "Let's Talk", href: "/contact-us" },
   intro: {
     lead: "Life Bay Montenegro",
@@ -269,7 +277,7 @@ export const services = {
       // Compact label + tag for the centre card; full title stays for alt text and SEO.
       short: "Development & Investment",
       tag: "Build · Invest · Own",
-      description: "Modern living and commercial spaces built for long-term value, backed by expert investment management.",
+      description: "We craft modern living and commercial spaces built for long-term value. Every project is supported by expert investment management that ensures effortless ownership, steady returns, and lasting confidence.",
       tone: "#6b6f4e",
       images: { left: "/images/services/development-left.webp", right: "/images/services/development-right.webp" },
     },
@@ -277,7 +285,7 @@ export const services = {
       title: "Residency Management Services",
       short: "Residency Management",
       tag: "EU residency",
-      description: "We help you secure European residency and manage premium resort properties with ease.",
+      description: "We help clients secure European residency and manage premium resort properties with ease. Each service is designed to deliver seamless processes, strong returns, and exceptional lifestyle experiences.",
       tone: "#9c5b3c",
       images: { left: "/images/services/residency-left.webp", right: "/images/services/residency-right.webp" },
     },
@@ -285,7 +293,7 @@ export const services = {
       title: "Property Rental Management Assistance",
       short: "Rental Management",
       tag: "Hassle-free income",
-      description: "Tenant sourcing, rent collection, maintenance and legal support for steady, hassle-free rental income.",
+      description: "We offer property rental management assistance, handling tenant sourcing, rent collection, maintenance, and legal support, ensuring your property remains occupied, well-maintained, and generates steady, hassle-free rental income.",
       tone: "#46596a",
       images: { left: "/images/services/rental-left.webp", right: "/images/services/rental-right.webp" },
     },

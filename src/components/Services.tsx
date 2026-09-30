@@ -70,10 +70,10 @@ export default function Services() {
   return (
     <section className="bg-linen text-ink">
       <div className="mx-auto flex max-w-4xl flex-col items-center px-4 pb-20 pt-4 text-center sm:px-8 sm:pb-28">
-        <p data-reveal className="flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.14em] sm:text-sm">
+        {/* <p data-reveal className="flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.14em] sm:text-sm">
           <span aria-hidden="true" className="size-1.5 rotate-45 bg-current" />
           {services.eyebrow}
-        </p>
+        </p> */}
         <h2 data-reveal="words" className="mt-8 text-balance text-3xl leading-[1.12] tracking-[-0.02em] sm:mt-10 sm:text-5xl lg:text-[4rem]">
           <RevealWords text={services.title} />
         </h2>
@@ -109,7 +109,7 @@ export default function Services() {
           {/* Centre cards: one per service, stacked in a single grid cell and wiped in with the images */}
           <div className="pointer-events-none absolute inset-0 z-20 grid place-items-center px-4">
             {/* Sized like the reference: 37.5vw × 7.5vw, clamped for phones and very wide screens */}
-            <div className="pointer-events-auto grid w-[clamp(18rem,37.5vw,42rem)] max-w-full">
+            <div className="pointer-events-auto grid w-[clamp(20rem,46vw,52rem)] max-w-full">
               {items.map((item, i) => (
                 <div
                   key={item.title}
@@ -124,11 +124,11 @@ export default function Services() {
                   <Link
                     href="/our-services"
                     aria-label={`${item.title} — find out more`}
-                    className="group flex h-[clamp(4.8rem,7.5vw,8rem)] flex-col justify-between p-[clamp(0.8rem,1.25vw,1.4rem)] text-white"
+                    className="group flex flex-col justify-between gap-5 p-[clamp(1.2rem,2vw,2rem)] text-white"
                     style={{ backgroundColor: item.tone }}
                   >
                     <div className="flex items-start justify-between gap-4">
-                      <h3 className="text-[clamp(1.05rem,1.45vw,1.6rem)] font-semibold leading-[1.1]">
+                      <h3 className="text-[clamp(1.1rem,1.6vw,1.75rem)] font-semibold leading-[1.1]">
                         <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-500 group-hover:bg-[length:100%_1px]">
                           {item.short}
                         </span>
@@ -136,7 +136,7 @@ export default function Services() {
                       <svg
                         aria-hidden="true"
                         viewBox="0 0 10 10"
-                        className="mt-1 size-[clamp(0.5rem,0.7vw,0.75rem)] shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                        className="mt-1 size-[clamp(0.6rem,0.8vw,0.9rem)] shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="1.3"
@@ -145,7 +145,11 @@ export default function Services() {
                       </svg>
                     </div>
 
-                    <div className="flex items-end justify-between gap-4 font-mono text-[clamp(0.6rem,0.75vw,0.8rem)] uppercase tracking-[0.14em] text-white/75">
+                    <p className="text-[clamp(0.8rem,1vw,1rem)] leading-relaxed text-white/80">
+                      {item.description}
+                    </p>
+
+                    <div className="flex items-end justify-between gap-4 font-mono text-[clamp(0.6rem,0.75vw,0.8rem)] uppercase tracking-[0.14em] text-white/60">
                       <p>Montenegro</p>
                       <p className="text-right">{item.tag}</p>
                     </div>
