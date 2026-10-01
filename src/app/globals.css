@@ -66,7 +66,41 @@
   transform: none;
 }
 
+/* Header menu: links rise out of their row mask, the rest fades up, staggered once the panel opens */
+[data-menu] .menu-link > span {
+  transform: translateY(110%);
+  transition: transform 500ms var(--ease-out-expo);
+}
+[data-menu][data-open] .menu-link > span {
+  transform: none;
+  transition: transform 1000ms var(--ease-out-expo) calc(250ms + var(--i, 0) * 60ms);
+}
+[data-menu] .menu-fade {
+  opacity: 0;
+  transform: translateY(1rem);
+  transition:
+    opacity 400ms var(--ease-out-expo),
+    transform 400ms var(--ease-out-expo);
+}
+[data-menu][data-open] .menu-fade {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 900ms var(--ease-out-expo) 550ms,
+    transform 1100ms var(--ease-out-expo) 550ms;
+}
+/* Hovering the list dims every link except the one under the pointer */
+.menu-list:hover .menu-link:not(:hover) {
+  opacity: 0.35;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  [data-menu] .menu-link > span,
+  [data-menu] .menu-fade {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
   :root.js [data-reveal],
   :root.js [data-reveal] .reveal-word > span,
   :root.js [data-reveal="image"] img {
