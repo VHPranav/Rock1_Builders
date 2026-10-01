@@ -1,11 +1,15 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 // Marks every [data-reveal] element [data-revealed] the first time it reaches the viewport, staggering
 // elements that arrive together in reading order. A data attribute (not a class) is used so React
-// re-renders never strip it.
+// re-renders never strip it. Re-scans on every route change, since the layout (and this component)
+// persists across client-side navigation.
 export default function RevealOnScroll() {
+  const pathname = usePathname();
+
   useEffect(() => {
     const pending = new Set(document.querySelectorAll<HTMLElement>("[data-reveal]:not([data-revealed])"));
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -51,7 +55,7 @@ export default function RevealOnScroll() {
       cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  }, [pathname]);
 
   return null;
 }

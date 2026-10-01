@@ -10,7 +10,8 @@ import { menu } from "@/content/site";
 // Inline desktop nav: the logo covers Home and the Enquire button covers Contact.
 const inlineLinks = menu.links.filter((link) => link.href !== "/" && link.href !== "/contact-us");
 
-export default function Header() {
+// `overLight`: the page starts on a light background (no dark hero), so the header is ink from the top.
+export default function Header({ overLight = false }: { overLight?: boolean }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [menuUsed, setMenuUsed] = useState(false);
@@ -47,14 +48,15 @@ export default function Header() {
     setOpen((value) => !value);
   };
 
-  // White over the hero or the open (dark) menu; ink on the scrolled linen bar.
+  // White over the hero or the open (dark) menu; ink on the scrolled linen bar or a light page.
   const solid = scrolled && !open;
+  const inkText = solid || (overLight && !open);
 
   return (
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 border-b transition-[translate,background-color,border-color,color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          solid ? "border-ink/10 bg-linen text-ink" : "border-transparent bg-transparent text-white"
+          solid ? "border-ink/10 bg-linen text-ink" : `border-transparent bg-transparent ${inkText ? "text-ink" : "text-white"}`
         } ${hidden && !open ? "-translate-y-full" : ""}`}
       >
         <div className="grid grid-cols-[1fr_auto] items-center gap-6 px-[clamp(1.25rem,4vw,3rem)] py-4 lg:grid-cols-[1fr_auto_1fr] lg:py-5">
@@ -96,7 +98,7 @@ export default function Header() {
             </button>
             {/* Wrapper does the hiding: Button's own inline-flex would override `hidden` */}
             <div className="hidden sm:block">
-              <Button href="/contact-us" variant={solid ? "dark" : "light"} className="!px-5 !py-3">
+              <Button href="/contact-us" variant={inkText ? "dark" : "light"} className="!px-5 !py-3">
                 Enquire
               </Button>
             </div>
@@ -109,7 +111,7 @@ export default function Header() {
               aria-controls="site-menu"
               aria-label={open ? "Close menu" : "Open menu"}
               className={`grid size-10 place-items-center rounded-full transition-colors lg:hidden ${
-                solid ? "bg-ink/10 hover:bg-ink/20" : "bg-white/20 backdrop-blur-md hover:bg-white/35"
+                inkText ? "bg-ink/10 hover:bg-ink/20" : "bg-white/20 backdrop-blur-md hover:bg-white/35"
               }`}
             >
               {/* Two lines that cross into an X while open */}

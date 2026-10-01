@@ -104,9 +104,6 @@ export default function Projects() {
                   <span aria-hidden="true" className="size-1.5 rotate-45 bg-current" />
                   {projects.eyebrow}
                 </p>
-                <p className="mt-2 pl-[1.125rem] font-mono text-[0.7rem] uppercase sm:text-xs tracking-[0.14em] text-white/55">
-                  {projects.imageNote}
-                </p>
               </div>
               <p data-reveal className="hidden max-w-sm text-right text-base leading-relaxed text-white/75 md:block">{projects.intro}</p>
             </div>

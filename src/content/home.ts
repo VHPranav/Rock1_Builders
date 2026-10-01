@@ -135,13 +135,24 @@ export const contactCta = {
 // section carries an "illustrative" note. Swap in real project photography when the client supplies it.
 export const projects = {
   eyebrow: "Our Projects",
-  imageNote: "Images are illustrative",
+  // /projects page heading, drawn from the client's own intro line below.
+  pageHeading: "From signature residences to premium resort spaces",
+  // Decorative Montenegro images shown between the project thumbnails in the /projects hero strip.
+  // 4 extras + 6 project items = 10 images total in the hero strip.
+  // They fade away as the projects fly into the grid; they are not projects and are not linked.
+  stripExtras: [
+    "/images/why/nature.webp",
+    "/images/gateway/wellness.webp",
+    "/images/why/tourism.webp",
+    "/images/gateway/connectivity.webp",
+  ],
   intro:
     "Each project reflects Rock1 Builders' commitment to quality, design, and value. From signature residential developments to premium resort spaces, every detail is crafted to enhance lifestyles.",
   items: [
     {
       name: "Life Bay",
       location: "Dobra Voda, Montenegro",
+      region: "Montenegro" as "Montenegro" | "India",
       category: "Residential",
       stat: { value: "20", label: "Apartments" },
       summary: "Premium sea-view apartments in Montenegro's Bar Riviera.",
@@ -154,6 +165,7 @@ export const projects = {
     {
       name: "Ocean Crest",
       location: "Bar Riviera, Montenegro",
+      region: "Montenegro" as "Montenegro" | "India",
       category: "Villas",
       stat: { value: "35", label: "Villas" },
       summary: "Premium coastal villas with private sea-view infinity pools.",
@@ -166,6 +178,7 @@ export const projects = {
     {
       name: "Royal Habitat",
       location: "India",
+      region: "India" as "Montenegro" | "India",
       category: "Luxury Residence",
       stat: { value: "10,000", label: "Sq. ft." },
       summary: "A 10,000 sq. ft. residence on a 20,000 sq. m plot.",
@@ -178,6 +191,7 @@ export const projects = {
     {
       name: "Rock Star Vazhakkala",
       location: "Vazhakkala, Kerala",
+      region: "India" as "Montenegro" | "India",
       category: "Luxury Villa",
       stat: { value: "10,000", label: "Sq. ft." },
       summary: "A 10,000 sq. ft. luxury villa on 15,000 sq. m of prime land.",
@@ -190,6 +204,7 @@ export const projects = {
     {
       name: "Rock Valley",
       location: "Kakkanad, Kerala",
+      region: "India" as "Montenegro" | "India",
       category: "Villa",
       stat: { value: "4,000", label: "Sq. ft." },
       summary: "A 4,000 sq. ft. premium residence in the heart of Kakkanad.",
@@ -202,6 +217,7 @@ export const projects = {
     {
       name: "Misty Blue",
       location: "Munnar, Kerala",
+      region: "India" as "Montenegro" | "India",
       category: "Resort",
       stat: { value: "35", label: "Executive rooms" },
       summary: "Munnar's first and only lake resort.",
