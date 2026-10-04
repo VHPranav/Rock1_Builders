@@ -18,6 +18,7 @@ type ProjectDetail = {
   heroImage?: string;
   logo?: { src: string; alt: string; width: number; height: number };
   heroVideo?: { src: string; poster: string };
+  bandVideo?: { src: string; poster: string; label: string };
   film?: { title: string; src: string; poster: string };
   stills?: Photo[];
   brochure?: Photo[];
@@ -29,6 +30,12 @@ export const projectDetails: Record<string, ProjectDetail> = {
   "life-bay": {
     logo: { src: "/images/logos/life-bay-montenegro.webp", alt: "Life Bay Montenegro", width: 1119, height: 513 },
     heroImage: "/images/projects/life-bay/render.webp",
+    // 8 s Google Flow film made from the real render (design/flow/life-bay-start-frame.jpg), muted.
+    bandVideo: {
+      src: "/videos/life-bay.mp4",
+      poster: "/images/projects/life-bay/film-poster.webp",
+      label: "Life Bay apartment building in Dobra Voda, late-afternoon light",
+    },
     // Pages from the Life Bay brochure, as shown on the old project page.
     brochure: [
       { src: "/images/projects/life-bay/brochure-0007.webp", caption: "Your home, your blueprint" },

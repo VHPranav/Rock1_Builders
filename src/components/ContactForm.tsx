@@ -1,52 +1,67 @@
 "use client";
 
-import { type FormEvent, useState } from "react";
-import { footer } from "@/content/site";
+import { useActionState, useEffect, useRef } from "react";
+import { type ContactField, type ContactState, sendEnquiry } from "@/app/contact-us/actions";
 
-// Enquiry form. There is no mail backend yet, so submitting opens the visitor's email app with the
-// message addressed to the enquiry inbox and pre-filled. Swap `onSubmit` for a server action or form
-// service (e.g. Resend, Formspree) when one is set up.
+const initialState: ContactState = { status: "idle", message: "" };
+
+// Enquiry form. Submits to a Server Action that emails the enquiry through Resend
+// (src/app/contact-us/actions.ts); replies go straight to the visitor's address.
 export default function ContactForm() {
-  const [sent, setSent] = useState(false);
+  const [state, formAction, pending] = useActionState(sendEnquiry, initialState);
+  const startedRef = useRef<HTMLInputElement>(null);
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const name = String(data.get("name") ?? "");
-    const lines = [
-      `Name: ${name}`,
-      `Email: ${data.get("email") ?? ""}`,
-      `Phone: ${data.get("phone") ?? ""}`,
-      `Interested in: ${data.get("interest") ?? ""}`,
-      "",
-      String(data.get("message") ?? ""),
-    ];
-    const subject = `Website enquiry from ${name}`;
-    window.location.href = `mailto:${footer.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
-    setSent(true);
-  };
+  // Time-on-form spam check: stamp when the form becomes usable, and again after each submission.
+  useEffect(() => {
+    if (startedRef.current) startedRef.current.value = String(Date.now());
+  }, [state.submittedAt]);
 
   const field =
-    "mt-2 w-full border-b border-ink/25 bg-transparent py-3 text-base outline-none transition-colors placeholder:text-ink/35 focus:border-ink";
+    "mt-2 w-full border-b bg-transparent py-3 text-base outline-none transition-colors placeholder:text-ink/35 focus:border-ink";
   const label = "font-mono text-xs uppercase tracking-[0.14em] text-ink/60";
+  const values = state.status === "error" ? state.fields : undefined;
+  const fieldProps = (name: ContactField) => ({
+    name,
+    defaultValue: values?.[name],
+    "aria-invalid": state.errors?.[name] ? true : undefined,
+    "aria-describedby": state.errors?.[name] ? `${name}-error` : undefined,
+    className: `${field} ${state.errors?.[name] ? "border-red-700" : "border-ink/25"}`,
+  });
+  const error = (name: ContactField) =>
+    state.errors?.[name] && (
+      <span id={`${name}-error`} className="mt-2 block text-sm text-red-700">
+        {state.errors[name]}
+      </span>
+    );
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-8 sm:grid-cols-2">
+    // Keyed by submission so the echoed values are applied after an error.
+    <form key={state.submittedAt ?? 0} action={formAction} className="grid gap-8 sm:grid-cols-2">
+      {/* Spam traps: hidden from people and screen readers */}
+      <input ref={startedRef} type="hidden" name="startedAt" defaultValue="" />
+      <label aria-hidden="true" className="absolute -left-[9999px] size-px overflow-hidden">
+        Company
+        <input name="company" tabIndex={-1} autoComplete="off" defaultValue="" />
+      </label>
+
       <label className="block">
         <span className={label}>Name</span>
-        <input name="name" required autoComplete="name" className={field} placeholder="Your full name" />
+        <input {...fieldProps("name")} required maxLength={120} autoComplete="name" placeholder="Your full name" />
+        {error("name")}
       </label>
       <label className="block">
         <span className={label}>Email</span>
-        <input name="email" type="email" required autoComplete="email" className={field} placeholder="you@example.com" />
+        <input {...fieldProps("email")} type="email" required maxLength={200} autoComplete="email" placeholder="you@example.com" />
+        {error("email")}
       </label>
       <label className="block">
         <span className={label}>Phone</span>
-        <input name="phone" type="tel" autoComplete="tel" className={field} placeholder="Optional" />
+        <input {...fieldProps("phone")} type="tel" maxLength={40} autoComplete="tel" placeholder="Optional" />
+        {error("phone")}
       </label>
       <label className="block">
         <span className={label}>Interested in</span>
-        <select name="interest" className={`${field} appearance-none`} defaultValue="Life Bay Montenegro">
+        <select {...fieldProps("interest")} defaultValue={values?.interest ?? "Life Bay Montenegro"} className={`${field} border-ink/25 appearance-none`}>
           <option>Life Bay Montenegro</option>
           <option>Ocean Crest villas</option>
           <option>European residency</option>
@@ -56,20 +71,26 @@ export default function ContactForm() {
       </label>
       <label className="block sm:col-span-2">
         <span className={label}>Message</span>
-        <textarea name="message" required rows={4} className={`${field} resize-none`} placeholder="How can we help?" />
+        <textarea {...fieldProps("message")} required rows={4} maxLength={4000} placeholder="How can we help?" className={`${fieldProps("message").className} resize-none`} />
+        {error("message")}
       </label>
       <div className="flex flex-wrap items-center gap-6 sm:col-span-2">
         <button
           type="submit"
-          className="group inline-flex items-center gap-3 bg-ink-deep px-6 py-3.5 font-mono text-xs font-medium uppercase tracking-[0.12em] text-white transition-colors hover:bg-ink"
+          disabled={pending}
+          className="group inline-flex items-center gap-3 bg-ink-deep px-6 py-3.5 font-mono text-xs font-medium uppercase tracking-[0.12em] text-white transition-colors hover:bg-ink disabled:cursor-wait disabled:opacity-60"
         >
           <svg aria-hidden="true" viewBox="0 0 18 14" className="h-3 w-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" strokeWidth="1.4">
             <path d="M1 0v8h15M12 4l4 4-4 4" />
           </svg>
-          Send enquiry
+          {pending ? "Sending…" : "Send enquiry"}
         </button>
-        <p aria-live="polite" className="text-sm text-ink/60">
-          {sent ? "Your email app should open with the message ready to send." : "Opens your email app with the message ready to send."}
+        <p
+          role="status"
+          aria-live="polite"
+          className={`text-sm ${state.status === "error" ? "text-red-700" : state.status === "success" ? "text-ink" : "text-ink/60"}`}
+        >
+          {state.message || "Name, email and message are required."}
         </p>
       </div>
     </form>

@@ -147,6 +147,23 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
               ))}
             </ul>
           </section>
+        ) : detail.bandVideo ? (
+          // Muted loop in place of the wide image band (Life Bay: Flow film of the real render)
+          <section className="px-[clamp(1.25rem,6vw,6rem)]">
+            <figure data-reveal="image" className="relative aspect-[4/3] overflow-hidden bg-ink/10 sm:aspect-video">
+              <video
+                src={detail.bandVideo.src}
+                poster={detail.bandVideo.poster}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-label={detail.bandVideo.label}
+                className="absolute inset-0 size-full object-cover"
+              />
+            </figure>
+          </section>
         ) : item.image && (
           <section className="px-[clamp(1.25rem,6vw,6rem)]">
             <figure data-reveal="image" className="relative aspect-[4/3] overflow-hidden sm:aspect-[21/9]">

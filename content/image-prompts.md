@@ -85,3 +85,11 @@ Save as `public/images/footer/footer.webp` and set `footer.image` in `src/conten
 | File | Prompt |
 | --- | --- |
 | `footer.webp` | Serene living room of a modern coastal residence on the Bay of Kotor at dusk, floor-to-ceiling glass wall over calm fjord-like water, limestone mountains and a stone village with terracotta roofs and warm lights on the far shore, pale limestone floor, oak and linen furniture kept low and to the sides so the centre stays uncluttered, blue-hour light. + shared style |
+
+## Life Bay project page: band video (2026-10-04)
+
+Google Flow (Pranav V H), image-to-video from the real render (`design/flow/life-bay-start-frame.jpg`, 16:9 crop of the old site's Life Bay render). 8 s, 1080p upscale; original in `design/flow/life-bay-film-flow.mp4`, muted web copy `public/videos/life-bay.mp4`, poster `public/images/projects/life-bay/film-poster.webp`.
+
+> Generate one 8-second video in 16:9 landscape, using the attached image as the exact first frame. The camera stays almost still: only a very slow, subtle push-in (about 5% closer) from the same viewpoint, no orbit, no pan, no change of angle. The building must stay identical to the image for the whole clip: same shape, same four floors, same cream and taupe walls, same balconies and the same orange timber slat panels; do not redesign or morph anything. Only the atmosphere moves: soft clouds drift slowly across the blue sky, warm late-afternoon sunlight gently brightens the facade, trees and palm leaves sway in a light breeze, reflections ripple on the wet forecourt, the people walk slowly. Photoreal, calm, cinematic, subtle film grain, no text, no logos, no music.
+
+A first attempt with a dolly-and-arc move was rejected: mid-clip the model redesigned the building (different facade and balconies). Keep camera moves minimal for real projects.
