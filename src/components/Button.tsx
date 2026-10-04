@@ -12,12 +12,16 @@ type ButtonProps = {
   children: React.ReactNode;
   variant?: keyof typeof variants;
   className?: string;
+  // Files (PDFs etc.) skip client-side routing and open in a new tab.
+  file?: boolean;
 };
 
-export default function Button({ href, children, variant = "dark", className = "" }: ButtonProps) {
+export default function Button({ href, children, variant = "dark", className = "", file = false }: ButtonProps) {
+  const Tag = file ? "a" : Link;
   return (
-    <Link
+    <Tag
       href={href}
+      {...(file && { target: "_blank", rel: "noopener" })}
       className={`group inline-flex items-center gap-3 px-6 py-3.5 font-mono text-xs font-medium uppercase tracking-[0.12em] transition-colors ${variants[variant]} ${className}`}
     >
       <svg
@@ -31,6 +35,6 @@ export default function Button({ href, children, variant = "dark", className = "
         <path d="M1 0v8h15M12 4l4 4-4 4" />
       </svg>
       {children}
-    </Link>
+    </Tag>
   );
 }

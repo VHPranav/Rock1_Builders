@@ -50,6 +50,9 @@ export default function RevealOnScroll() {
 
     pending.forEach((el) => observer.observe(el));
     window.addEventListener("scroll", onScroll, { passive: true });
+    // Reveal whatever is already on screen right away, rather than waiting for the observer's first
+    // callback (which can lag, leaving above-the-fold text hidden until the first scroll).
+    raf = requestAnimationFrame(sweep);
     return () => {
       observer.disconnect();
       cancelAnimationFrame(raf);

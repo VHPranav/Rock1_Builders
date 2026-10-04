@@ -1,14 +1,16 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Button from "@/components/Button";
 import SiteMenu from "@/components/SiteMenu";
-import { menu } from "@/content/site";
+import { nav } from "@/content/site";
 
-// Inline desktop nav: the logo covers Home and the Enquire button covers Contact.
-const inlineLinks = menu.links.filter((link) => link.href !== "/" && link.href !== "/contact-us");
+// Desktop link style: small mono capitals with an underline that draws in on hover / current page.
+const linkClass =
+  "whitespace-nowrap bg-[linear-gradient(currentColor,currentColor)] bg-left-bottom bg-no-repeat pb-1 font-mono text-[0.7rem] uppercase tracking-[0.14em] transition-[background-size] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[length:100%_1px] xl:text-xs";
 
 // `overLight`: the page starts on a light background (no dark hero), so the header is ink from the top.
 export default function Header({ overLight = false }: { overLight?: boolean }) {
@@ -61,27 +63,81 @@ export default function Header({ overLight = false }: { overLight?: boolean }) {
       >
         <div className="grid grid-cols-[1fr_auto] items-center gap-6 px-[clamp(1.25rem,4vw,3rem)] py-4 lg:grid-cols-[1fr_auto_1fr] lg:py-5">
           {/* Logo, left */}
-          <Link data-reveal href="/" onClick={close} className="justify-self-start leading-none" aria-label="Rock1 Builders home">
-            <span className="block text-xl font-medium uppercase tracking-[0.2em] sm:text-2xl">Rock1</span>
-            <span className="mt-1 block text-[0.55rem] uppercase tracking-[0.5em] sm:text-[0.6rem]">Builders</span>
+          {/* Both logo versions are stacked; the white one shows over the hero and the open menu */}
+          <Link data-reveal href="/" onClick={close} className="relative block justify-self-start" aria-label="Rock1 Builders home">
+            <Image
+              src="/images/logos/rock1-builders.webp"
+              alt=""
+              width={830}
+              height={334}
+              priority
+              sizes="160px"
+              className={`h-10 w-auto transition-opacity duration-500 sm:h-12 ${inkText ? "opacity-100" : "opacity-0"}`}
+            />
+            <Image
+              src="/images/logos/rock1-builders-white.webp"
+              alt=""
+              width={830}
+              height={334}
+              priority
+              sizes="160px"
+              className={`absolute inset-0 h-10 w-auto transition-opacity duration-500 sm:h-12 ${inkText ? "opacity-0" : "opacity-100"}`}
+            />
           </Link>
 
-          {/* Menu, centre (desktop) */}
+          {/* Menu, centre (desktop). Items with children open a dropdown on hover or keyboard focus;
+              the dropdown links stay focusable while hidden, so tabbing into them opens the panel. */}
           <nav data-reveal aria-label="Main" className="hidden lg:block">
-            <ul className="flex items-center gap-[clamp(1.25rem,2.2vw,2.25rem)]">
-              {inlineLinks.map((link) => {
-                const current = pathname === link.href;
+            <ul className="flex items-center gap-[clamp(1rem,2vw,2rem)]">
+              {nav.map((item) => {
+                const current =
+                  pathname === item.href || (item.children?.some((child) => child.href === pathname) ?? false);
                 return (
-                  <li key={link.href}>
+                  <li key={item.label} className="group/item relative">
                     <Link
-                      href={link.href}
-                      aria-current={current ? "page" : undefined}
-                      className={`whitespace-nowrap bg-[linear-gradient(currentColor,currentColor)] bg-left-bottom bg-no-repeat pb-1 font-mono text-[0.7rem] uppercase tracking-[0.14em] transition-[background-size] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[length:100%_1px] xl:text-xs ${
-                        current ? "bg-[length:100%_1px]" : "bg-[length:0%_1px]"
-                      }`}
+                      href={item.href}
+                      aria-current={pathname === item.href ? "page" : undefined}
+                      aria-haspopup={item.children ? "true" : undefined}
+                      className={`${linkClass} inline-flex items-center gap-1.5 ${current ? "bg-[length:100%_1px]" : "bg-[length:0%_1px]"}`}
                     >
-                      {link.label}
+                      {item.label}
+                      {item.children && (
+                        <svg
+                          aria-hidden="true"
+                          viewBox="0 0 10 6"
+                          className="h-1.5 w-2.5 transition-transform duration-300 group-focus-within/item:rotate-180 group-hover/item:rotate-180"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.3"
+                        >
+                          <path d="M1 1l4 4 4-4" />
+                        </svg>
+                      )}
                     </Link>
+
+                    {item.children && (
+                      <div className="pointer-events-none absolute left-1/2 top-full z-10 -translate-x-1/2 pt-4 opacity-0 transition-opacity duration-300 group-focus-within/item:pointer-events-auto group-focus-within/item:opacity-100 group-hover/item:pointer-events-auto group-hover/item:opacity-100">
+                        <ul className="min-w-64 translate-y-1 border border-ink/10 bg-linen p-2 text-ink shadow-[0_24px_48px_-24px_rgb(0_0_0/0.35)] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-focus-within/item:translate-y-0 group-hover/item:translate-y-0">
+                          {item.children.map((child) => (
+                            <li key={`${child.label}-${child.href}`}>
+                              <Link
+                                href={child.href}
+                                onClick={close}
+                                aria-current={pathname === child.href ? "page" : undefined}
+                                className={`flex items-baseline justify-between gap-8 px-3 py-2.5 text-sm transition-colors hover:bg-ink/5 focus-visible:bg-ink/5 ${
+                                  pathname === child.href ? "bg-ink/5" : ""
+                                }`}
+                              >
+                                <span>{child.label}</span>
+                                {child.note && (
+                                  <span className="font-mono text-[0.65rem] uppercase tracking-[0.12em] text-ink/50">{child.note}</span>
+                                )}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </li>
                 );
               })}

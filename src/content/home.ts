@@ -118,7 +118,7 @@ export const contactCta = {
   intro: "Reach out to us, we're here to craft the perfect solution for your home.",
   primary: { label: "Speak with our advisor", href: "/contact-us" },
   secondary: [
-    { label: "Explore investment options", href: "/works/ocean-crest" },
+    { label: "Explore investment options", href: "/projects/ocean-crest" },
     // Brochure still lives on the current WordPress site; move it into /public when the domain switches over.
     { label: "Download brochure", href: "https://rock1builders.com/wp-content/uploads/2025/10/Montenegro-Brochure.pdf" },
   ],
@@ -158,7 +158,8 @@ export const projects = {
       summary: "Premium sea-view apartments in Montenegro's Bar Riviera.",
       description:
         "A strategic development in Dobra Voda designed for the fast-growing real estate and tourism market of the Bar Riviera. Modern, high-quality apartments with sea views, a swimming pool and car parking, backed by strong rental demand and Montenegro's favourable climate.",
-      href: "/works/life-bay-montenegro",
+      slug: "life-bay",
+      href: "/projects/life-bay",
       tone: "#46596a",
       image: "/images/projects/life-bay.webp" as string | null,
     },
@@ -171,9 +172,11 @@ export const projects = {
       summary: "Premium coastal villas with private sea-view infinity pools.",
       description:
         "Modern architecture, comfort and a refined coastal lifestyle, minutes from Dobra Voda beach and Bar Old Town. Villa types from 32 m² to 170.7 m², with sea-view infinity pools, landscaped Mediterranean gardens and an Ayurveda wellness centre next door at Life Bay.",
-      href: "/works/ocean-crest",
+      slug: "ocean-crest",
+      href: "/projects/ocean-crest",
       tone: "#5b6b73",
-      image: "/images/projects/ocean-crest.webp" as string | null,
+      // Real render from the client's 3D film (was an AI illustration).
+      image: "/images/projects/ocean-crest/frontage.webp" as string | null,
     },
     {
       name: "Royal Habitat",
@@ -184,7 +187,8 @@ export const projects = {
       summary: "A 10,000 sq. ft. residence on a 20,000 sq. m plot.",
       description:
         "Six grand bedrooms, a home theatre, an executive office and an indoor water fountain, surrounded by a landscaped garden, fruit orchard and private swimming pool.",
-      href: "/works/royal-habitat",
+      slug: "royal-habitat",
+      href: "/projects/royal-habitat",
       tone: "#7d6a5a",
       image: "/images/projects/royal-habitat.webp" as string | null,
     },
@@ -197,7 +201,8 @@ export const projects = {
       summary: "A 10,000 sq. ft. luxury villa on 15,000 sq. m of prime land.",
       description:
         "Five spacious bedrooms, a home theatre, an office and a children's playhouse, with landscaped gardens, a private play area and a garage for five cars.",
-      href: "/works/rock-star-vazhakkalla",
+      slug: "rock-star-vazhakkala",
+      href: "/projects/rock-star-vazhakkala",
       tone: "#6b6f4e",
       image: "/images/projects/rock-star-vazhakkala.webp" as string | null,
     },
@@ -210,7 +215,8 @@ export const projects = {
       summary: "A 4,000 sq. ft. premium residence in the heart of Kakkanad.",
       description:
         "A four-bedroom villa on 10,000 sq. m with a private swimming pool, home theatre, office space and a lush garden: urban luxury in a peaceful natural setting.",
-      href: "/works/rock-valley-kakkanad",
+      slug: "rock-valley",
+      href: "/projects/rock-valley",
       tone: "#8a7a64",
       image: "/images/projects/rock-valley.webp" as string | null,
     },
@@ -223,7 +229,8 @@ export const projects = {
       summary: "Munnar's first and only lake resort.",
       description:
         "A five-star resort in the misty hills of Munnar with a swimming pool, wellness and spa centre, multi-cuisine restaurant, barbecue zone, private pond and lake, and an open-air amphitheatre.",
-      href: "/works/misty-blue",
+      slug: "misty-blue",
+      href: "/projects/misty-blue",
       tone: "#4f5d56",
       image: "/images/projects/misty-blue.webp" as string | null,
     },

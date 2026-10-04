@@ -27,8 +27,8 @@ export default function Footer() {
 
           {/* ── Col 1: Brand ── */}
           <div>
-            <Link href="/" className="inline-block">
-              <span className="text-2xl font-semibold tracking-[-0.02em]">Rock1 Builders</span>
+            <Link href="/" className="inline-block" aria-label="Rock1 Builders home">
+              <Image src="/images/logos/rock1-builders-white.webp" alt="" width={830} height={334} sizes="200px" className="h-14 w-auto sm:h-16" />
             </Link>
             <p className="mt-4 max-w-[28ch] text-sm leading-relaxed text-white/80">
               Building lives, communities, and legacies — across South India and now on the shores of Europe.

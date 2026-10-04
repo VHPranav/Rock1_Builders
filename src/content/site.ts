@@ -1,5 +1,35 @@
 // Site-wide content, from the old site's footer (content/raw/_global-header-footer.md).
 
+import { projects } from "@/content/home";
+
+type NavLink = { label: string; href: string; note?: string };
+type NavItem = NavLink & { children?: NavLink[] };
+
+// Desktop header navigation. Items with `children` open a dropdown on hover or keyboard focus.
+export const nav: NavItem[] = [
+  {
+    label: "About",
+    href: "/about-us",
+    children: [
+      { label: "About Us", href: "/about-us" },
+      { label: "About Montenegro", href: "/about-montenegro" },
+      { label: "Legal", href: "/legal" },
+    ],
+  },
+  { label: "Our Services", href: "/our-services" },
+  {
+    label: "Projects",
+    href: "/projects",
+    children: [
+      { label: "All projects", href: "/projects", note: `${projects.items.length}` },
+      ...projects.items.map((item) => ({ label: item.name, href: item.href, note: item.region })),
+    ],
+  },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Newsroom", href: "/newsroom" },
+  { label: "Contact Us", href: "/contact-us" },
+];
+
 // Full-screen header menu. Each link previews one of the site's existing images on hover.
 // /projects is the planned listing page (replaces the old empty Project/Ongoing/Completed pages).
 export const menu = {
@@ -11,7 +41,8 @@ export const menu = {
     { label: "About Montenegro", href: "/about-montenegro", image: "/images/why/nature.webp" },
     { label: "Gallery", href: "/gallery", image: "/images/gateway/wellness.webp" },
     { label: "Newsroom", href: "/newsroom", image: "/images/why/economy.webp" },
-    { label: "Contact", href: "/contact-us", image: "/images/why/climate.webp" },
+    { label: "Legal", href: "/legal", image: "/images/why/tax-living.webp" },
+    { label: "Contact Us", href: "/contact-us", image: "/images/why/climate.webp" },
   ],
   cta: { label: "Book a consultation", href: "/contact-us" },
 };

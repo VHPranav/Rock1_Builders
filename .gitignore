@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Client source video: over GitHub's 100 MB file limit; web versions live in public/videos
+design/originals/client/*.mp4
+
+# Old rock1builders.com photos (originals; WebP copies live in public/)
+design/originals/old-site/
