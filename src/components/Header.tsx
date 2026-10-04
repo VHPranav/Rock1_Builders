@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Button from "@/components/Button";
+import NavMega from "@/components/NavMega";
 import SiteMenu from "@/components/SiteMenu";
 import { nav } from "@/content/site";
 
@@ -20,6 +21,11 @@ export default function Header({ overLight = false }: { overLight?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  // Desktop dropdown: label of the open item, and whether any has opened yet (defers its images).
+  const [mega, setMega] = useState<string | null>(null);
+  const [megaLoaded, setMegaLoaded] = useState(false);
+  const megaTimer = useRef(0);
+  const headerRef = useRef<HTMLElement>(null);
 
   // Transparent over the hero; a solid linen bar once scrolled. Slides away while scrolling down past
   // the hero and returns on any scroll up.
@@ -45,21 +51,54 @@ export default function Header({ overLight = false }: { overLight?: boolean }) {
   }, []);
 
   const close = useCallback(() => setOpen(false), []);
+
+  const openMega = (label: string | null) => {
+    window.clearTimeout(megaTimer.current);
+    setMega(label);
+    if (label) setMegaLoaded(true);
+  };
+  // A short grace period so moving the pointer from the link down into the panel doesn't close it.
+  const closeMegaSoon = () => {
+    window.clearTimeout(megaTimer.current);
+    megaTimer.current = window.setTimeout(() => setMega(null), 140);
+  };
+  const closeMega = useCallback(() => {
+    window.clearTimeout(megaTimer.current);
+    setMega(null);
+  }, []);
+
+  useEffect(() => {
+    if (!mega) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      const trigger = headerRef.current?.querySelector<HTMLElement>(`[data-mega-trigger="${mega}"]`);
+      closeMega();
+      trigger?.focus();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [mega, closeMega]);
   const toggle = () => {
     setMenuUsed(true);
     setOpen((value) => !value);
   };
 
   // White over the hero or the open (dark) menu; ink on the scrolled linen bar or a light page.
-  const solid = scrolled && !open;
+  const solid = (scrolled || mega !== null) && !open;
   const inkText = solid || (overLight && !open);
 
   return (
     <>
       <header
+        ref={headerRef}
+        onMouseLeave={closeMegaSoon}
+        onMouseEnter={() => window.clearTimeout(megaTimer.current)}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) closeMega();
+        }}
         className={`fixed inset-x-0 top-0 z-50 border-b transition-[translate,background-color,border-color,color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           solid ? "border-ink/10 bg-linen text-ink" : `border-transparent bg-transparent ${inkText ? "text-ink" : "text-white"}`
-        } ${hidden && !open ? "-translate-y-full" : ""}`}
+        } ${hidden && !open && !mega ? "-translate-y-full" : ""}`}
       >
         <div className="grid grid-cols-[1fr_auto] items-center gap-6 px-[clamp(1.25rem,4vw,3rem)] py-4 lg:grid-cols-[1fr_auto_1fr] lg:py-5">
           {/* Logo, left */}
@@ -85,27 +124,42 @@ export default function Header({ overLight = false }: { overLight?: boolean }) {
             />
           </Link>
 
-          {/* Menu, centre (desktop). Items with children open a dropdown on hover or keyboard focus;
-              the dropdown links stay focusable while hidden, so tabbing into them opens the panel. */}
+          {/* Menu, centre (desktop). Items with children open a full-width panel (NavMega) on hover or
+              keyboard focus; Escape, leaving the header or hovering the dimmed page closes it. */}
           <nav data-reveal aria-label="Main" className="hidden lg:block">
             <ul className="flex items-center gap-[clamp(1rem,2vw,2rem)]">
               {nav.map((item) => {
                 const current =
                   pathname === item.href || (item.children?.some((child) => child.href === pathname) ?? false);
+                const expanded = mega === item.label;
                 return (
-                  <li key={item.label} className="group/item relative">
+                  <li key={item.label} onMouseEnter={() => openMega(item.children ? item.label : null)}>
                     <Link
                       href={item.href}
+                      data-mega-trigger={item.children ? item.label : undefined}
+                      onFocus={() => openMega(item.children ? item.label : null)}
+                      // The panel sits after the header actions in the DOM, so Tab / ↓ jump straight into it.
+                      onKeyDown={(event) => {
+                        if (!item.children || !expanded) return;
+                        if (event.key === "ArrowDown" || (event.key === "Tab" && !event.shiftKey)) {
+                          const first = document.querySelector<HTMLElement>(`#mega-${item.label.toLowerCase()} a`);
+                          if (first) {
+                            event.preventDefault();
+                            first.focus();
+                          }
+                        }
+                      }}
                       aria-current={pathname === item.href ? "page" : undefined}
-                      aria-haspopup={item.children ? "true" : undefined}
-                      className={`${linkClass} inline-flex items-center gap-1.5 ${current ? "bg-[length:100%_1px]" : "bg-[length:0%_1px]"}`}
+                      aria-expanded={item.children ? expanded : undefined}
+                      aria-controls={item.children ? `mega-${item.label.toLowerCase()}` : undefined}
+                      className={`${linkClass} inline-flex items-center gap-1.5 ${current || expanded ? "bg-[length:100%_1px]" : "bg-[length:0%_1px]"}`}
                     >
                       {item.label}
                       {item.children && (
                         <svg
                           aria-hidden="true"
                           viewBox="0 0 10 6"
-                          className="h-1.5 w-2.5 transition-transform duration-300 group-focus-within/item:rotate-180 group-hover/item:rotate-180"
+                          className={`h-1.5 w-2.5 transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
                           fill="none"
                           stroke="currentColor"
                           strokeWidth="1.3"
@@ -114,30 +168,6 @@ export default function Header({ overLight = false }: { overLight?: boolean }) {
                         </svg>
                       )}
                     </Link>
-
-                    {item.children && (
-                      <div className="pointer-events-none absolute left-1/2 top-full z-10 -translate-x-1/2 pt-4 opacity-0 transition-opacity duration-300 group-focus-within/item:pointer-events-auto group-focus-within/item:opacity-100 group-hover/item:pointer-events-auto group-hover/item:opacity-100">
-                        <ul className="min-w-64 translate-y-1 border border-ink/10 bg-linen p-2 text-ink shadow-[0_24px_48px_-24px_rgb(0_0_0/0.35)] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-focus-within/item:translate-y-0 group-hover/item:translate-y-0">
-                          {item.children.map((child) => (
-                            <li key={`${child.label}-${child.href}`}>
-                              <Link
-                                href={child.href}
-                                onClick={close}
-                                aria-current={pathname === child.href ? "page" : undefined}
-                                className={`flex items-baseline justify-between gap-8 px-3 py-2.5 text-sm transition-colors hover:bg-ink/5 focus-visible:bg-ink/5 ${
-                                  pathname === child.href ? "bg-ink/5" : ""
-                                }`}
-                              >
-                                <span>{child.label}</span>
-                                {child.note && (
-                                  <span className="font-mono text-[0.65rem] uppercase tracking-[0.12em] text-ink/50">{child.note}</span>
-                                )}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
                   </li>
                 );
               })}
@@ -186,7 +216,35 @@ export default function Header({ overLight = false }: { overLight?: boolean }) {
             </button>
           </div>
         </div>
+
+        {/* Full-width dropdown panels (desktop) */}
+        <div className="hidden lg:block">
+          {nav
+            .filter((item) => item.children)
+            .map((item) => (
+              <NavMega
+                key={item.label}
+                id={`mega-${item.label.toLowerCase()}`}
+                kind={item.href === "/projects" ? "projects" : "links"}
+                links={item.children}
+                open={mega === item.label}
+                loaded={megaLoaded}
+                pathname={pathname}
+                onNavigate={closeMega}
+              />
+            ))}
+        </div>
       </header>
+
+      {/* Dims the page under an open panel; hovering or clicking it closes the panel */}
+      <div
+        aria-hidden="true"
+        onMouseEnter={closeMegaSoon}
+        onClick={closeMega}
+        className={`fixed inset-0 z-40 hidden bg-ink-deep/35 backdrop-blur-[2px] transition-opacity duration-500 lg:block ${
+          mega ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      />
 
       <SiteMenu open={open} loadImages={menuUsed} onClose={close} toggleRef={toggleRef} />
     </>

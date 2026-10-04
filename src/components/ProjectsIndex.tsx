@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useLayoutEffect, useRef } from "react";
 import RevealWords from "@/components/RevealWords";
-import { projects } from "@/content/home";
+import { type ProjectStatus, projects, projectStatuses } from "@/content/home";
 
 type Item = (typeof projects.items)[number];
 
@@ -14,15 +14,24 @@ const STAGGER_MS = 65;
 const GAP = 6;
 const TARGET_STRIP_COUNT = 10;
 
-// Rows alternate two wide tiles, then up to four narrow ones.
-function toRows(items: Item[]) {
-  const rows: Item[][] = [];
-  for (let i = 0, r = 0; i < items.length; r++) {
-    const size = r % 2 === 0 ? 2 : 4;
-    rows.push(items.slice(i, i + size));
-    i += size;
+const anchor = (status: ProjectStatus) => status.toLowerCase().replace(/\s+/g, "-");
+
+// Grouped as on the old site's Project menu. Groups with a single project (Newly Launched, Ongoing)
+// share the first row as two wide tiles, each labelled; larger groups get a heading and rows of four.
+function toSections(items: Item[]) {
+  const groups = projectStatuses.map((status) => ({ status, items: items.filter((item) => item.status === status) }));
+  const singles = groups.filter((group) => group.items.length === 1);
+  const multiples = groups.filter((group) => group.items.length > 1);
+  const sections: { heading?: ProjectStatus; rows: Item[][] }[] = [];
+  for (let i = 0; i < singles.length; i += 2) {
+    sections.push({ rows: [singles.slice(i, i + 2).map((group) => group.items[0])] });
   }
-  return rows;
+  for (const group of multiples) {
+    const rows: Item[][] = [];
+    for (let i = 0; i < group.items.length; i += 4) rows.push(group.items.slice(i, i + 4));
+    sections.push({ heading: group.status, rows });
+  }
+  return sections;
 }
 
 // Per-row layout. The project images are 16:9, so in a 4:5 tile they render ~2.2x the tile's width
@@ -254,48 +263,65 @@ export default function ProjectsIndex() {
       </div>
 
       {/* Grid: starts below the strip with balanced spacing for image formation */}
-      <div className="space-y-12 pb-32 pt-6 sm:mt-[24rem] lg:mt-[26rem] sm:space-y-16">
-        {toRows(projects.items).map((row, r) => {
-          const layout = rowLayout(row.length);
-          return (
-            <ul key={r} className={`grid gap-x-2 gap-y-12 ${layout.cols}`}>
-              {row.map((item) => {
-                const i = tileIndex++;
-                return (
-                  <li key={item.name}>
-                    <Link href={item.href} className="group block">
-                      <figure data-tile className={`relative overflow-hidden bg-ink/10 ${layout.aspect}`}>
-                        {item.image ? (
-                          <Image
-                            src={item.image}
-                            alt={`${item.name}, ${item.location}`}
-                            fill
-                            quality={85}
-                            sizes={layout.sizes}
-                            priority={i < 6}
-                            className="object-cover transition-[scale] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
-                          />
-                        ) : (
-                          <div className="absolute inset-0" style={{ background: item.tone }} />
+      <div className="space-y-16 pb-32 pt-6 sm:mt-[24rem] lg:mt-[26rem] sm:space-y-24">
+        {toSections(projects.items).map((section, s) => (
+          <section key={s} id={section.heading ? anchor(section.heading) : undefined} className="scroll-mt-28 space-y-12 sm:space-y-16">
+            {section.heading && (
+              <p className="project-caption inline-flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.14em] sm:text-sm">
+                <span aria-hidden="true" className="size-1.5 rotate-45 bg-current" />
+                {section.heading}
+                <span className="text-ink/45">{section.rows.flat().length}</span>
+              </p>
+            )}
+            {section.rows.map((row, r) => {
+              const layout = rowLayout(row.length);
+              return (
+                <ul key={r} className={`grid gap-x-2 gap-y-12 ${layout.cols}`}>
+                  {row.map((item) => {
+                    const i = tileIndex++;
+                    return (
+                      <li key={item.name} id={section.heading ? undefined : anchor(item.status)} className="scroll-mt-28">
+                        {!section.heading && (
+                          <p className="project-caption mb-3 inline-flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.14em] sm:text-sm">
+                            <span aria-hidden="true" className="size-1.5 rotate-45 bg-current" />
+                            {item.status}
+                          </p>
                         )}
-                      </figure>
-                      <div className="project-caption mt-3 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-                        <h2 className="text-base font-medium tracking-[-0.01em] sm:text-lg">
-                          <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-500 group-hover:bg-[length:100%_1px]">
-                            {item.name}
-                          </span>
-                        </h2>
-                        <p className="font-mono text-[0.65rem] uppercase tracking-[0.12em] text-ink/55 sm:text-right sm:text-[0.7rem]">
-                          {item.category} · {item.location}
-                        </p>
-                      </div>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          );
-        })}
+                        <Link href={item.href} className="group block">
+                          <figure data-tile className={`relative overflow-hidden bg-ink/10 ${layout.aspect}`}>
+                            {item.image ? (
+                              <Image
+                                src={item.image}
+                                alt={`${item.name}, ${item.location}`}
+                                fill
+                                quality={85}
+                                sizes={layout.sizes}
+                                priority={i < 6}
+                                className="object-cover transition-[scale] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+                              />
+                            ) : (
+                              <div className="absolute inset-0" style={{ background: item.tone }} />
+                            )}
+                          </figure>
+                          <div className="project-caption mt-3 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+                            <h2 className="text-base font-medium tracking-[-0.01em] sm:text-lg">
+                              <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-500 group-hover:bg-[length:100%_1px]">
+                                {item.name}
+                              </span>
+                            </h2>
+                            <p className="font-mono text-[0.65rem] uppercase tracking-[0.12em] text-ink/55 sm:text-right sm:text-[0.7rem]">
+                              {item.category} · {item.location}
+                            </p>
+                          </div>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              );
+            })}
+          </section>
+        ))}
       </div>
     </div>
   );

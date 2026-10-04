@@ -17,7 +17,7 @@ export const story = {
   statement:
     "For over 25 years and 50+ projects, we've shaped skylines across South India. Now we bring that same care to Europe with Life Bay Montenegro.",
   body1:
-    "For over 25 years, Rock Builders has been shaping skylines across South India. With more than fifty completed projects, the company blends thoughtful design with community focus. Every development reflects quality, trust, and care, creating spaces where people can live, work, and thrive with pride and comfort.",
+    "We offer investors a gateway to Montenegro's growing market with low taxes, Euro stability, and the promise of EU expansion. For over 25 years, Rock Builders has been shaping skylines across South India. With more than fifty completed projects, the company blends thoughtful design with community focus. Every development reflects quality, trust, and care, creating spaces where people can live, work, and thrive with pride and comfort.",
   body2:
     "Now, Rock Builders is taking its expertise to the global stage with Life Bay Montenegro. The project features luxury apartments alongside Europe's first Ayurvedic wellness resort. Residents gain a beautiful home in one of Europe's most scenic locations, plus European residency and strong rental potential. Rock Builders continues to build with purpose, blending luxury living with lasting value.",
   cta: { label: "Explore", href: "/about-us" },
@@ -119,8 +119,8 @@ export const contactCta = {
   primary: { label: "Speak with our advisor", href: "/contact-us" },
   secondary: [
     { label: "Explore investment options", href: "/projects/ocean-crest" },
-    // Brochure still lives on the current WordPress site; move it into /public when the domain switches over.
-    { label: "Download brochure", href: "https://rock1builders.com/wp-content/uploads/2025/10/Montenegro-Brochure.pdf" },
+    // Life Bay brochure from the old site (Montenegro-Brochure.pdf), now hosted with the site.
+    { label: "Download brochure", href: "/documents/life-bay-montenegro-brochure.pdf" },
   ],
   details: [
     { label: "Call us (India)", value: "+91 79940 40740", href: "tel:+917994040740" },
@@ -133,6 +133,11 @@ export const contactCta = {
 // "Our Projects": homepage block (content/raw/home.md:118-168) plus every project page (content/raw/project-*.md).
 // Images are AI-generated illustrations of each documented brief (see content/image-prompts.md), so the
 // section carries an "illustrative" note. Swap in real project photography when the client supplies it.
+export type ProjectStatus = "Newly Launched" | "Ongoing" | "Completed";
+
+// Display order of the status groups on the Projects page and in the menu.
+export const projectStatuses: ProjectStatus[] = ["Newly Launched", "Ongoing", "Completed"];
+
 export const projects = {
   eyebrow: "Our Projects",
   // /projects page heading, drawn from the client's own intro line below.
@@ -153,6 +158,8 @@ export const projects = {
       name: "Life Bay",
       location: "Dobra Voda, Montenegro",
       region: "Montenegro" as "Montenegro" | "India",
+      // Grouping from the old site's Project menu (Ongoing / Completed / Newly Launched).
+      status: "Ongoing" as ProjectStatus,
       category: "Residential",
       stat: { value: "20", label: "Apartments" },
       summary: "Premium sea-view apartments in Montenegro's Bar Riviera.",
@@ -167,6 +174,8 @@ export const projects = {
       name: "Ocean Crest",
       location: "Bar Riviera, Montenegro",
       region: "Montenegro" as "Montenegro" | "India",
+      // Grouping from the old site's Project menu (Ongoing / Completed / Newly Launched).
+      status: "Newly Launched" as ProjectStatus,
       category: "Villas",
       stat: { value: "35", label: "Villas" },
       summary: "Premium coastal villas with private sea-view infinity pools.",
@@ -182,6 +191,8 @@ export const projects = {
       name: "Royal Habitat",
       location: "India",
       region: "India" as "Montenegro" | "India",
+      // Grouping from the old site's Project menu (Ongoing / Completed / Newly Launched).
+      status: "Completed" as ProjectStatus,
       category: "Luxury Residence",
       stat: { value: "10,000", label: "Sq. ft." },
       summary: "A 10,000 sq. ft. residence on a 20,000 sq. m plot.",
@@ -196,6 +207,8 @@ export const projects = {
       name: "Rock Star Vazhakkala",
       location: "Vazhakkala, Kerala",
       region: "India" as "Montenegro" | "India",
+      // Grouping from the old site's Project menu (Ongoing / Completed / Newly Launched).
+      status: "Completed" as ProjectStatus,
       category: "Luxury Villa",
       stat: { value: "10,000", label: "Sq. ft." },
       summary: "A 10,000 sq. ft. luxury villa on 15,000 sq. m of prime land.",
@@ -210,6 +223,8 @@ export const projects = {
       name: "Rock Valley",
       location: "Kakkanad, Kerala",
       region: "India" as "Montenegro" | "India",
+      // Grouping from the old site's Project menu (Ongoing / Completed / Newly Launched).
+      status: "Completed" as ProjectStatus,
       category: "Villa",
       stat: { value: "4,000", label: "Sq. ft." },
       summary: "A 4,000 sq. ft. premium residence in the heart of Kakkanad.",
@@ -224,6 +239,8 @@ export const projects = {
       name: "Misty Blue",
       location: "Munnar, Kerala",
       region: "India" as "Montenegro" | "India",
+      // Grouping from the old site's Project menu (Ongoing / Completed / Newly Launched).
+      status: "Completed" as ProjectStatus,
       category: "Resort",
       stat: { value: "35", label: "Executive rooms" },
       summary: "Munnar's first and only lake resort.",

@@ -18,7 +18,7 @@ export default function MontenegroPage() {
     <>
       <main className="bg-linen text-ink">
         <Header overLight />
-        <PageHero eyebrow={montenegroPage.eyebrow} title={montenegroPage.title} intro={montenegroPage.intro} image={montenegroPage.image} />
+        <PageHero eyebrow={montenegroPage.eyebrow} title={montenegroPage.title} intro={montenegroPage.intro} image={montenegroPage.image} video={montenegroPage.video} />
 
         <section className="px-[clamp(1.25rem,6vw,6rem)] py-24 sm:py-32">
           <div className="grid gap-10 md:grid-cols-12 md:gap-6">

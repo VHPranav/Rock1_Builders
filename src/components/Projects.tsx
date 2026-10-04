@@ -112,7 +112,7 @@ export default function Projects() {
             <div key={current.name} className="mt-auto grid gap-8 pb-28 md:grid-cols-12 md:items-end md:gap-6 md:pb-32">
               <div className="animate-[rise_900ms_cubic-bezier(0.16,1,0.3,1)] md:col-span-7">
                 <p className="font-mono text-sm uppercase tracking-[0.14em] text-white/70">
-                  {current.category} · {current.location}
+                  {current.status} · {current.category} · {current.location}
                 </p>
                 <h3 className="mt-3 text-[clamp(2.5rem,7vw,6.5rem)] font-light leading-[0.95] tracking-[-0.03em]">
                   {current.name}

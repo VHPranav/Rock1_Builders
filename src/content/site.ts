@@ -1,8 +1,9 @@
 // Site-wide content, from the old site's footer (content/raw/_global-header-footer.md).
 
-import { projects } from "@/content/home";
+import { projects, projectStatuses } from "@/content/home";
 
-type NavLink = { label: string; href: string; note?: string };
+// `description` and `image` feed the full-width dropdown (link list left, preview right).
+type NavLink = { label: string; href: string; note?: string; description?: string; image?: string; documents?: string[] };
 type NavItem = NavLink & { children?: NavLink[] };
 
 // Desktop header navigation. Items with `children` open a dropdown on hover or keyboard focus.
@@ -11,9 +12,26 @@ export const nav: NavItem[] = [
     label: "About",
     href: "/about-us",
     children: [
-      { label: "About Us", href: "/about-us" },
-      { label: "About Montenegro", href: "/about-montenegro" },
-      { label: "Legal", href: "/legal" },
+      {
+        label: "About Us",
+        href: "/about-us",
+        description: "Twenty-five years of trust, our leadership and the team behind Rock1.",
+        image: "/images/why/stability.webp",
+      },
+      {
+        label: "About Montenegro",
+        href: "/about-montenegro",
+        description: "Why Montenegro is Europe's smart investment: the Euro, low taxes and the Adriatic.",
+        image: "/images/gateway/wellness.webp",
+      },
+      {
+        label: "Legal",
+        href: "/legal",
+        description: "Title deeds, company registrations and certificates, open to review.",
+        image: "/images/legal/title-deed-1.webp",
+        // Shown as a row of scans instead of a photo
+        documents: ["/images/legal/title-deed-1.webp", "/images/legal/company-registration.webp", "/images/legal/vat-registration.webp"],
+      },
     ],
   },
   { label: "Our Services", href: "/our-services" },
@@ -22,7 +40,10 @@ export const nav: NavItem[] = [
     href: "/projects",
     children: [
       { label: "All projects", href: "/projects", note: `${projects.items.length}` },
-      ...projects.items.map((item) => ({ label: item.name, href: item.href, note: item.region })),
+      // Newly Launched, Ongoing, then Completed, as in the old site's Project menu.
+      ...projectStatuses.flatMap((status) =>
+        projects.items.filter((item) => item.status === status).map((item) => ({ label: item.name, href: item.href, note: status })),
+      ),
     ],
   },
   { label: "Gallery", href: "/gallery" },

@@ -50,7 +50,7 @@ export default function ContactCta() {
           <div data-reveal className="mt-10 flex flex-wrap items-center gap-2">
             <Button href={contactCta.primary.href}>{contactCta.primary.label}</Button>
             {contactCta.secondary.map((link) => (
-              <Button key={link.label} href={link.href} variant="ghost">
+              <Button key={link.label} href={link.href} variant="ghost" file={link.href.endsWith(".pdf")}>
                 {link.label}
               </Button>
             ))}

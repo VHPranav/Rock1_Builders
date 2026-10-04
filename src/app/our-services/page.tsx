@@ -18,7 +18,7 @@ export default function ServicesPage() {
     <>
       <main className="bg-linen text-ink">
         <Header overLight />
-        <PageHero eyebrow={servicesPage.eyebrow} title={servicesPage.title} intro={servicesPage.intro} image={servicesPage.image} />
+        <PageHero eyebrow={servicesPage.eyebrow} title={servicesPage.title} intro={servicesPage.intro} image={servicesPage.image} video={servicesPage.video} />
 
         <section className="px-[clamp(1.25rem,6vw,6rem)] py-24 sm:py-32">
           <div className="grid gap-10 md:grid-cols-12 md:gap-6">

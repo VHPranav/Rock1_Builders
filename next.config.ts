@@ -4,6 +4,8 @@ const nextConfig: NextConfig = {
   images: {
     // 85 for grainy editorial photography — 75 visibly smears the film grain.
     qualities: [75, 85],
+    // YouTube thumbnails for click-to-play embeds (About Us film)
+    remotePatterns: [new URL("https://i.ytimg.com/vi/**")],
   },
 
   // Old WordPress addresses → new pages, so existing links and search results keep working.
@@ -26,7 +28,11 @@ const nextConfig: NextConfig = {
       { source: "/rock-star-vazhakkala", destination: "/projects/rock-star-vazhakkala", permanent: true },
       { source: "/rock-valley-kakkanad", destination: "/projects/rock-valley", permanent: true },
       { source: "/ocean-crest", destination: "/projects/ocean-crest", permanent: true },
-      { source: "/:listing(project|ongoing|completed|upcoming|work-projects)", destination: "/projects", permanent: true },
+      // Old category pages land on their section of the projects page
+      { source: "/ongoing", destination: "/projects#ongoing", permanent: true },
+      { source: "/completed", destination: "/projects#completed", permanent: true },
+      { source: "/upcoming", destination: "/projects#newly-launched", permanent: true },
+      { source: "/:listing(project|work-projects)", destination: "/projects", permanent: true },
     ];
   },
 };

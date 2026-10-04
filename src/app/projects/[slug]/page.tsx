@@ -70,7 +70,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 via-45% to-black/30" />
           <div className="relative px-[clamp(1.25rem,6vw,6rem)] pb-14 [text-shadow:0_1px_14px_rgb(0_0_0/0.45)] sm:pb-20">
             <p data-reveal className="font-mono text-xs uppercase tracking-[0.14em] text-white/75 sm:text-sm">
-              {item.category} · {item.location}
+              {item.status} · {item.category} · {item.location}
             </p>
             <h1 data-reveal="words" className="mt-4 text-[clamp(3rem,9vw,8rem)] font-light leading-[0.95] tracking-[-0.03em]">
               <RevealWords text={item.name} />
@@ -107,6 +107,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
               <dl className="mt-10 border-t border-ink/15">
                 {[
                   { label: "Location", value: item.location },
+                  { label: "Status", value: item.status },
                   { label: "Type", value: item.category },
                   { label: item.stat.label, value: item.stat.value },
                 ].map((fact) => (
@@ -116,8 +117,22 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
                   </div>
                 ))}
               </dl>
+              {/* Brochure download sits here when there is no villa section to carry it */}
+              {!detail.villas &&
+                detail.downloads?.map((download) => (
+                  <div key={download.href} data-reveal className="mt-8">
+                    <Button href={download.href} file>
+                      {download.label}
+                    </Button>
+                  </div>
+                ))}
             </div>
             <div className="space-y-8 md:col-span-7 md:col-start-6">
+              {detail.tagline && (
+                <p data-reveal className="font-mono text-xs uppercase tracking-[0.14em] text-ink/60 sm:text-sm">
+                  {detail.tagline}
+                </p>
+              )}
               {detail.overview.map((paragraph) => (
                 <p key={paragraph.slice(0, 24)} data-reveal className="text-[clamp(1.25rem,2.2vw,1.75rem)] leading-snug tracking-[-0.01em]">
                   {paragraph}

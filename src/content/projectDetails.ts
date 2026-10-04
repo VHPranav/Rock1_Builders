@@ -11,6 +11,8 @@ export type VillaType = {
 };
 
 type ProjectDetail = {
+  // Line shown above the old project pages' titles.
+  tagline?: string;
   overview: string[];
   lists?: DetailList[];
   villas?: VillaType[];
@@ -30,6 +32,8 @@ export const projectDetails: Record<string, ProjectDetail> = {
   "life-bay": {
     logo: { src: "/images/logos/life-bay-montenegro.webp", alt: "Life Bay Montenegro", width: 1119, height: 513 },
     heroImage: "/images/projects/life-bay/render.webp",
+    // The old page's "Download Detail.PDF" (Montenegro-Brochure.pdf, also linked from Home, About Us and About Montenegro).
+    downloads: [{ label: "Download the Life Bay brochure (PDF)", href: "/documents/life-bay-montenegro-brochure.pdf" }],
     // 8 s Google Flow film made from the real render (design/flow/life-bay-start-frame.jpg), muted.
     bandVideo: {
       src: "/videos/life-bay.mp4",
@@ -52,10 +56,12 @@ export const projectDetails: Record<string, ProjectDetail> = {
     overview: [
       "The Life Bay residential project by Rock1 Builders is a strategic development in Dobra Voda, Montenegro, designed to capitalise on the rapidly expanding real estate and tourism market in the Bar Riviera.",
       "Leveraging the region's competitive property pricing and high demand for coastal rentals, the project offers investors modern, high-quality apartments featuring sea views and essential amenities like a swimming pool and car parking.",
+      "The development provides a compelling investment proposition, with Montenegro's favourable climate and growing tourism sector driving strong potential rental yields.",
       "The development is backed by the credibility and track record of Rock1 Builders, who also developed the acclaimed Broad Bean Resort & Spa in Munnar.",
     ],
   },
   "ocean-crest": {
+    tagline: "The Crown of Luxury Living",
     logo: { src: "/images/logos/ocean-crest-adriatic.webp", alt: "Ocean Crest Adriatic", width: 359, height: 198 },
     // 11 s of the exterior renders (32-43 s of the client's 3D film), muted, for the hero background.
     heroVideo: { src: "/videos/ocean-crest-hero.mp4", poster: "/images/projects/ocean-crest/hero-poster.webp" },
@@ -84,6 +90,7 @@ export const projectDetails: Record<string, ProjectDetail> = {
     overview: [
       "Ocean Crest is a thoughtfully designed residential project that brings together modern architecture, comfort, and a refined lifestyle. Crafted with attention to detail and quality construction, it offers elegant living spaces designed for both functionality and sophistication.",
       "Inspired by serene coastal surroundings and contemporary design principles, Ocean Crest creates a peaceful environment while keeping residents connected to essential urban conveniences, ideal for families and individuals seeking a balance of luxury and tranquillity.",
+      "The project reflects a commitment to excellence, offering a lifestyle that combines comfort, style, and long-term value in a truly distinctive address.",
     ],
     lists: [
       {
@@ -203,6 +210,7 @@ export const projectDetails: Record<string, ProjectDetail> = {
     ],
   },
   "royal-habitat": {
+    tagline: "The Crown of Luxury Living",
     heroImage: "/images/projects/royal-habitat/hero.webp",
     stills: [
       { src: "/images/projects/royal-habitat/garden.webp", caption: "The villa across its landscaped lawn", wide: true },
@@ -215,7 +223,7 @@ export const projectDetails: Record<string, ProjectDetail> = {
     ],
     overview: [
       "Occupying an expansive 20,000 sq. metre plot, Royal Habitat is a 10,000 sq. ft. architectural masterpiece featuring six grand bedrooms, a lavish home theatre, an executive office, and a breathtaking indoor water fountain.",
-      "The property is surrounded by a landscaped garden, fruit orchard, and private swimming pool, offering the perfect harmony of elegance and serenity.",
+      "The property is surrounded by a landscaped garden, fruit orchard, and private swimming pool, offering the perfect harmony of elegance and serenity. Royal Habitat is the ultimate symbol of prestige and modern royal comfort.",
     ],
   },
   "rock-star-vazhakkala": {
@@ -234,6 +242,7 @@ export const projectDetails: Record<string, ProjectDetail> = {
     ],
   },
   "rock-valley": {
+    tagline: "Modern Luxury Home",
     heroImage: "/images/projects/rock-valley/hero.webp",
     stills: [
       { src: "/images/projects/rock-valley/side.webp", caption: "The four-bedroom residence", wide: true },

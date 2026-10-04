@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
 import RevealWords from "@/components/RevealWords";
+import YouTubeEmbed from "@/components/YouTubeEmbed";
 import { about } from "@/content/pages";
 
 export const metadata: Metadata = {
@@ -34,7 +35,7 @@ export default function AboutPage() {
     <>
       <main className="bg-linen text-ink">
         <Header overLight />
-        <PageHero eyebrow={about.eyebrow} title={about.title} intro={about.intro} image={about.image} />
+        <PageHero eyebrow={about.eyebrow} title={about.title} intro={about.intro} image={about.image} video={about.video} />
 
         {/* Story */}
         <section className="px-[clamp(1.25rem,6vw,6rem)] py-24 sm:py-32">
@@ -48,6 +49,17 @@ export default function AboutPage() {
               ))}
             </div>
           </div>
+        </section>
+
+        {/* Project film (YouTube, loads on click) */}
+        <section className="px-[clamp(1.25rem,6vw,6rem)] pb-24 sm:pb-32">
+          <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
+            <Eyebrow>{about.film.eyebrow}</Eyebrow>
+            <h2 data-reveal="words" className="text-[clamp(1.75rem,3.5vw,3rem)] leading-[1.08] tracking-[-0.02em]">
+              <RevealWords text={about.film.title} />
+            </h2>
+          </div>
+          <YouTubeEmbed id={about.film.youtubeId} title={about.film.videoTitle} />
         </section>
 
         <EuropeanAdvantage />

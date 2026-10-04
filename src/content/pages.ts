@@ -14,6 +14,8 @@ export const about = {
   intro:
     "For over 25 years, Rock1 Builders has been more than a property developer. We have been a custodian of trust and a pioneer of architectural quality.",
   image: "/images/why/stability.webp",
+  // 8 s Google Flow film made from the image above (watermark cropped); see content/image-prompts.md.
+  video: { src: "/videos/about-us.mp4", poster: "/images/pages/about-us-film-poster.webp" } as { src: string; poster: string } | undefined,
   story: [
     "Our unblemished track record spans South India, where we have successfully promoted and delivered townships, residential apartments, and commercial spaces. This sustained effort has resulted in over 50 landmark projects, shaping the urban landscape and creating lasting value for countless families and investors.",
     "We believe that true development is not merely about constructing buildings; it is about crafting enduring ecosystems where life can thrive. This core philosophy, a relentless passion for excellence, is what drives us to look beyond established borders.",
@@ -44,13 +46,20 @@ export const about = {
       "Over 25 years in business, delivering communities built with care and trust.",
     ],
   },
+  // Project film from the "Invest in Montenegro" YouTube channel; the old site linked it from the footer.
+  film: {
+    eyebrow: "The film",
+    title: "See Rock1 Builders in Montenegro.",
+    youtubeId: "PfVaq7U5rBs",
+    videoTitle: "Rock 1 Builders Project Video",
+  },
   ceo: {
     eyebrow: "Leadership",
     role: "CEO & Executive Director",
     name: "K. Bawa Salim",
     photo: "/images/team/bawa-salim.webp",
     bio: [
-      "Salim Bawa is a multifaceted entrepreneur from Kerala, the southernmost state in India, one of the world's most sought-after tourism destinations.",
+      "Salim Bawa is a multifaceted entrepreneur from Kerala, the southernmost state in India. Kerala is one of the world's most sought-after tourism destinations and enjoys human development indices comparable to many developed nations.",
       "His entrepreneurial journey in tourism and real estate spans 25 years of innovative thinking and success, beginning with the launch of Vintage Properties Pvt. Ltd. in 1996.",
       "He holds a Bachelor's degree in Economics, an Integrated Management Certification from the District Industrial Centre, Government of India, and an Export Import Certificate from a reputed institute in Ahmedabad, Gujarat.",
     ],
@@ -74,7 +83,7 @@ export const about = {
         name: "Mahmut Vukovic",
         photo: "/images/team/mahmut-vukovic.webp",
         role: "Project Advisor",
-        bio: "Provides local expertise and strategic guidance, supporting project planning and execution with deep industry knowledge to ensure smooth coordination, informed decisions, and adherence to global standards.",
+        bio: "Provides local expertise and strategic guidance, supporting project planning and execution with deep industry knowledge to ensure smooth coordination, informed decisions, and adherence to global standards. Through careful analysis and practical experience, he contributes to delivering efficient, high-quality projects that meet organisational and client expectations.",
       },
     ],
   },
@@ -111,6 +120,7 @@ export const servicesPage = {
   intro:
     "Our difference is a proven ability to create assets that enhance lifestyles and secure our clients' financial future.",
   image: "/images/services/residency-left.webp",
+  video: { src: "/videos/our-services.mp4", poster: "/images/pages/our-services-film-poster.webp" } as { src: string; poster: string } | undefined,
   body: [
     "In addition to our 25-year legacy of award-winning projects across India, our expertise extends to cultivating high-yield European investments, providing comprehensive property management, and ensuring a seamless process for European residency.",
     "Whether you are looking for an asset that provides passive income or a long-term base in Europe, what excites us is creating spaces that deliver both financial return and peace of mind. As professional developers and asset managers, we build trust one landmark at a time.",
@@ -129,6 +139,7 @@ export const montenegroPage = {
   intro:
     "Montenegro, the Black Mountain, is an exquisite jewel on the Adriatic coast: dramatic fjords, UNESCO-protected medieval towns, and sun-drenched beaches.",
   image: "/images/gateway/wellness.webp",
+  video: { src: "/videos/about-montenegro.mp4", poster: "/images/pages/about-montenegro-film-poster.webp" } as { src: string; poster: string } | undefined,
   body: [
     "More than a breathtaking destination, Montenegro stands as Europe's most compelling investment frontier. As a long-term candidate for EU membership with an economy that uses the Euro, it offers a rare blend of stability, low taxation, and growth potential.",
     "For the discerning investor, buying property here is not simply buying a home; it is securing a profitable, world-class asset and a valuable European residency.",
