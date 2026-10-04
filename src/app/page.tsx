@@ -20,7 +20,7 @@ export default function Home() {
         <Gateway />
         <WhyMontenegro />
         <Projects />
-        <ContactCta />
+        <ContactCta brochure />
         <Faqs />
       </main>
       <Footer />

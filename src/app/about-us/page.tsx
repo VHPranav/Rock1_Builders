@@ -98,15 +98,15 @@ export default function AboutPage() {
           <Eyebrow>{about.ceo.eyebrow}</Eyebrow>
           <div className="mt-12 grid gap-10 md:grid-cols-12 md:gap-6">
             <div data-reveal className="md:col-span-4">
-              {/* Full-length cutout on white; multiply lets it stand on the linen */}
-              <div className="relative aspect-[4/5] bg-linen">
+              {/* Team portraits share one style (Flow-edited from the client's photos; see content/image-prompts.md) */}
+              <div className="relative aspect-[4/5] overflow-hidden bg-ink/[0.06]">
                 <Image
                   src={about.ceo.photo}
                   alt={about.ceo.name}
                   fill
                   quality={85}
                   sizes="(min-width: 768px) 33vw, 100vw"
-                  className="object-contain object-bottom mix-blend-multiply"
+                  className="object-cover object-top"
                 />
               </div>
             </div>
@@ -155,7 +155,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <ContactCta />
+        <ContactCta brochure />
       </main>
       <Footer />
     </>

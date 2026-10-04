@@ -117,11 +117,10 @@ export const contactCta = {
   title: "Let's create something exceptional together.",
   intro: "Reach out to us, we're here to craft the perfect solution for your home.",
   primary: { label: "Speak with our advisor", href: "/contact-us" },
-  secondary: [
-    { label: "Explore investment options", href: "/projects/ocean-crest" },
-    // Life Bay brochure from the old site (Montenegro-Brochure.pdf), now hosted with the site.
-    { label: "Download brochure", href: "/documents/life-bay-montenegro-brochure.pdf" },
-  ],
+  secondary: [{ label: "Explore investment options", href: "/projects/ocean-crest" }],
+  // Life Bay brochure (old site's Montenegro-Brochure.pdf). The old site offered it only in this block on
+  // Home, About Us and About Montenegro, so those pages pass `brochure` to ContactCta.
+  brochure: { label: "Download brochure", href: "/documents/life-bay-montenegro-brochure.pdf" },
   details: [
     { label: "Call us (India)", value: "+91 79940 40740", href: "tel:+917994040740" },
     // Old site lists "rock1builder.com" (no s); confirm with the client before launch.

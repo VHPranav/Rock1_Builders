@@ -83,9 +83,9 @@ export default function Header({ overLight = false }: { overLight?: boolean }) {
     setOpen((value) => !value);
   };
 
-  // White over the hero or the open (dark) menu; ink on the scrolled linen bar or a light page.
-  const solid = (scrolled || mega !== null) && !open;
-  const inkText = solid || (overLight && !open);
+  // White over a dark hero; ink on the scrolled linen bar, a light page, an open dropdown or the (linen) menu.
+  const solid = scrolled || mega !== null || open;
+  const inkText = solid || overLight;
 
   return (
     <>

@@ -29,7 +29,7 @@ function BuildingLines() {
   );
 }
 
-export default function ContactCta() {
+export default function ContactCta({ brochure = false }: { brochure?: boolean }) {
   return (
     <section className="bg-linen px-[clamp(1.25rem,6vw,6rem)] py-24 text-ink sm:py-32">
       <div className="relative overflow-hidden border border-ink/15">
@@ -50,10 +50,15 @@ export default function ContactCta() {
           <div data-reveal className="mt-10 flex flex-wrap items-center gap-2">
             <Button href={contactCta.primary.href}>{contactCta.primary.label}</Button>
             {contactCta.secondary.map((link) => (
-              <Button key={link.label} href={link.href} variant="ghost" file={link.href.endsWith(".pdf")}>
+              <Button key={link.label} href={link.href} variant="ghost">
                 {link.label}
               </Button>
             ))}
+            {brochure && (
+              <Button href={contactCta.brochure.href} variant="ghost" file>
+                {contactCta.brochure.label}
+              </Button>
+            )}
           </div>
 
           <dl className="mt-[clamp(4rem,8vw,7rem)] grid gap-6 border-t border-ink/15 pt-8 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-x-12">

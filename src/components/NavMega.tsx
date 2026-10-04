@@ -25,7 +25,7 @@ type NavMegaProps = {
 const EASE = "ease-[cubic-bezier(0.16,1,0.3,1)]";
 
 // Projects use their real photography where the project page has it.
-const projectPreviews = projects.items.map((item) => ({
+export const projectPreviews = projects.items.map((item) => ({
   ...item,
   preview: projectDetails[item.slug]?.heroImage ?? item.image,
 }));

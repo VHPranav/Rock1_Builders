@@ -14,13 +14,15 @@ type ButtonProps = {
   className?: string;
   // Files (PDFs etc.) skip client-side routing and open in a new tab.
   file?: boolean;
+  onClick?: () => void;
 };
 
-export default function Button({ href, children, variant = "dark", className = "", file = false }: ButtonProps) {
+export default function Button({ href, children, variant = "dark", className = "", file = false, onClick }: ButtonProps) {
   const Tag = file ? "a" : Link;
   return (
     <Tag
       href={href}
+      onClick={onClick}
       {...(file && { target: "_blank", rel: "noopener" })}
       className={`group inline-flex items-center gap-3 px-6 py-3.5 font-mono text-xs font-medium uppercase tracking-[0.12em] transition-colors ${variants[variant]} ${className}`}
     >

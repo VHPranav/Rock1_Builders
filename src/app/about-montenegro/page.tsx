@@ -35,7 +35,7 @@ export default function MontenegroPage() {
 
         <WhyMontenegro />
         <EuropeanAdvantage />
-        <ContactCta />
+        <ContactCta brochure />
       </main>
       <Footer />
     </>

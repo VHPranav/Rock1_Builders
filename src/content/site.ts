@@ -51,20 +51,8 @@ export const nav: NavItem[] = [
   { label: "Contact Us", href: "/contact-us" },
 ];
 
-// Full-screen header menu. Each link previews one of the site's existing images on hover.
-// /projects is the planned listing page (replaces the old empty Project/Ongoing/Completed pages).
+// Full-screen menu below lg (SiteMenu): it lists the `nav` items above, plus this call to action.
 export const menu = {
-  links: [
-    { label: "Home", href: "/", image: "/images/gateway/amenities.webp" },
-    { label: "About Us", href: "/about-us", image: "/images/why/stability.webp" },
-    { label: "Our Services", href: "/our-services", image: "/images/services/development-left.webp" },
-    { label: "Projects", href: "/projects", image: "/images/projects/life-bay.webp" },
-    { label: "About Montenegro", href: "/about-montenegro", image: "/images/why/nature.webp" },
-    { label: "Gallery", href: "/gallery", image: "/images/gateway/wellness.webp" },
-    { label: "Newsroom", href: "/newsroom", image: "/images/why/economy.webp" },
-    { label: "Legal", href: "/legal", image: "/images/why/tax-living.webp" },
-    { label: "Contact Us", href: "/contact-us", image: "/images/why/climate.webp" },
-  ],
   cta: { label: "Book a consultation", href: "/contact-us" },
 };
 

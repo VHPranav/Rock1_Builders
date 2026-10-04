@@ -99,10 +99,6 @@
     opacity 900ms var(--ease-out-expo) 550ms,
     transform 1100ms var(--ease-out-expo) 550ms;
 }
-/* Hovering the list dims every link except the one under the pointer */
-.menu-list:hover .menu-link:not(:hover) {
-  opacity: 0.35;
-}
 
 @media (prefers-reduced-motion: reduce) {
   [data-menu] .menu-link > span,

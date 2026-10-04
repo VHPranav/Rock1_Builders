@@ -57,7 +57,7 @@ export const about = {
     eyebrow: "Leadership",
     role: "CEO & Executive Director",
     name: "K. Bawa Salim",
-    photo: "/images/team/bawa-salim.webp",
+    photo: "/images/team/bawa-salim-portrait.webp",
     bio: [
       "Salim Bawa is a multifaceted entrepreneur from Kerala, the southernmost state in India. Kerala is one of the world's most sought-after tourism destinations and enjoys human development indices comparable to many developed nations.",
       "His entrepreneurial journey in tourism and real estate spans 25 years of innovative thinking and success, beginning with the launch of Vintage Properties Pvt. Ltd. in 1996.",
@@ -69,19 +69,19 @@ export const about = {
     members: [
       {
         name: "Shekhar D'Costa",
-        photo: "/images/team/shekhar-dcosta.webp",
+        photo: "/images/team/shekhar-dcosta-portrait.webp",
         role: "Project Coordinator",
         bio: "With over 37 years of experience, including as Deputy General Manager at the State Bank of India, Mr. D'Costa brings deep expertise in finance, operations, compliance, risk management, HR, and administration. He oversees project execution, financial management, customer relations, and overall coordination in Montenegro.",
       },
       {
         name: "Shahid Salim",
-        photo: "/images/team/shahid-salim.webp",
+        photo: "/images/team/shahid-salim-portrait.webp",
         role: "Regional Manager",
         bio: "Ensures operational excellence and seamless project delivery across all teams. His leadership, strategic planning, and commitment to efficiency keep projects running smoothly, deadlines met, and client expectations consistently achieved across the region.",
       },
       {
         name: "Mahmut Vukovic",
-        photo: "/images/team/mahmut-vukovic.webp",
+        photo: "/images/team/mahmut-vukovic-portrait.webp",
         role: "Project Advisor",
         bio: "Provides local expertise and strategic guidance, supporting project planning and execution with deep industry knowledge to ensure smooth coordination, informed decisions, and adherence to global standards. Through careful analysis and practical experience, he contributes to delivering efficient, high-quality projects that meet organisational and client expectations.",
       },
