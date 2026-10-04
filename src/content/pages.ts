@@ -108,7 +108,7 @@ export const europeanAdvantage = {
     },
     {
       title: "World-class Adriatic lifestyle",
-      text: "Minutes from the stunning Dobra Voda beach and historic Bar Old Town: a world-class asset with timeless design, in a country known for its magnificent climate, culture, and natural beauty.",
+      text: "Invest in a life of quality, backed by Rock1's 25 years of trusted delivery. Minutes from the stunning Dobra Voda beach and historic Bar Old Town: a world-class asset with timeless design, in a country known for its magnificent climate, culture, and natural beauty.",
       image: "/images/why/climate.webp",
     },
   ],
