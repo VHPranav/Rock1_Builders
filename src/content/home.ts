@@ -123,8 +123,7 @@ export const contactCta = {
   brochure: { label: "Download brochure", href: "/documents/life-bay-montenegro-brochure.pdf" },
   details: [
     { label: "Call us (India)", value: "+91 79940 40740", href: "tel:+917994040740" },
-    // Old site lists "rock1builder.com" (no s); confirm with the client before launch.
-    { label: "Mail us", value: "enquiry@rock1builder.com", href: "mailto:enquiry@rock1builder.com" },
+    { label: "Mail us", value: "enquiry@rock1builders.com", href: "mailto:enquiry@rock1builders.com" },
     { label: "Head office", value: "Rock1 Builders D.O.O (LLC), Mainski Put BB, Budva, Montenegro", href: null as string | null },
   ],
 };
