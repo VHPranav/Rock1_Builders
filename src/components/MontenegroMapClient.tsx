@@ -200,6 +200,10 @@ export default function MontenegroMapClient({
 
   const visible = useMemo(() => places.filter((p) => kinds.has(p.kind)), [places, kinds]);
   const active = places.find((p) => p.id === activeId) ?? places[0];
+  // Card photos mount once their place has been shown (and stay for the cross-fade), so the
+  // page loads one photo, not all of them.
+  const [seenIds, setSeenIds] = useState(() => new Set([active.id]));
+  if (!seenIds.has(active.id)) setSeenIds(new Set(seenIds).add(active.id));
   const origin = places.find((p) => p.id === focus) ?? places[0];
   const hovered = hoverId ? places.find((p) => p.id === hoverId) : null;
 
@@ -234,7 +238,7 @@ export default function MontenegroMapClient({
     <div className="flex h-full flex-col">
       <div className="relative aspect-[4/3] shrink-0 overflow-hidden bg-white/5">
         {places.map((place) =>
-          place.image ? (
+          place.image && seenIds.has(place.id) ? (
             <Image
               key={place.id}
               src={place.image}

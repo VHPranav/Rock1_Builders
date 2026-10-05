@@ -97,6 +97,7 @@ export const projectDetails: Record<string, ProjectDetail> = {
       full: "/images/projects/ocean-crest/site-plan-full.webp",
       caption: "Ocean Crest Adriatic Phase II site plan: Blocks A and B with pools, beside the Phase I apartment block and 3-bedroom villa.",
     },
+    downloads: [{ label: "Download the villa brochure (PDF)", href: "/documents/ocean-crest-adriatic-villa-brochure.pdf" }],
     floorPlans: {
       title: "Phase II floor plans",
       pdf: { label: "Download Phase II floor plans (PDF)", href: "/documents/ocean-crest-adriatic-phase-ii-floor-plans.pdf" },
