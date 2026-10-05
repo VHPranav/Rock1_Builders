@@ -1,0 +1,30 @@
+{
+ "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0",
+ "region": {
+  "src": "/images/map/satellite/region.webp",
+  "bounds": [
+   12.601318359375,
+   38.59970036588818,
+   25.400390625,
+   46.600393037345476
+  ]
+ },
+ "country": {
+  "src": "/images/map/satellite/country.webp",
+  "bounds": [
+   18.400039672851562,
+   41.83989728790339,
+   20.39989471435547,
+   43.579893442165854
+  ]
+ },
+ "coast": {
+  "src": "/images/map/satellite/coast.webp",
+  "bounds": [
+   18.450164794921875,
+   41.85012764855732,
+   19.449920654296875,
+   42.55004530600438
+  ]
+ }
+}

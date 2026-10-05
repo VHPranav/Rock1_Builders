@@ -8,10 +8,12 @@ import Eyebrow from "@/components/Eyebrow";
 import Footer from "@/components/Footer";
 import GalleryGrid from "@/components/GalleryGrid";
 import Header from "@/components/Header";
+import MontenegroMap from "@/components/MontenegroMap";
 import ParallaxLayer from "@/components/ParallaxLayer";
 import RevealWords from "@/components/RevealWords";
 import { projects } from "@/content/home";
-import { projectDetails } from "@/content/projectDetails";
+import { montenegroMap } from "@/content/montenegroMap";
+import { projectDetails, projectPhoto } from "@/content/projectDetails";
 
 const items = projects.items;
 
@@ -179,11 +181,11 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
               />
             </figure>
           </section>
-        ) : item.image && (
+        ) : projectPhoto(slug, item.image) && (
           <section className="px-[clamp(1.25rem,6vw,6rem)]">
             <figure data-reveal="image" className="relative aspect-[4/3] overflow-hidden sm:aspect-[21/9]">
               <ParallaxLayer>
-                <Image src={item.image} alt="" fill quality={85} sizes="100vw" className="object-cover object-bottom" />
+                <Image src={projectPhoto(slug, item.image)!} alt="" fill quality={85} sizes="100vw" className="object-cover object-bottom" />
               </ParallaxLayer>
             </figure>
           </section>
@@ -281,6 +283,37 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           </section>
         )}
 
+        {/* Architect's floor plans: each PDF page as an image (opens full-screen), plus the PDF itself */}
+        {detail.floorPlans && (
+          <section className="pb-24 sm:pb-32">
+            <div className="flex flex-wrap items-end justify-between gap-6 px-[clamp(1.25rem,6vw,6rem)]">
+              <div>
+                <Eyebrow>Floor plans</Eyebrow>
+                <h2 data-reveal className="mt-6 text-[clamp(1.75rem,3.5vw,3rem)] font-light leading-[1.05] tracking-[-0.02em]">
+                  {detail.floorPlans.title}
+                </h2>
+              </div>
+              <div data-reveal>
+                <Button href={detail.floorPlans.pdf.href} file>
+                  {detail.floorPlans.pdf.label}
+                </Button>
+              </div>
+            </div>
+            <GalleryGrid
+              images={detail.floorPlans.pages.map((page, i) => ({
+                ...page,
+                // Life Bay's sheets are landscape; Ocean Crest's are portrait (block plans)
+                ratio: slug === "ocean-crest" ? "sheet-portrait" : "sheet",
+                caption: `${page.caption} · ${i + 1}/${detail.floorPlans!.pages.length}`,
+              }))}
+              captions="below"
+              className={`mt-12 grid gap-x-2 gap-y-6 px-[clamp(1.25rem,6vw,6rem)] sm:grid-cols-2 ${
+                slug === "ocean-crest" ? "lg:grid-cols-5" : "lg:grid-cols-3"
+              }`}
+            />
+          </section>
+        )}
+
         {/* Villa types (Ocean Crest) */}
         {detail.villas && (
           <section className="px-[clamp(1.25rem,6vw,6rem)] pb-24 sm:pb-32">
@@ -330,6 +363,19 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           </section>
         )}
 
+        {/* Location map for the Montenegro projects: starts on this project, distances measured from it */}
+        {montenegroMap.places.some((place) => place.id === slug) && (
+          <MontenegroMap
+            focus={slug}
+            landing="coast"
+            heading={{
+              eyebrow: "Location",
+              title: `${item.name} and what's around it.`,
+              intro: `${item.name} sits on the Bar Riviera. Explore the beaches, old towns, airports and mountains within reach, with distances measured from the project.`,
+            }}
+          />
+        )}
+
         {/* Previous / next */}
         <nav aria-label="More projects" className="grid gap-2 px-[clamp(1.25rem,6vw,6rem)] py-16 sm:grid-cols-2">
           {[
@@ -338,9 +384,9 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           ].map(({ label, project }) => (
             <Link key={label} href={project.href} data-reveal className="group flex items-center gap-6 border-t border-ink/15 pt-6">
               <div className="relative aspect-[4/3] w-28 shrink-0 overflow-hidden bg-ink/10 sm:w-36">
-                {project.image && (
+                {projectPhoto(project.slug, project.image) && (
                   <Image
-                    src={project.image}
+                    src={projectPhoto(project.slug, project.image)!}
                     alt=""
                     fill
                     quality={85}

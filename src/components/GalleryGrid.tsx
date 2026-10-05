@@ -11,6 +11,9 @@ const ratios = {
   portrait: "aspect-[3/4]",
   page: "aspect-[1931/1574]",
   document: "aspect-[1500/1941] bg-white",
+  // Architect's plan sheets: landscape (A3/A4) and portrait, shown whole on white.
+  sheet: "aspect-[2400/1695] bg-white",
+  "sheet-portrait": "aspect-[3/4] bg-white",
 } as const;
 
 type GalleryGridProps = {
@@ -74,7 +77,7 @@ export default function GalleryGrid({
                     fill
                     quality={85}
                     sizes="(min-width: 1024px) 34vw, (min-width: 640px) 52vw, 100vw"
-                    className={`${image.ratio === "document" ? "object-contain" : "object-cover"} transition-[scale] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]`}
+                    className={`${image.ratio === "document" || image.ratio?.startsWith("sheet") ? "object-contain" : "object-cover"} transition-[scale] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]`}
                   />
                   {captions === "hover" && (
                     <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 to-transparent px-4 pb-3 pt-10 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-white opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100">

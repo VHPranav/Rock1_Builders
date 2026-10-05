@@ -6,11 +6,13 @@ import { useState } from "react";
 type YouTubeEmbedProps = {
   id: string;
   title: string;
+  // Corner label on the thumbnail.
+  label?: string;
 };
 
 // Click-to-play YouTube video: shows the thumbnail until clicked, then loads the player from
 // youtube-nocookie.com, so nothing from YouTube loads (or sets cookies) until the visitor asks for it.
-export default function YouTubeEmbed({ id, title }: YouTubeEmbedProps) {
+export default function YouTubeEmbed({ id, title, label = "Watch the film" }: YouTubeEmbedProps) {
   const [playing, setPlaying] = useState(false);
 
   return (
@@ -39,7 +41,7 @@ export default function YouTubeEmbed({ id, title }: YouTubeEmbedProps) {
               <path d="M8 5v14l11-7z" />
             </svg>
           </span>
-          <span className="absolute bottom-5 left-5 font-mono text-xs uppercase tracking-[0.14em] sm:bottom-8 sm:left-8">Watch the film</span>
+          <span className="absolute bottom-5 left-5 font-mono text-xs uppercase tracking-[0.14em] sm:bottom-8 sm:left-8">{label}</span>
         </button>
       )}
     </div>

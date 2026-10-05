@@ -116,3 +116,24 @@ Google Flow (Nano Banana 2) image edits of the client's own team photos (`design
 > Edit the attached photo into one image, 3:4 portrait: an ultra close-up professional portrait of this exact man. Keep his face exactly as in the photo: identical facial features, face shape, skin tone, smile, moustache, hair and age; do not change his identity in any way. Dress him in a tailored navy blue suit jacket with a crisp white open-collar shirt, no tie. Tight head-and-shoulders framing, centred, looking at the camera with his natural expression. Soft warm natural window light from the left. Background: a softly blurred warm Mediterranean stone terrace with greenery, rendered as creamy bokeh, very shallow depth of field like an 85mm lens at f/1.4. Photoreal editorial corporate portrait, subtle film grain, no text, no logos, no watermark.
 
 The other three used the same prompt with "in exactly the same style as the previous portrait(s)" and their own features listed (glasses, moustache, beard), plus "no lanyard" for Shekhar D'Costa.
+
+## Montenegro map destinations (2026-10-04)
+
+For the interactive map on About Montenegro (`src/content/montenegroMap.ts`). Generated in one Flow batch (Nano Banana 2, 4:3); originals in `design/flow/map/`, cropped to 1040×780 from the top-left to drop Flow's sparkle and saved as `public/images/map/<file>.webp`. Ulcinj was regenerated (the first came out looking like Sveti Stefan) with: "the old town of Ulcinj … a medieval fortress town of pale stone houses and walls on a rocky promontory rising directly from the sea, with a slender white minaret … It must not be an island and must not look like Sveti Stefan." Shared style for this set:
+
+> Editorial travel photography, shot on 35mm film, visible fine film grain, soft natural light, muted warm palette, calm composition, high-end travel magazine, no people facing camera, no text, no logos.
+
+| File | Place | Prompt |
+| --- | --- | --- |
+| `kotor.webp` | Kotor (replaces the café detail) | The walled medieval old town of Kotor, Montenegro, at the foot of steep grey limestone mountains on the Bay of Kotor: terracotta rooftops, the twin bell towers of St Tryphon's Cathedral, fortress walls zigzagging up the mountainside, calm fjord-like water. + style |
+| `podgorica.webp` | Podgorica | Podgorica, Montenegro: the white cable-stayed Millennium Bridge over the emerald Morača river, the modern capital and green hills behind. + style |
+| `bar.webp` | Bar | Stari Bar, Montenegro: the stone ruins of old Bar on a hilltop beneath the Rumija mountains, ancient olive trees, arched walls and the old aqueduct. + style |
+| `ulcinj.webp` | Ulcinj | Ulcinj, Montenegro: the hilltop old town of stone houses above the Adriatic, a small beach and pine trees, warm evening light. + style |
+| `herceg-novi.webp` | Herceg Novi | Herceg Novi, Montenegro: stepped stone streets and the old clock tower at the entrance to the Bay of Kotor, mimosa and palm trees, terracotta roofs falling to the sea. + style |
+| `zabljak.webp` | Žabljak | Žabljak and Durmitor National Park, Montenegro: snow-covered Durmitor peaks reflected in the still Black Lake, dark pine forest along the shore, crisp winter light. + style |
+| `podgorica-airport.webp` | Podgorica Airport | Small modern airport terminal in Montenegro at golden hour, mountains behind, a regional jet on the apron. + style |
+| `tivat-airport.webp` | Tivat Airport | A passenger jet descending over the Bay of Kotor toward Tivat, Montenegro, limestone mountains and calm water below. + style |
+| `velika-plaza.webp` | Velika Plaža | Velika Plaža near Ulcinj, Montenegro: a long, wide fine-sand beach stretching to the horizon along the Adriatic, gentle waves, a few parasols. + style |
+| `lovcen.webp` | Lovćen | Lovćen National Park, Montenegro: the Njegoš Mausoleum on the summit of Jezerski vrh, a stone stairway path, mountain ridges falling toward the Bay of Kotor. + style |
+| `ostrog.webp` | Ostrog Monastery | Ostrog Monastery, Montenegro: the white monastery built into a sheer cliff face high above the Bjelopavlići plain, mountain backdrop. + style |
+| `tara.webp` | Tara Canyon | Tara River Canyon, Montenegro: the white concrete arches of the Đurđevića Tara Bridge spanning the deep forested canyon of the turquoise Tara river. + style |

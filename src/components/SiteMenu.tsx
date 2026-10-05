@@ -19,8 +19,8 @@ type SiteMenuProps = {
 
 const EASE = "ease-[cubic-bezier(0.16,1,0.3,1)]";
 
-// The same items as the desktop navigation, with Home first.
-const items = [{ label: "Home", href: "/" }, ...nav];
+// The same items as the desktop navigation (Home first).
+const items = nav;
 
 // Full-screen menu below lg, styled like the desktop dropdown panels: linen, thin rules, About and
 // Projects expand in place (pages with a thumbnail and description; projects as swipeable photo cards).

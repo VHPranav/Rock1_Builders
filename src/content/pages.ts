@@ -7,6 +7,9 @@
 // - Our Services says 16+ completed projects while About / Home say 50+ landmark projects.
 
 import type { GalleryImage } from "@/components/GalleryGrid";
+import clientGallery from "@/content/gallery.json";
+
+export type GalleryGroup = { id: string; label: string; place: string; images: GalleryImage[] };
 
 export const about = {
   eyebrow: "About Us",
@@ -149,64 +152,78 @@ export const montenegroPage = {
 export const galleryPage = {
   eyebrow: "Gallery",
   title: "The spaces we build.",
-  intro: "Renders of our developments on Montenegro's Bar Riviera, and photographs of the residences and resorts we have completed in Kerala.",
-  // Real project photography from the old site (design/originals/old-site), Montenegro renders first.
-  images: [
-    { src: "/images/projects/ocean-crest/render-two-storey.webp", caption: "Ocean Crest, Bar Riviera", ratio: "landscape" },
-    { src: "/images/projects/ocean-crest/living.webp", caption: "Ocean Crest, living and kitchen", ratio: "portrait" },
-    { src: "/images/projects/life-bay/render.webp", caption: "Life Bay, Dobra Voda", ratio: "portrait" },
-    { src: "/images/projects/ocean-crest/render-single-storey.webp", caption: "Ocean Crest villa with private pool", ratio: "landscape" },
-    { src: "/images/projects/ocean-crest/bedroom.webp", caption: "Ocean Crest, sea-view bedroom", ratio: "portrait" },
-    { src: "/images/projects/rock-star-vazhakkala/night.webp", caption: "Rock Star, Vazhakkala", ratio: "landscape" },
-    { src: "/images/projects/royal-habitat/hero.webp", caption: "Royal Habitat", ratio: "landscape" },
-    { src: "/images/projects/royal-habitat/hu6a9117.webp", caption: "Royal Habitat, garden court", ratio: "portrait" },
-    { src: "/images/projects/misty-blue/lake.webp", caption: "Misty Blue, Munnar", ratio: "landscape" },
-    { src: "/images/projects/royal-habitat/hu6a9293.webp", caption: "Royal Habitat at night", ratio: "landscape" },
-    { src: "/images/projects/misty-blue/fountain-pool.webp", caption: "Misty Blue pool", ratio: "portrait" },
-    { src: "/images/projects/rock-valley/hero.webp", caption: "Rock Valley, Kakkanad", ratio: "landscape" },
-    { src: "/images/projects/royal-habitat/3.webp", caption: "Royal Habitat, water court", ratio: "landscape" },
-    { src: "/images/projects/rock-star-vazhakkala/dusk.webp", caption: "Rock Star at dusk", ratio: "landscape" },
-    { src: "/images/projects/royal-habitat/hu6a9030.webp", caption: "Royal Habitat, glass bridge", ratio: "portrait" },
-    { src: "/images/projects/misty-blue/aerial.webp", caption: "Misty Blue from above", ratio: "portrait" },
-    { src: "/images/projects/rock-valley/gable.webp", caption: "Rock Valley, garden porch", ratio: "portrait" },
-    { src: "/images/projects/royal-habitat/1.webp", caption: "Royal Habitat from above", ratio: "landscape" },
-    { src: "/images/projects/rock-star-vazhakkala/living.webp", caption: "Rock Star, living room", ratio: "landscape" },
-    { src: "/images/projects/royal-habitat/hu6a8939.webp", caption: "Royal Habitat, atrium stair", ratio: "portrait" },
-    { src: "/images/projects/misty-blue/suite.webp", caption: "Misty Blue suite", ratio: "landscape" },
-    { src: "/images/projects/royal-habitat/hu6a9264.webp", caption: "Royal Habitat", ratio: "landscape" },
-    { src: "/images/projects/rock-valley/living.webp", caption: "Rock Valley, living room", ratio: "landscape" },
-    { src: "/images/projects/royal-habitat/hu6a9124.webp", caption: "Royal Habitat, courtyard room", ratio: "portrait" },
-    { src: "/images/projects/rock-star-vazhakkala/drive.webp", caption: "Rock Star, garden drive", ratio: "landscape" },
-    { src: "/images/projects/misty-blue/cottage-dusk.webp", caption: "Misty Blue cottages at dusk", ratio: "portrait" },
-    { src: "/images/projects/royal-habitat/hu6a9347.webp", caption: "Royal Habitat, screened facade", ratio: "landscape" },
-    { src: "/images/projects/rock-star-vazhakkala/veranda.webp", caption: "Rock Star, veranda", ratio: "landscape" },
-    { src: "/images/projects/misty-blue/pool.webp", caption: "Misty Blue infinity pool", ratio: "portrait" },
-    { src: "/images/projects/royal-habitat/hu6a8990.webp", caption: "Royal Habitat, stone and timber", ratio: "portrait" },
-    { src: "/images/projects/rock-valley/terrace.webp", caption: "Rock Valley, terrace", ratio: "landscape" },
-    { src: "/images/projects/royal-habitat/hu6a9281.webp", caption: "Royal Habitat by night", ratio: "landscape" },
-    { src: "/images/projects/misty-blue/bedroom.webp", caption: "Misty Blue bedroom", ratio: "landscape" },
-    { src: "/images/projects/rock-star-vazhakkala/office.webp", caption: "Rock Star, office room", ratio: "landscape" },
-    { src: "/images/projects/royal-habitat/hu6a9014.webp", caption: "Royal Habitat, upper gallery", ratio: "portrait" },
-    { src: "/images/projects/rock-valley/porch.webp", caption: "Rock Valley, porch", ratio: "landscape" },
-  ] as GalleryImage[],
+  intro: "Renders of our developments on Montenegro's Bar Riviera, and photographs of the residences, resorts and offices we have built in Kerala.",
+  // Montenegro renders first; the Kerala groups are the client's photo sets (src/content/gallery.json,
+  // built by scripts/build-gallery.py from design/originals/gallery).
+  groups: [
+    {
+      id: "montenegro",
+      label: "Montenegro",
+      place: "Bar Riviera",
+      images: [
+        { src: "/images/projects/ocean-crest/render-two-storey.webp", caption: "Ocean Crest, Bar Riviera", ratio: "landscape" },
+        { src: "/images/projects/ocean-crest/living.webp", caption: "Ocean Crest, living and kitchen", ratio: "portrait" },
+        { src: "/images/projects/life-bay/render.webp", caption: "Life Bay, Dobra Voda", ratio: "portrait" },
+        { src: "/images/projects/ocean-crest/render-single-storey.webp", caption: "Ocean Crest villa with private pool", ratio: "landscape" },
+        { src: "/images/projects/ocean-crest/bedroom.webp", caption: "Ocean Crest, sea-view bedroom", ratio: "portrait" },
+        { src: "/images/projects/ocean-crest/exterior.webp", caption: "Ocean Crest, villa building", ratio: "landscape" },
+        { src: "/images/projects/ocean-crest/entrance.webp", caption: "Ocean Crest, entrance", ratio: "landscape" },
+      ] as GalleryImage[],
+    },
+    ...(clientGallery as GalleryGroup[]),
+  ],
+};
+
+export type NewsPost = {
+  slug: string;
+  category: string;
+  // ISO date; leave out when the source gives none.
+  date?: string;
+  title: string;
+  summary: string;
+  paragraphs: string[];
+  video?: { id: string; title: string; duration: string };
+  source?: { label: string; href: string };
 };
 
 export const newsroom = {
   eyebrow: "Newsroom",
   title: "Updates for buyers and investors.",
   intro: "Announcements on our projects, regulations and the Montenegrin market.",
+  // Newest first.
   posts: [
+    {
+      slug: "eu-preparing-montenegro-accession-treaty",
+      category: "EU accession",
+      date: "2026-10-01",
+      title: "The EU is already preparing Montenegro's accession treaty",
+      summary:
+        "Speaking in Montenegro, European Commission President Ursula von der Leyen said the EU has begun preparing Montenegro's accession treaty, one of her strongest messages yet on enlargement.",
+      paragraphs: [
+        "An accession treaty is one of the last formal steps on the road to EU membership: it sets out the terms on which a country joins and is then ratified by the member states and the candidate.",
+        "Montenegro already uses the euro and is widely seen as one of the most advanced candidates for membership. For buyers on the Adriatic coast, a clearer path into the EU means greater stability, easier movement and stronger long-term demand for property.",
+        "Our team can talk you through what this means for Life Bay and Ocean Crest, and for residency questions as the process moves forward.",
+      ],
+      video: {
+        id: "l2hjot_kaBw",
+        title: "Ursula von der Leyen: EU Is Already Preparing Montenegro's Accession Treaty",
+        duration: "4:52",
+      },
+      source: { label: "Video: EU Debates (eudebates.tv)", href: "https://www.youtube.com/watch?v=l2hjot_kaBw" },
+    },
     {
       slug: "residency-investment-update",
       category: "Buyer notice",
       title: "Important update for existing and prospective buyers",
+      summary:
+        "The minimum real estate investment that qualifies for residency eligibility has been revised by the Montenegrin authorities as part of the EU accession process.",
       paragraphs: [
         "Due to recent regulatory changes associated with Montenegro's EU accession process, the minimum qualifying real estate investment amount required for residency eligibility has been revised by local authorities.",
         "With Montenegro's confirmed EU accession pathway, property values and tourism demand are expected to continue increasing, further strengthening the long-term investment potential of the market.",
         "Clients considering residency applications may contact our office at the time of project completion for the latest guidance and eligibility requirements.",
       ],
     },
-  ],
+  ] as NewsPost[],
 };
 
 export const contactPage = {

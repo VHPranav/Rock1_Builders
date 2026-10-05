@@ -34,7 +34,7 @@ export default function ServicesPage() {
         </section>
 
         {/* The homepage's services section: intro plus the pinned split-screen wipe */}
-        <Services />
+        <Services onServicesPage />
 
         <StatsBand stats={servicesPage.stats} />
         <ContactCta />

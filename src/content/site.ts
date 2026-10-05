@@ -8,6 +8,8 @@ type NavItem = NavLink & { children?: NavLink[] };
 
 // Desktop header navigation. Items with `children` open a dropdown on hover or keyboard focus.
 export const nav: NavItem[] = [
+  // A dedicated Home link (client request), alongside the logo link.
+  { label: "Home", href: "/" },
   {
     label: "About",
     href: "/about-us",

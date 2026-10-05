@@ -26,6 +26,8 @@ type ProjectDetail = {
   brochure?: Photo[];
   sitePlan?: { src: string; full: string; caption: string };
   downloads?: { label: string; href: string }[];
+  // Architect's floor plan PDF, shown page by page with its download button.
+  floorPlans?: { title: string; pdf: { label: string; href: string }; pages: { src: string; caption: string }[] };
 };
 
 export const projectDetails: Record<string, ProjectDetail> = {
@@ -34,6 +36,17 @@ export const projectDetails: Record<string, ProjectDetail> = {
     heroImage: "/images/projects/life-bay/render.webp",
     // The old page's "Download Detail.PDF" (Montenegro-Brochure.pdf, also linked from Home, About Us and About Montenegro).
     downloads: [{ label: "Download the Life Bay brochure (PDF)", href: "/documents/life-bay-montenegro-brochure.pdf" }],
+    floorPlans: {
+      title: "Phase 1 floor plans",
+      pdf: { label: "Download Phase 1 floor plans (PDF)", href: "/documents/life-bay-phase-1-floor-plans.pdf" },
+      pages: [
+        { src: "/images/projects/life-bay/floor-plans/01.webp", caption: "Basement: parking, lift and lobby" },
+        { src: "/images/projects/life-bay/floor-plans/02.webp", caption: "Ground floor: suites, pool, Ayurveda centre and lobby" },
+        { src: "/images/projects/life-bay/floor-plans/03.webp", caption: "First floor" },
+        { src: "/images/projects/life-bay/floor-plans/04.webp", caption: "Second floor" },
+        { src: "/images/projects/life-bay/floor-plans/05.webp", caption: "Third floor" },
+      ],
+    },
     // 8 s Google Flow film made from the real render (design/flow/life-bay-start-frame.jpg), muted.
     bandVideo: {
       src: "/videos/life-bay.mp4",
@@ -84,9 +97,17 @@ export const projectDetails: Record<string, ProjectDetail> = {
       full: "/images/projects/ocean-crest/site-plan-full.webp",
       caption: "Ocean Crest Adriatic Phase II site plan: Blocks A and B with pools, beside the Phase I apartment block and 3-bedroom villa.",
     },
-    downloads: [
-      { label: "Download Phase II floor plans (PDF)", href: "/documents/ocean-crest-adriatic-phase-ii-floor-plans.pdf" },
-    ],
+    floorPlans: {
+      title: "Phase II floor plans",
+      pdf: { label: "Download Phase II floor plans (PDF)", href: "/documents/ocean-crest-adriatic-phase-ii-floor-plans.pdf" },
+      pages: [
+        { src: "/images/projects/ocean-crest/floor-plans/01.webp", caption: "Block A, ground floor" },
+        { src: "/images/projects/ocean-crest/floor-plans/02.webp", caption: "Block A, first floor" },
+        { src: "/images/projects/ocean-crest/floor-plans/03.webp", caption: "Block A, second floor" },
+        { src: "/images/projects/ocean-crest/floor-plans/04.webp", caption: "Block B, ground floor" },
+        { src: "/images/projects/ocean-crest/floor-plans/05.webp", caption: "Block B, first floor" },
+      ],
+    },
     overview: [
       "Ocean Crest is a thoughtfully designed residential project that brings together modern architecture, comfort, and a refined lifestyle. Crafted with attention to detail and quality construction, it offers elegant living spaces designed for both functionality and sophistication.",
       "Inspired by serene coastal surroundings and contemporary design principles, Ocean Crest creates a peaceful environment while keeping residents connected to essential urban conveniences, ideal for families and individuals seeking a balance of luxury and tranquillity.",
@@ -271,3 +292,9 @@ export const projectDetails: Record<string, ProjectDetail> = {
     ],
   },
 };
+
+// The real photograph or render for a project. Everywhere except the home page uses this; the home
+// page's Our Projects section keeps its Flow imagery (projects.items[n].image).
+export function projectPhoto(slug: string, fallback: string | null): string | null {
+  return projectDetails[slug]?.heroImage ?? fallback;
+}

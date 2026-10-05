@@ -26,7 +26,10 @@ function Panel({ src, tone, label }: { src: string | null; tone: string; label: 
   );
 }
 
-export default function Services() {
+// `onServicesPage`: rendered on /our-services itself, where links back to that page would go nowhere,
+// so the "Know more" button is dropped and the service bars lead to the contact page instead.
+export default function Services({ onServicesPage = false }: { onServicesPage?: boolean }) {
+  const target = onServicesPage ? "/contact-us" : services.cta.href;
   const trackRef = useRef<HTMLDivElement>(null);
   const leftRefs = useRef<(HTMLDivElement | null)[]>([]);
   const rightRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -78,9 +81,12 @@ export default function Services() {
           <RevealWords text={services.title} />
         </h2>
         <p data-reveal className="mt-6 max-w-xl text-balance text-base leading-relaxed text-ink/70 sm:text-lg">{services.intro}</p>
-        <div data-reveal className="mt-10">
-          <Button href={services.cta.href}>{services.cta.label}</Button>
-        </div>
+        {/* On /our-services itself the button is dropped; the service cards lead to the contact page */}
+        {!onServicesPage && (
+          <div data-reveal className="mt-10">
+            <Button href={services.cta.href}>{services.cta.label}</Button>
+          </div>
+        )}
       </div>
 
       {/* Pinned split-screen: one viewport of scroll per service */}
@@ -122,8 +128,8 @@ export default function Services() {
                 >
                   {/* The whole bar is the link */}
                   <Link
-                    href="/our-services"
-                    aria-label={`${item.title} — find out more`}
+                    href={target}
+                    aria-label={`${item.title} — ${onServicesPage ? "enquire" : "find out more"}`}
                     className="group flex flex-col justify-between gap-5 p-[clamp(1.2rem,2vw,2rem)] text-white"
                     style={{ backgroundColor: item.tone }}
                   >

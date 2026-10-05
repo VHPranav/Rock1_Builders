@@ -4,6 +4,7 @@ import EuropeanAdvantage from "@/components/EuropeanAdvantage";
 import Eyebrow from "@/components/Eyebrow";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import MontenegroMap from "@/components/MontenegroMap";
 import PageHero from "@/components/PageHero";
 import WhyMontenegro from "@/components/WhyMontenegro";
 import { montenegroPage } from "@/content/pages";
@@ -33,6 +34,7 @@ export default function MontenegroPage() {
           </div>
         </section>
 
+        <MontenegroMap />
         <WhyMontenegro />
         <EuropeanAdvantage />
         <ContactCta brochure />

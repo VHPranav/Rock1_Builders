@@ -6,7 +6,7 @@ import { useEffect } from "react";
 // Marks every [data-reveal] element [data-revealed] the first time it reaches the viewport, staggering
 // elements that arrive together in reading order. A data attribute (not a class) is used so React
 // re-renders never strip it. Re-scans on every route change, since the layout (and this component)
-// persists across client-side navigation.
+// persists across client-side navigation, and watches for elements added later (e.g. gallery tabs).
 export default function RevealOnScroll() {
   const pathname = usePathname();
 
@@ -27,7 +27,6 @@ export default function RevealOnScroll() {
           pending.delete(el);
           observer.unobserve(el);
         });
-      if (!pending.size) window.removeEventListener("scroll", onScroll);
     };
 
     const observer = new IntersectionObserver(
@@ -50,11 +49,32 @@ export default function RevealOnScroll() {
 
     pending.forEach((el) => observer.observe(el));
     window.addEventListener("scroll", onScroll, { passive: true });
+
+    // Pick up [data-reveal] elements rendered after this scan (tab switches, expanding panels).
+    const mutations = new MutationObserver((records) => {
+      let added = false;
+      for (const record of records) {
+        record.addedNodes.forEach((node) => {
+          if (!(node instanceof HTMLElement)) return;
+          const found = node.matches("[data-reveal]:not([data-revealed])") ? [node] : [];
+          found.push(...node.querySelectorAll<HTMLElement>("[data-reveal]:not([data-revealed])"));
+          found.forEach((el) => {
+            if (pending.has(el)) return;
+            pending.add(el);
+            observer.observe(el);
+            added = true;
+          });
+        });
+      }
+      if (added && !raf) raf = requestAnimationFrame(sweep);
+    });
+    mutations.observe(document.body, { childList: true, subtree: true });
     // Reveal whatever is already on screen right away, rather than waiting for the observer's first
     // callback (which can lag, leaving above-the-fold text hidden until the first scroll).
     raf = requestAnimationFrame(sweep);
     return () => {
       observer.disconnect();
+      mutations.disconnect();
       cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
     };

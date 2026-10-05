@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useLayoutEffect, useRef } from "react";
 import RevealWords from "@/components/RevealWords";
 import { type ProjectStatus, projects, projectStatuses } from "@/content/home";
+import { projectPhoto } from "@/content/projectDetails";
 
 type Item = (typeof projects.items)[number];
 
@@ -289,9 +290,9 @@ export default function ProjectsIndex() {
                         )}
                         <Link href={item.href} className="group block">
                           <figure data-tile className={`relative overflow-hidden bg-ink/10 ${layout.aspect}`}>
-                            {item.image ? (
+                            {projectPhoto(item.slug, item.image) ? (
                               <Image
-                                src={item.image}
+                                src={projectPhoto(item.slug, item.image)!}
                                 alt={`${item.name}, ${item.location}`}
                                 fill
                                 quality={85}

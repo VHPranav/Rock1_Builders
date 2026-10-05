@@ -46,3 +46,9 @@ design/originals/client/*.mp4
 
 # Old rock1builders.com photos (originals; WebP copies live in public/)
 design/originals/old-site/
+
+# Raw satellite tiles (re-downloadable; stitched images live in public/images/map/satellite)
+design/map/tiles-*/
+
+# Client gallery originals (~700 MB); WebP copies live in public/images/gallery
+design/originals/gallery/

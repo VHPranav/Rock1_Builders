@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
-import GalleryGrid from "@/components/GalleryGrid";
+import GalleryBrowser from "@/components/GalleryBrowser";
 import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
 import { galleryPage } from "@/content/pages";
@@ -16,7 +16,9 @@ export default function GalleryPage() {
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={galleryPage.eyebrow} title={galleryPage.title} intro={galleryPage.intro} />
-        <GalleryGrid images={galleryPage.images} />
+        <div className="mt-16">
+          <GalleryBrowser groups={galleryPage.groups} />
+        </div>
       </main>
       <Footer />
     </>
