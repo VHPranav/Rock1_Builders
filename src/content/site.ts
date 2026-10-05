@@ -3,7 +3,7 @@
 import { projects, projectStatuses } from "@/content/home";
 
 // Live address, used for the sitemap and robots.txt.
-export const siteUrl = "https://rock1builders.com";
+export const siteUrl = "https://www.rock1builders.com";
 
 // `description` and `image` feed the full-width dropdown (link list left, preview right).
 type NavLink = { label: string; href: string; note?: string; description?: string; image?: string; documents?: string[] };
