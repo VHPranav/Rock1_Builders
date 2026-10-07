@@ -9,7 +9,7 @@
 import type { GalleryImage } from "@/components/GalleryGrid";
 import clientGallery from "@/content/gallery.json";
 
-export type GalleryGroup = { id: string; label: string; place: string; images: GalleryImage[] };
+export type GalleryGroup = { id: string; label: string; place: string; description?: string; images: GalleryImage[] };
 
 export const about = {
   eyebrow: "About Us",
@@ -151,7 +151,7 @@ export const montenegroPage = {
 
 export const galleryPage = {
   eyebrow: "Gallery",
-  title: "The spaces we build.",
+  title: "List Of Completed Projects",
   intro: "Renders of our developments on Montenegro's Bar Riviera, and photographs of the residences, resorts and offices we have built in Kerala.",
   // Montenegro renders first; the Kerala groups are the client's photo sets (src/content/gallery.json,
   // built by scripts/build-gallery.py from design/originals/gallery).
@@ -269,8 +269,12 @@ export const legalPage = {
     { src: "/images/legal/title-deed-2.webp", caption: "Title deed extract (List nepokretnosti 2580), Dobra Voda, page 2", ratio: "document" },
     { src: "/images/legal/company-registration.webp", caption: "Company registration, Rock1 Builders D.O.O., Central Register of Business Entities", ratio: "document" },
     { src: "/images/legal/tax-registration.webp", caption: "Tax registration (PIB), Revenue and Customs Administration, Budva", ratio: "document" },
-    { src: "/images/legal/vat-registration.webp", caption: "VAT (PDV) registration, Revenue and Customs Administration, Budva", ratio: "document" },
-    { src: "/images/legal/certificate-of-incorporation.webp", caption: "Certificate of Incorporation, Vintage Properties Pvt. Ltd., Kerala", ratio: "document" },
+    {
+      src: "/images/legal/certificate-of-incorporation-1996.webp",
+      caption: "Certificate of Incorporation – Vintage Properties Pvt. Ltd. (1996)",
+      description: "Original Certificate of Incorporation issued on 28 February 1996, evidencing the incorporation of Vintage Properties Pvt. Ltd., Kerala.",
+      ratio: "document",
+    },
     { src: "/images/legal/misty-blue-trade-mark.webp", caption: "Misty Blue trade mark certificate, Government of India", ratio: "document" },
   ] as GalleryImage[],
 };

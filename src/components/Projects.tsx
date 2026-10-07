@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Button from "@/components/Button";
 import { projects } from "@/content/home";
+import { projectPhoto } from "@/content/projectDetails";
 
 const items = projects.items;
 // Expo-out: quick start, long gentle settle. Shared by the crossfade and the strip slide.
@@ -82,8 +83,8 @@ export default function Projects() {
                 transition: `opacity 900ms ${EASE}, transform 1600ms ${EASE}`,
               }}
             >
-              {item.image ? (
-                <Image src={item.image} alt="" fill quality={85} sizes="100vw" className="object-cover" />
+              {projectPhoto(item.slug, item.image) ? (
+                <Image src={projectPhoto(item.slug, item.image)!} alt="" fill quality={85} sizes="100vw" className="object-cover" />
               ) : (
                 <div
                   className="absolute inset-0"
@@ -117,6 +118,11 @@ export default function Projects() {
                 <h3 className="mt-3 text-[clamp(2.5rem,7vw,6.5rem)] font-light leading-[0.95] tracking-[-0.03em]">
                   {current.name}
                 </h3>
+                {current.subtitle && (
+                  <p className="mt-2 text-base font-light text-white/80 sm:text-lg">
+                    {current.subtitle}
+                  </p>
+                )}
                 <p className="mt-4 max-w-lg text-base text-white/85 sm:text-lg">{current.summary}</p>
                 <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-5">
                   <p className="flex items-baseline gap-3">

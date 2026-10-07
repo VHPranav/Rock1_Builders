@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export type GalleryImage = { src: string; caption: string; ratio?: keyof typeof ratios };
+export type GalleryImage = { src: string; caption: string; description?: string; ratio?: keyof typeof ratios };
 
 // "page" fits brochure spreads, "document" fits A4 scans (shown whole on white).
 const ratios = {
@@ -87,7 +87,10 @@ export default function GalleryGrid({
                 </div>
                 {captions === "below" && (
                   <figcaption data-reveal className="mt-3 text-sm leading-snug text-ink/70">
-                    {image.caption}
+                    <p>{image.caption}</p>
+                    {image.description && (
+                      <p className="mt-1 text-xs leading-normal text-ink/55">{image.description}</p>
+                    )}
                   </figcaption>
                 )}
               </figure>

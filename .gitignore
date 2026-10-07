@@ -52,3 +52,6 @@ design/map/tiles-*/
 
 # Client gallery originals (~700 MB); WebP copies live in public/images/gallery
 design/originals/gallery/
+
+# Large client video masters (too big for GitHub)
+*.mkv

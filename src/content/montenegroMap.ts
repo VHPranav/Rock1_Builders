@@ -49,7 +49,7 @@ export const montenegroMap = {
       kind: "project",
       coordinates: [19.1385, 42.0408],
       labelLeft: true,
-      note: "Ongoing · 20 apartments",
+      note: "Ongoing · 17 apartments",
       description:
         "Sea-view apartments with a pool and parking in Dobra Voda on the Bar Riviera, beside an Ayurveda wellness centre, a first for Montenegro.",
       image: "/images/projects/life-bay/render.webp",
@@ -60,7 +60,7 @@ export const montenegroMap = {
       name: "Ocean Crest",
       kind: "project",
       coordinates: [19.156, 42.0485],
-      note: "Newly launched · 35 villas",
+      note: "Newly launched · 20 units",
       description:
         "Coastal villas with private sea-view infinity pools, 2 km from Dobra Voda beach and minutes from Bar, with the Life Bay wellness centre next door.",
       image: "/images/projects/ocean-crest/frontage.webp",

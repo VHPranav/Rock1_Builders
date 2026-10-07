@@ -1,3 +1,5 @@
+import type { GalleryImage } from "@/components/GalleryGrid";
+
 // Extended content for /projects/[slug], from each old project page (content/raw/project-*.md).
 // The short fields (name, location, stat, summary, image) live in projects.items in home.ts.
 
@@ -22,7 +24,11 @@ type ProjectDetail = {
   heroVideo?: { src: string; poster: string };
   bandVideo?: { src: string; poster: string; label: string };
   film?: { title: string; src: string; poster: string };
+  // Films about the project: YouTube (click to play) or a self-hosted MP4 with controls.
+  videos?: { title: string; duration: string; youtubeId?: string; src?: string; poster?: string }[];
   stills?: Photo[];
+  // Further photographs, in a grid that opens full-screen (The Grand Manor).
+  photos?: GalleryImage[];
   brochure?: Photo[];
   sitePlan?: { src: string; full: string; caption: string };
   downloads?: { label: string; href: string }[];
@@ -56,9 +62,6 @@ export const projectDetails: Record<string, ProjectDetail> = {
     // Pages from the Life Bay brochure, as shown on the old project page.
     brochure: [
       { src: "/images/projects/life-bay/brochure-0007.webp", caption: "Your home, your blueprint" },
-      { src: "/images/projects/life-bay/brochure-0009.webp", caption: "First floor plan" },
-      { src: "/images/projects/life-bay/brochure-0010.webp", caption: "Second floor plan" },
-      { src: "/images/projects/life-bay/brochure-0011.webp", caption: "Third floor plan" },
       { src: "/images/projects/life-bay/brochure-0012.webp", caption: "Studio apartment floor plan" },
       { src: "/images/projects/life-bay/brochure-0012-1.webp", caption: "Studio apartment floor plan, alternative layout" },
       { src: "/images/projects/life-bay/brochure-0013.webp", caption: "1-bedroom apartment floor plan" },
@@ -161,8 +164,7 @@ export const projectDetails: Record<string, ProjectDetail> = {
       {
         title: "Additional services",
         items: [
-          "Property management and maintenance",
-          "Cleaning and housekeeping",
+          "Assist in arranging professional resort management companies to handle tourist rental services and property maintenance",
           "Airport transfer arrangements",
           "Tourist information and activity booking",
           "Car rental and local transportation assistance",
@@ -202,13 +204,14 @@ export const projectDetails: Record<string, ProjectDetail> = {
       },
       {
         name: "Villa Type C",
-        size: "60 m² (645 sq. ft.)",
+        size: "71 m² (764 sq. ft.)",
         specs: [
           { label: "Building", value: "71 m² (764 sq. ft.)" },
           { label: "Ground floor", value: "Living, dining, kitchen and parking (32 m²)" },
           { label: "First floor", value: "2 bedrooms, 2 bathrooms and balcony (39 m²)" },
           { label: "Parking", value: "Yes" },
           { label: "Sea view", value: "Optional" },
+          { label: "Land", value: "Private garden" },
         ],
         plans: [
           { src: "/images/projects/ocean-crest/plan-c-ground.webp", caption: "Ground floor", width: 754, height: 1318 },
@@ -278,8 +281,35 @@ export const projectDetails: Record<string, ProjectDetail> = {
       "The four-bedroom villa includes a private swimming pool, home theatre, office space, and a lush garden for leisure. Designed with contemporary aesthetics, it offers urban luxury within a peaceful natural setting.",
     ],
   },
+  "grand-manor": {
+    tagline: "One of our first luxury mansions",
+    heroImage: "/images/projects/grand-manor/elevation.webp",
+    stills: [
+      { src: "/images/projects/grand-manor/landscaping.webp", caption: "Landscaped garden", wide: true },
+      { src: "/images/projects/grand-manor/covered-courtyard.webp", caption: "Covered courtyard" },
+      { src: "/images/projects/grand-manor/dining.webp", caption: "Dining" },
+      { src: "/images/projects/grand-manor/dining-ceiling.webp", caption: "Teak dining ceiling" },
+      { src: "/images/projects/grand-manor/drawing-room-2.webp", caption: "Drawing room" },
+      { src: "/images/projects/grand-manor/master-bedroom.webp", caption: "Master bedroom", wide: true },
+    ],
+    photos: [
+      { src: "/images/projects/grand-manor/drawing-room.webp", caption: "Drawing room", ratio: "portrait" },
+      { src: "/images/projects/grand-manor/dining-2.webp", caption: "Dining and lounge", ratio: "landscape" },
+      { src: "/images/projects/grand-manor/kitchen.webp", caption: "Kitchen", ratio: "landscape" },
+      { src: "/images/projects/grand-manor/office-room.webp", caption: "Office room", ratio: "landscape" },
+      { src: "/images/projects/grand-manor/bedroom.webp", caption: "Bedroom", ratio: "landscape" },
+      { src: "/images/projects/grand-manor/bedroom-2.webp", caption: "Bedroom", ratio: "landscape" },
+      { src: "/images/projects/grand-manor/bathroom.webp", caption: "Bathroom", ratio: "portrait" },
+      { src: "/images/projects/grand-manor/bathroom-2.webp", caption: "Bathroom", ratio: "landscape" },
+    ],
+    overview: [
+      "The Grand Manor in Kakkanad, Kochi, completed in 2003, is one of Rock1 Builders' first luxury mansions.",
+      "It is crafted using premium Nilambur teak, a luxurious and expensive timber widely regarded as one of the finest and most prestigious in the world.",
+    ],
+  },
   "misty-blue": {
     heroImage: "/images/projects/misty-blue/hero.webp",
+    videos: [{ title: "The Legacy of Misty Blue", duration: "5:40", youtubeId: "IWejp-mLw_U" }],
     stills: [
       { src: "/images/projects/misty-blue/lake.webp", caption: "Munnar's first lake resort", wide: true },
       { src: "/images/projects/misty-blue/room.webp", caption: "Executive room" },
@@ -294,8 +324,7 @@ export const projectDetails: Record<string, ProjectDetail> = {
   },
 };
 
-// The real photograph or render for a project. Everywhere except the home page uses this; the home
-// page's Our Projects section keeps its Flow imagery (projects.items[n].image).
+// The real photograph or render for a project, used wherever a project is pictured.
 export function projectPhoto(slug: string, fallback: string | null): string | null {
   return projectDetails[slug]?.heroImage ?? fallback;
 }

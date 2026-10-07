@@ -20,14 +20,16 @@ GROUPS = [
     ("ROCK STAR VAZHAKKALLA", "rock-star-vazhakkala", "Rock Star Vazhakkala", "Kochi, Kerala"),
     ("MISTY BLUE", "misty-blue", "Misty Blue", "Munnar, Kerala"),
     ("ROCK VALLEY", "rock-valley", "Rock Valley", "Kakkanad, Kerala"),
-    ("The Grand Manor", "grand-manor", "The Grand Manor", "Kerala"),
     ("kochi office inaugration January 2006", "kochi-office-2006", "Kochi office inauguration", "January 2006"),
 ]
+
+# The Grand Manor's photos are on its project page (public/images/projects/grand-manor), not here.
+DESCRIPTIONS = {}
 
 # Near-identical frames left out (same shot taken in a row).
 SKIP = {
     "ROCK VALLEY": {"IMG_5342.JPG", "IMG_5344.JPG"},
-    "ROCK STAR VAZHAKKALLA": {"08.jpg", "09.jpg", "10.jpg"},
+    "ROCK STAR VAZHAKKALLA": {"08.jpg", "09.jpg", "10.jpg", "13.jpg"},
 }
 
 
@@ -62,7 +64,10 @@ for folder, gid, name, place in GROUPS:
         im.save(os.path.join(OUT, out), quality=80, method=6)
         caption = f"{name}, {label(f).lower()}" if gid == "grand-manor" else name
         images.append({"src": f"/images/gallery/{out}", "caption": caption, "ratio": "landscape" if im.width >= im.height else "portrait"})
-    manifest.append({"id": gid, "label": name, "place": place, "images": images})
+    entry = {"id": gid, "label": name, "place": place, "images": images}
+    if gid in DESCRIPTIONS:
+        entry["description"] = DESCRIPTIONS[gid]
+    manifest.append(entry)
     print(gid, len(images))
 
 with open("src/content/gallery.json", "w") as fh:

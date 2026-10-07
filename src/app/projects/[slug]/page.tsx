@@ -11,6 +11,7 @@ import Header from "@/components/Header";
 import MontenegroMap from "@/components/MontenegroMap";
 import ParallaxLayer from "@/components/ParallaxLayer";
 import RevealWords from "@/components/RevealWords";
+import YouTubeEmbed from "@/components/YouTubeEmbed";
 import { projects } from "@/content/home";
 import { montenegroMap } from "@/content/montenegroMap";
 import { projectDetails, projectPhoto } from "@/content/projectDetails";
@@ -77,6 +78,11 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             <h1 data-reveal="words" className="mt-4 text-[clamp(3rem,9vw,8rem)] font-light leading-[0.95] tracking-[-0.03em]">
               <RevealWords text={item.name} />
             </h1>
+            {item.subtitle && (
+              <p data-reveal className="mt-2 text-base font-light text-white/80 sm:text-lg">
+                {item.subtitle}
+              </p>
+            )}
             <div className="mt-8 flex flex-wrap items-end justify-between gap-8">
               <p data-reveal className="max-w-xl text-lg text-white/85 sm:text-xl">
                 {item.summary}
@@ -188,6 +194,52 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
                 <Image src={projectPhoto(slug, item.image)!} alt="" fill quality={85} sizes="100vw" className="object-cover object-bottom" />
               </ParallaxLayer>
             </figure>
+          </section>
+        )}
+
+        {/* Films (Misty Blue): YouTube loads only when played; MP4s load only when played */}
+        {detail.videos && (
+          <section className="mt-24 bg-ink-deep px-[clamp(1.25rem,6vw,6rem)] py-24 text-white sm:mt-32 sm:py-32">
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <div>
+                <p data-reveal className="font-mono text-xs uppercase tracking-[0.14em] text-white/60 sm:text-sm">
+                  {detail.videos.length > 1 ? "Films" : "Film"}
+                </p>
+                <h2 data-reveal="words" className="mt-4 text-[clamp(2rem,5vw,4rem)] font-light leading-none tracking-[-0.03em]">
+                  <RevealWords text={`Watch ${item.name}`} />
+                </h2>
+              </div>
+            </div>
+            <ul className={`mt-12 grid gap-x-4 gap-y-10 ${detail.videos.length > 1 ? "lg:grid-cols-2" : ""}`}>
+              {detail.videos.map((video) => (
+                <li key={video.youtubeId ?? video.src}>
+                  {video.youtubeId ? (
+                    <YouTubeEmbed id={video.youtubeId} title={video.title} label={`Watch · ${video.duration}`} />
+                  ) : (
+                    <video data-reveal src={video.src} poster={video.poster} controls preload="none" playsInline className="aspect-video w-full bg-black">
+                      <a href={video.src}>Watch the film</a>
+                    </video>
+                  )}
+                  <p data-reveal className="mt-4 flex items-baseline justify-between gap-6">
+                    <span className="text-lg">{video.title}</span>
+                    <span className="font-mono text-xs uppercase tracking-[0.14em] text-white/50">{video.duration}</span>
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* More photographs (The Grand Manor), opening full-screen */}
+        {detail.photos && (
+          <section className="pt-24 sm:pt-32">
+            <div className="px-[clamp(1.25rem,6vw,6rem)]">
+              <Eyebrow>More photographs</Eyebrow>
+            </div>
+            <GalleryGrid
+              images={detail.photos}
+              className="mt-12 columns-1 gap-2 px-[clamp(1.25rem,6vw,6rem)] sm:columns-2 lg:columns-3"
+            />
           </section>
         )}
 

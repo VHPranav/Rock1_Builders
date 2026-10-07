@@ -133,15 +133,37 @@ export const contactCta = {
 // section carries an "illustrative" note. Swap in real project photography when the client supplies it.
 export type ProjectStatus = "Newly Launched" | "Ongoing" | "Completed";
 
+export type ProjectItem = {
+  name: string;
+  subtitle?: string;
+  location: string;
+  region: "Montenegro" | "India";
+  status: ProjectStatus;
+  category: string;
+  stat: { value: string; label: string };
+  summary: string;
+  description: string;
+  slug: string;
+  href: string;
+  tone: string;
+  image: string | null;
+};
+
 // Display order of the status groups on the Projects page and in the menu.
 export const projectStatuses: ProjectStatus[] = ["Newly Launched", "Ongoing", "Completed"];
 
-export const projects = {
+export const projects: {
+  eyebrow: string;
+  pageHeading: string;
+  stripExtras: string[];
+  intro: string;
+  items: ProjectItem[];
+} = {
   eyebrow: "Our Projects",
   // /projects page heading, drawn from the client's own intro line below.
   pageHeading: "From signature residences to premium resort spaces",
   // Decorative Montenegro images shown between the project thumbnails in the /projects hero strip.
-  // 4 extras + 6 project items = 10 images total in the hero strip.
+  // The hero strip shows 10 images: every project, padded out with these extras.
   // They fade away as the projects fly into the grid; they are not projects and are not linked.
   stripExtras: [
     "/images/why/nature.webp",
@@ -159,24 +181,25 @@ export const projects = {
       // Grouping from the old site's Project menu (Ongoing / Completed / Newly Launched).
       status: "Ongoing" as ProjectStatus,
       category: "Residential",
-      stat: { value: "20", label: "Apartments" },
+      stat: { value: "17", label: "Apartments" },
       summary: "Premium sea-view apartments in Montenegro's Bar Riviera.",
       description:
         "A strategic development in Dobra Voda designed for the fast-growing real estate and tourism market of the Bar Riviera. Modern, high-quality apartments with sea views, a swimming pool and car parking, backed by strong rental demand and Montenegro's favourable climate.",
       slug: "life-bay",
       href: "/projects/life-bay",
       tone: "#46596a",
-      image: "/images/projects/life-bay.webp" as string | null,
+      image: "/images/projects/life-bay/render.webp" as string | null,
     },
     {
       name: "Ocean Crest",
-      location: "Bar Riviera, Montenegro",
+      subtitle: "Town House",
+      location: "Bar Riviera, Dobra Voda",
       region: "Montenegro" as "Montenegro" | "India",
       // Grouping from the old site's Project menu (Ongoing / Completed / Newly Launched).
       status: "Newly Launched" as ProjectStatus,
       category: "Villas",
-      stat: { value: "35", label: "Villas" },
-      summary: "Premium coastal villas with private sea-view infinity pools.",
+      stat: { value: "20", label: "Units" },
+      summary: "Premium coastal villas with private sea-view infinity pools. Luxury standalone villa will be built on demand.",
       description:
         "Modern architecture, comfort and a refined coastal lifestyle, minutes from Dobra Voda beach and Bar Old Town. Villa types from 32 m² to 170.7 m², with sea-view infinity pools, landscaped Mediterranean gardens and an Ayurveda wellness centre next door at Life Bay.",
       slug: "ocean-crest",
@@ -193,13 +216,13 @@ export const projects = {
       status: "Completed" as ProjectStatus,
       category: "Luxury Residence",
       stat: { value: "10,000", label: "Sq. ft." },
-      summary: "A 10,000 sq. ft. residence on a 20,000 sq. m plot.",
+      summary: "A 10,000 sq. ft. residence on 20,000 sq. m plot.",
       description:
         "Six grand bedrooms, a home theatre, an executive office and an indoor water fountain, surrounded by a landscaped garden, fruit orchard and private swimming pool.",
       slug: "royal-habitat",
       href: "/projects/royal-habitat",
       tone: "#7d6a5a",
-      image: "/images/projects/royal-habitat.webp" as string | null,
+      image: "/images/projects/royal-habitat/hero.webp" as string | null,
     },
     {
       name: "Rock Star Vazhakkala",
@@ -215,7 +238,7 @@ export const projects = {
       slug: "rock-star-vazhakkala",
       href: "/projects/rock-star-vazhakkala",
       tone: "#6b6f4e",
-      image: "/images/projects/rock-star-vazhakkala.webp" as string | null,
+      image: "/images/projects/rock-star-vazhakkala/night.webp" as string | null,
     },
     {
       name: "Rock Valley",
@@ -231,7 +254,7 @@ export const projects = {
       slug: "rock-valley",
       href: "/projects/rock-valley",
       tone: "#8a7a64",
-      image: "/images/projects/rock-valley.webp" as string | null,
+      image: "/images/projects/rock-valley/hero.webp" as string | null,
     },
     {
       name: "Misty Blue",
@@ -247,7 +270,22 @@ export const projects = {
       slug: "misty-blue",
       href: "/projects/misty-blue",
       tone: "#4f5d56",
-      image: "/images/projects/misty-blue.webp" as string | null,
+      image: "/images/projects/misty-blue/hero.webp" as string | null,
+    },
+    {
+      name: "The Grand Manor",
+      location: "Kakkanad, Kochi",
+      region: "India" as "Montenegro" | "India",
+      status: "Completed" as ProjectStatus,
+      category: "Luxury Mansion",
+      stat: { value: "2003", label: "Completed" },
+      summary: "One of our first luxury mansions, crafted in premium Nilambur teak.",
+      description:
+        "Completed in 2003 in Kakkanad, Kochi, and crafted using premium Nilambur teak, one of the finest and most prestigious timbers in the world.",
+      slug: "grand-manor",
+      href: "/projects/grand-manor",
+      tone: "#7a5a3e",
+      image: "/images/projects/grand-manor/elevation.webp" as string | null,
     },
   ],
 };

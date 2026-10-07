@@ -58,6 +58,11 @@ export default function GalleryBrowser({ groups }: { groups: GalleryGroup[] }) {
                 {group.place} · {group.images.length}
               </p>
             </div>
+            {group.description && (
+              <p className="mt-3 max-w-3xl px-[clamp(1.25rem,6vw,6rem)] text-sm leading-relaxed text-ink/70 sm:text-base">
+                {group.description}
+              </p>
+            )}
             {/* Keyed so the viewer resets when switching tabs */}
             <GalleryGrid
               key={`${active}-${group.id}`}

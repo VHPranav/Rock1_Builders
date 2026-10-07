@@ -237,11 +237,6 @@
     "ratio": "landscape"
    },
    {
-    "src": "/images/gallery/rock-star-vazhakkala/15.webp",
-    "caption": "Rock Star Vazhakkala",
-    "ratio": "landscape"
-   },
-   {
     "src": "/images/gallery/rock-star-vazhakkala/16.webp",
     "caption": "Rock Star Vazhakkala",
     "ratio": "landscape"
@@ -468,88 +463,6 @@
    {
     "src": "/images/gallery/rock-valley/08.webp",
     "caption": "Rock Valley",
-    "ratio": "landscape"
-   }
-  ]
- },
- {
-  "id": "grand-manor",
-  "label": "The Grand Manor",
-  "place": "Kerala",
-  "images": [
-   {
-    "src": "/images/gallery/grand-manor/01.webp",
-    "caption": "The Grand Manor, bedroom",
-    "ratio": "landscape"
-   },
-   {
-    "src": "/images/gallery/grand-manor/02.webp",
-    "caption": "The Grand Manor, bedroom",
-    "ratio": "landscape"
-   },
-   {
-    "src": "/images/gallery/grand-manor/03.webp",
-    "caption": "The Grand Manor, covered courtyard",
-    "ratio": "landscape"
-   },
-   {
-    "src": "/images/gallery/grand-manor/04.webp",
-    "caption": "The Grand Manor, dining",
-    "ratio": "landscape"
-   },
-   {
-    "src": "/images/gallery/grand-manor/05.webp",
-    "caption": "The Grand Manor, dining",
-    "ratio": "landscape"
-   },
-   {
-    "src": "/images/gallery/grand-manor/06.webp",
-    "caption": "The Grand Manor, dining ceiling",
-    "ratio": "landscape"
-   },
-   {
-    "src": "/images/gallery/grand-manor/07.webp",
-    "caption": "The Grand Manor, drawing room",
-    "ratio": "portrait"
-   },
-   {
-    "src": "/images/gallery/grand-manor/08.webp",
-    "caption": "The Grand Manor, drawing room",
-    "ratio": "portrait"
-   },
-   {
-    "src": "/images/gallery/grand-manor/09.webp",
-    "caption": "The Grand Manor, elevation",
-    "ratio": "landscape"
-   },
-   {
-    "src": "/images/gallery/grand-manor/10.webp",
-    "caption": "The Grand Manor, kitchen",
-    "ratio": "landscape"
-   },
-   {
-    "src": "/images/gallery/grand-manor/11.webp",
-    "caption": "The Grand Manor, landscaping",
-    "ratio": "landscape"
-   },
-   {
-    "src": "/images/gallery/grand-manor/12.webp",
-    "caption": "The Grand Manor, master bedroom",
-    "ratio": "landscape"
-   },
-   {
-    "src": "/images/gallery/grand-manor/13.webp",
-    "caption": "The Grand Manor, office room",
-    "ratio": "landscape"
-   },
-   {
-    "src": "/images/gallery/grand-manor/14.webp",
-    "caption": "The Grand Manor, bathroom",
-    "ratio": "portrait"
-   },
-   {
-    "src": "/images/gallery/grand-manor/15.webp",
-    "caption": "The Grand Manor, bathroom",
     "ratio": "landscape"
    }
   ]
