@@ -14,6 +14,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const gaId = "G-Y97S2DKLRJ";
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   // "./" resolves to each page's own URL, so every page gets a self-referencing canonical.
@@ -30,6 +32,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         {/* Gate the intro-animation hidden states on JS actually running */}
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        {/* Google Analytics 4 */}
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${gaId}');`,
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col">
         {children}
