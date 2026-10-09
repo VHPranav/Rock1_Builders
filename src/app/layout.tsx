@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import RevealOnScroll from "@/components/RevealOnScroll";
+import { siteUrl } from "@/content/site";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -14,6 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  // "./" resolves to each page's own URL, so every page gets a self-referencing canonical.
+  alternates: { canonical: "./" },
   title: "Rock1 Builders – Gateway to Mediterranean Living in Montenegro",
   description:
     "Luxury residences and Europe's first Ayurvedic wellness resort at Life Bay Montenegro, from Rock1 Builders.",

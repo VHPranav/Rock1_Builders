@@ -16,6 +16,13 @@ const nextConfig: NextConfig = {
       permanent: true,
     });
     return [
+      // One host only: www → apex, matching the canonical tags.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.rock1builders.com" }],
+        destination: "https://rock1builders.com/:path*",
+        permanent: true,
+      },
       project("life-bay-montenegro", "life-bay"),
       project("ocean-crest", "ocean-crest"),
       project("ocean-crust", "ocean-crest"),
