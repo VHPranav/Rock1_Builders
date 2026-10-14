@@ -26,7 +26,12 @@ export async function generateMetadata({ params }: PageProps<"/projects/[slug]">
   const { slug } = await params;
   const item = items.find((project) => project.slug === slug);
   if (!item) return {};
-  return { title: `${item.name} – Rock1 Builders`, description: item.summary };
+  const image = projectPhoto(slug, item.image);
+  return {
+    title: `${item.name} – Rock1 Builders`,
+    description: item.summary,
+    openGraph: { type: "website", siteName: "Rock1 Builders", ...(image && { images: [{ url: image, alt: item.name }] }) },
+  };
 }
 
 export default async function ProjectPage({ params }: PageProps<"/projects/[slug]">) {

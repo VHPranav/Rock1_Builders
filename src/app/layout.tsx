@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import RevealOnScroll from "@/components/RevealOnScroll";
-import { siteUrl } from "@/content/site";
+import { defaultOgImage, siteUrl } from "@/content/site";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -23,6 +23,13 @@ export const metadata: Metadata = {
   title: "Rock1 Builders – Gateway to Mediterranean Living in Montenegro",
   description:
     "Luxury residences and Europe's first Ayurvedic wellness resort at Life Bay Montenegro, from Rock1 Builders.",
+  openGraph: {
+    type: "website",
+    siteName: "Rock1 Builders",
+    locale: "en_GB",
+    images: [{ url: defaultOgImage, width: 1200, height: 630, alt: "Life Bay Montenegro by Rock1 Builders" }],
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

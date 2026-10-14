@@ -23,6 +23,8 @@ const nextConfig: NextConfig = {
         destination: "https://rock1builders.com/:path*",
         permanent: true,
       },
+      // Sitemap addresses used by WordPress, Yoast and Rank Math
+      { source: "/:map(sitemap_index|wp-sitemap|page-sitemap|post-sitemap)\\.xml", destination: "/sitemap.xml", permanent: true },
       project("life-bay-montenegro", "life-bay"),
       project("ocean-crest", "ocean-crest"),
       project("ocean-crust", "ocean-crest"),

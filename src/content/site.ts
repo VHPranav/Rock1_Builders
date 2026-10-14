@@ -5,6 +5,12 @@ import { projects, projectStatuses } from "@/content/home";
 // Live address, used for the sitemap and robots.txt.
 export const siteUrl = "https://rock1builders.com";
 
+// Sitemap "last updated" date. Bump this when page content changes (a build-time date would change on every deploy, which search engines learn to ignore).
+export const contentUpdated = "2026-10-14";
+
+// Default preview image for shared links (WhatsApp, LinkedIn, Facebook, X).
+export const defaultOgImage = "/images/og-default.jpg";
+
 // `description` and `image` feed the full-width dropdown (link list left, preview right).
 type NavLink = { label: string; href: string; note?: string; description?: string; image?: string; documents?: string[] };
 type NavItem = NavLink & { children?: NavLink[] };
