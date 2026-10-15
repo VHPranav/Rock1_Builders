@@ -2,10 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    loaderFile: "./src/lib/imageLoader.ts",
-    // Fewer widths and a long cache keep us inside Vercel's monthly image-resize allowance.
-    deviceSizes: [640, 828, 1200, 1920],
-    minimumCacheTTL: 2678400, // 31 days
+    // Images are served straight from /public: Vercel Hobby caps resizing at 5,000 a month and breaks images past that.
+    // Turn this off again (and restore the resizer) once the project is on a Pro plan.
+    unoptimized: true,
     // 85 for grainy editorial photography — 75 visibly smears the film grain.
     qualities: [75, 85],
     // YouTube thumbnails for click-to-play embeds (About Us film)
