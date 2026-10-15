@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    loaderFile: "./src/lib/imageLoader.ts",
+    // Fewer widths and a long cache keep us inside Vercel's monthly image-resize allowance.
+    deviceSizes: [640, 828, 1200, 1920],
+    minimumCacheTTL: 2678400, // 31 days
     // 85 for grainy editorial photography — 75 visibly smears the film grain.
     qualities: [75, 85],
     // YouTube thumbnails for click-to-play embeds (About Us film)
