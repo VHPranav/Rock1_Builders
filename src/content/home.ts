@@ -216,7 +216,7 @@ export const projects: {
       status: "Completed" as ProjectStatus,
       category: "Luxury Residence",
       stat: { value: "10,000", label: "Sq. ft." },
-      summary: "A 10,000 sq. ft. residence on 20,000 sq. m plot.",
+      summary: "A 10,000 sq. ft. residence on 20k sq. m plot.",
       description:
         "Six grand bedrooms, a home theatre, an executive office and an indoor water fountain, surrounded by a landscaped garden, fruit orchard and private swimming pool.",
       slug: "royal-habitat",
