@@ -313,7 +313,11 @@ export const projectDetails: Record<string, ProjectDetail> = {
   },
   "misty-blue": {
     heroImage: "/images/projects/misty-blue/hero.webp",
-    videos: [{ title: "The Legacy of Misty Blue", duration: "5:40", uploadDate: "2025-09-22T03:04:37-07:00", youtubeId: "IWejp-mLw_U" }],
+    videos: [
+      { title: "The Legacy of Misty Blue", duration: "5:40", uploadDate: "2025-09-22T03:04:37-07:00", youtubeId: "IWejp-mLw_U" },
+      // Client-provided: "A Throwback to 2012 with Mr. Bawa Salim" on the Invest in Montenegro channel.
+      { title: "A throwback to 2012 with Mr. Bawa Salim", duration: "7:02", uploadDate: "2026-10-09T03:14:38-07:00", youtubeId: "hg4MTpiwaVk" },
+    ],
     stills: [
       { src: "/images/projects/misty-blue/lake.webp", caption: "Munnar's first lake resort", wide: true },
       { src: "/images/projects/misty-blue/room.webp", caption: "Executive room" },
