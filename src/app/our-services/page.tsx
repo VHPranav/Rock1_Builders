@@ -8,16 +8,14 @@ import Services from "@/components/Services";
 import StatsBand from "@/components/StatsBand";
 import { servicesPage } from "@/content/pages";
 import { JsonLd } from "@/lib/schema";
+import { seo, seoMetadata } from "@/content/seo";
 
-export const metadata: Metadata = {
-  title: "Our Services – Rock1 Builders",
-  description: servicesPage.intro,
-};
+export const metadata: Metadata = seoMetadata("/our-services");
 
 export default function ServicesPage() {
   return (
     <>
-      <JsonLd path="/our-services" name="Our Services" description={servicesPage.intro} />
+      <JsonLd path="/our-services" name="Our Services" description={seo["/our-services"].description} />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={servicesPage.eyebrow} title={servicesPage.title} intro={servicesPage.intro} image={servicesPage.image} video={servicesPage.video} />

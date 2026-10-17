@@ -10,11 +10,9 @@ import RevealWords from "@/components/RevealWords";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
 import { about } from "@/content/pages";
 import { JsonLd, videoNode } from "@/lib/schema";
+import { seo, seoMetadata } from "@/content/seo";
 
-export const metadata: Metadata = {
-  title: "About Us – Rock1 Builders",
-  description: about.intro,
-};
+export const metadata: Metadata = seoMetadata("/about-us");
 
 // Initials tile, kept for any team member without a portrait.
 function Monogram({ name, className = "" }: { name: string; className?: string }) {
@@ -37,7 +35,7 @@ export default function AboutPage() {
       <JsonLd
         path="/about-us"
         name="About Us"
-        description={about.intro}
+        description={seo["/about-us"].description}
         type="AboutPage"
         nodes={[
           videoNode(

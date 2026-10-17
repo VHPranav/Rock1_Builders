@@ -7,11 +7,9 @@ import YouTubeEmbed from "@/components/YouTubeEmbed";
 import { type NewsPost, newsroom } from "@/content/pages";
 import { defaultOgImage } from "@/content/site";
 import { absolute, JsonLd, orgId, videoNode } from "@/lib/schema";
+import { seo, seoMetadata } from "@/content/seo";
 
-export const metadata: Metadata = {
-  title: "Newsroom – Rock1 Builders",
-  description: newsroom.intro,
-};
+export const metadata: Metadata = seoMetadata("/newsroom");
 
 const formatDate = (iso: string) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
@@ -74,7 +72,7 @@ export default function NewsroomPage() {
 
   return (
     <>
-      <JsonLd path="/newsroom" name="Newsroom" description={newsroom.intro} type="CollectionPage" nodes={postNodes} />
+      <JsonLd path="/newsroom" name="Newsroom" description={seo["/newsroom"].description} type="CollectionPage" nodes={postNodes} />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={newsroom.eyebrow} title={newsroom.title} intro={newsroom.intro} />

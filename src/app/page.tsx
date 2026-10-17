@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import ContactCta from "@/components/ContactCta";
 import Faqs from "@/components/Faqs";
 import Footer from "@/components/Footer";
@@ -8,15 +9,18 @@ import OurStory from "@/components/OurStory";
 import Projects from "@/components/Projects";
 import Services from "@/components/Services";
 import WhyMontenegro from "@/components/WhyMontenegro";
+import { seo, seoMetadata } from "@/content/seo";
 import { JsonLd } from "@/lib/schema";
+
+export const metadata: Metadata = seoMetadata("/");
 
 export default function Home() {
   return (
     <>
       <JsonLd
         path="/"
-        name="Rock1 Builders – Gateway to Mediterranean Living in Montenegro"
-        description="Luxury residences and Europe's first Ayurvedic wellness resort at Life Bay Montenegro, from Rock1 Builders."
+        name={seo["/"].title}
+        description={seo["/"].description}
       />
       <main>
         <Header />

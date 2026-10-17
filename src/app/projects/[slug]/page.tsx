@@ -15,6 +15,7 @@ import YouTubeEmbed from "@/components/YouTubeEmbed";
 import { projects } from "@/content/home";
 import { montenegroMap } from "@/content/montenegroMap";
 import { projectDetails, projectPhoto } from "@/content/projectDetails";
+import { seo, seoMetadata } from "@/content/seo";
 import { defaultOgImage } from "@/content/site";
 import { absolute, JsonLd, videoNode } from "@/lib/schema";
 
@@ -39,6 +40,8 @@ export async function generateMetadata({ params }: PageProps<"/projects/[slug]">
   return {
     title: `${item.name} – Rock1 Builders`,
     description: item.summary,
+    // Sheet values override the defaults above where the SEO team has written them.
+    ...seoMetadata(`/projects/${slug}`),
     openGraph: {
       type: "website",
       url: "./",
@@ -84,7 +87,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
       <JsonLd
         path={path}
         name={item.name}
-        description={item.summary}
+        description={seo[path]?.description ?? item.summary}
         parents={[{ name: "Projects", path: "/projects" }]}
         image={image ?? undefined}
         nodes={[property, ...videos]}

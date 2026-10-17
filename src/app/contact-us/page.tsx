@@ -8,16 +8,14 @@ import PageHero from "@/components/PageHero";
 import { contactPage } from "@/content/pages";
 import { footer } from "@/content/site";
 import { JsonLd } from "@/lib/schema";
+import { seo, seoMetadata } from "@/content/seo";
 
-export const metadata: Metadata = {
-  title: "Contact – Rock1 Builders",
-  description: contactPage.intro,
-};
+export const metadata: Metadata = seoMetadata("/contact-us");
 
 export default function ContactPage() {
   return (
     <>
-      <JsonLd path="/contact-us" name="Contact" description={contactPage.intro} type="ContactPage" />
+      <JsonLd path="/contact-us" name="Contact" description={seo["/contact-us"].description} type="ContactPage" />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={contactPage.eyebrow} title={contactPage.title} intro={contactPage.intro} />

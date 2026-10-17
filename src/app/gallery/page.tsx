@@ -5,16 +5,14 @@ import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
 import { galleryPage } from "@/content/pages";
 import { JsonLd } from "@/lib/schema";
+import { seo, seoMetadata } from "@/content/seo";
 
-export const metadata: Metadata = {
-  title: "Gallery – Rock1 Builders",
-  description: galleryPage.intro,
-};
+export const metadata: Metadata = seoMetadata("/gallery");
 
 export default function GalleryPage() {
   return (
     <>
-      <JsonLd path="/gallery" name="Gallery" description={galleryPage.intro} type="CollectionPage" />
+      <JsonLd path="/gallery" name="Gallery" description={seo["/gallery"].description} type="CollectionPage" />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={galleryPage.eyebrow} title={galleryPage.title} intro={galleryPage.intro} />

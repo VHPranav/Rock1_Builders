@@ -7,16 +7,14 @@ import PageHero from "@/components/PageHero";
 import { legalPage } from "@/content/pages";
 import { footer } from "@/content/site";
 import { JsonLd } from "@/lib/schema";
+import { seo, seoMetadata } from "@/content/seo";
 
-export const metadata: Metadata = {
-  title: "Legal – Rock1 Builders",
-  description: legalPage.intro,
-};
+export const metadata: Metadata = seoMetadata("/legal");
 
 export default function LegalPage() {
   return (
     <>
-      <JsonLd path="/legal" name="Legal" description={legalPage.intro} />
+      <JsonLd path="/legal" name="Legal" description={seo["/legal"].description} />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={legalPage.eyebrow} title={legalPage.title} intro={legalPage.intro} />

@@ -9,16 +9,14 @@ import PageHero from "@/components/PageHero";
 import WhyMontenegro from "@/components/WhyMontenegro";
 import { montenegroPage } from "@/content/pages";
 import { JsonLd } from "@/lib/schema";
+import { seo, seoMetadata } from "@/content/seo";
 
-export const metadata: Metadata = {
-  title: "About Montenegro – Rock1 Builders",
-  description: montenegroPage.intro,
-};
+export const metadata: Metadata = seoMetadata("/about-montenegro");
 
 export default function MontenegroPage() {
   return (
     <>
-      <JsonLd path="/about-montenegro" name="About Montenegro" description={montenegroPage.intro} />
+      <JsonLd path="/about-montenegro" name="About Montenegro" description={seo["/about-montenegro"].description} />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={montenegroPage.eyebrow} title={montenegroPage.title} intro={montenegroPage.intro} image={montenegroPage.image} video={montenegroPage.video} />

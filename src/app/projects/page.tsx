@@ -4,11 +4,9 @@ import Header from "@/components/Header";
 import ProjectsIndex from "@/components/ProjectsIndex";
 import { projects } from "@/content/home";
 import { JsonLd, absolute } from "@/lib/schema";
+import { seo, seoMetadata } from "@/content/seo";
 
-export const metadata: Metadata = {
-  title: "Projects – Rock1 Builders",
-  description: projects.intro,
-};
+export const metadata: Metadata = seoMetadata("/projects");
 
 export default function ProjectsPage() {
   return (
@@ -16,7 +14,7 @@ export default function ProjectsPage() {
       <JsonLd
         path="/projects"
         name="Projects"
-        description={projects.intro}
+        description={seo["/projects"].description}
         type="CollectionPage"
         extra={{
           mainEntity: {
