@@ -8,6 +8,7 @@ import MontenegroMap from "@/components/MontenegroMap";
 import PageHero from "@/components/PageHero";
 import WhyMontenegro from "@/components/WhyMontenegro";
 import { montenegroPage } from "@/content/pages";
+import { JsonLd } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "About Montenegro – Rock1 Builders",
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
 export default function MontenegroPage() {
   return (
     <>
+      <JsonLd path="/about-montenegro" name="About Montenegro" description={montenegroPage.intro} />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={montenegroPage.eyebrow} title={montenegroPage.title} intro={montenegroPage.intro} image={montenegroPage.image} video={montenegroPage.video} />

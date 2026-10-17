@@ -16,8 +16,16 @@ import { projects } from "@/content/home";
 import { montenegroMap } from "@/content/montenegroMap";
 import { projectDetails, projectPhoto } from "@/content/projectDetails";
 import { defaultOgImage } from "@/content/site";
+import { absolute, JsonLd, videoNode } from "@/lib/schema";
 
 const items = projects.items;
+
+// schema.org type for each project category.
+const propertyType: Record<string, string> = {
+  Residential: "ApartmentComplex",
+  Villas: "GatedResidenceCommunity",
+  Resort: "Resort",
+};
 
 export function generateStaticParams() {
   return items.map((item) => ({ slug: item.slug }));
@@ -51,8 +59,37 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
   const previous = items[(index - 1 + items.length) % items.length];
   const next = items[(index + 1) % items.length];
 
+  const path = `/projects/${slug}`;
+  const image = projectPhoto(slug, item.image);
+  const property = {
+    "@type": propertyType[item.category] ?? "SingleFamilyResidence",
+    "@id": `${absolute(path)}#property`,
+    name: item.name,
+    description: item.summary,
+    url: absolute(path),
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: item.location.split(",")[0],
+      addressCountry: item.region === "Montenegro" ? "ME" : "IN",
+    },
+    image: [...new Set([image, ...(detail.stills ?? []).map((still) => still.src)])].filter((src): src is string => !!src).map(absolute),
+  };
+  const videos = [
+    ...(detail.videos ?? []).map((video) => videoNode({ ...video, name: video.title, description: item.summary }, path)),
+    ...(detail.film ? [videoNode({ ...detail.film, name: detail.film.title, description: item.summary }, path)] : []),
+  ];
+
   return (
     <>
+      <JsonLd
+        path={path}
+        name={item.name}
+        description={item.summary}
+        parents={[{ name: "Projects", path: "/projects" }]}
+        image={image ?? undefined}
+        nodes={[property, ...videos]}
+        extra={{ mainEntity: { "@id": property["@id"] } }}
+      />
       <main className="bg-linen text-ink">
         <Header />
 

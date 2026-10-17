@@ -1,4 +1,3 @@
-import { footer, siteUrl } from "@/content/site";
 import ContactCta from "@/components/ContactCta";
 import Faqs from "@/components/Faqs";
 import Footer from "@/components/Footer";
@@ -9,23 +8,16 @@ import OurStory from "@/components/OurStory";
 import Projects from "@/components/Projects";
 import Services from "@/components/Services";
 import WhyMontenegro from "@/components/WhyMontenegro";
-
-const organization = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Rock1 Builders",
-  url: siteUrl,
-  logo: `${siteUrl}/images/logos/rock1-builders.webp`,
-  email: footer.email,
-  address: { "@type": "PostalAddress", streetAddress: "Mainski Put BB", addressLocality: "Budva", addressCountry: "ME" },
-  contactPoint: footer.phones.map((phone) => ({ "@type": "ContactPoint", telephone: phone.tel, contactType: "sales", areaServed: phone.region })),
-  sameAs: footer.socials.filter((social) => social.label !== "YouTube").map((social) => social.href),
-};
+import { JsonLd } from "@/lib/schema";
 
 export default function Home() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }} />
+      <JsonLd
+        path="/"
+        name="Rock1 Builders – Gateway to Mediterranean Living in Montenegro"
+        description="Luxury residences and Europe's first Ayurvedic wellness resort at Life Bay Montenegro, from Rock1 Builders."
+      />
       <main>
         <Header />
         <Hero />

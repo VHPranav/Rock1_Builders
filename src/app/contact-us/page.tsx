@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
 import { contactPage } from "@/content/pages";
 import { footer } from "@/content/site";
+import { JsonLd } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Contact – Rock1 Builders",
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
+      <JsonLd path="/contact-us" name="Contact" description={contactPage.intro} type="ContactPage" />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={contactPage.eyebrow} title={contactPage.title} intro={contactPage.intro} />

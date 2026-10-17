@@ -5,6 +5,8 @@ import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
 import { type NewsPost, newsroom } from "@/content/pages";
+import { defaultOgImage } from "@/content/site";
+import { absolute, JsonLd, orgId, videoNode } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Newsroom – Rock1 Builders",
@@ -44,11 +46,35 @@ function Actions({ post }: { post: NewsPost }) {
   );
 }
 
+// One BlogPosting per update; the posts have no pages of their own, so each URL is its card's anchor.
+const postNodes = newsroom.posts.flatMap((post) => {
+  const url = absolute(`/newsroom#${post.slug}`);
+  const video = post.video && videoNode({ name: post.video.title, description: post.summary, uploadDate: post.video.uploadDate, duration: post.video.duration, youtubeId: post.video.id }, "/newsroom");
+  const posting = {
+    "@type": "BlogPosting",
+    "@id": `${url}-post`,
+    url,
+    mainEntityOfPage: { "@id": absolute("/newsroom#webpage") },
+    headline: post.title,
+    description: post.summary,
+    articleBody: post.paragraphs.join("\n\n"),
+    articleSection: post.category,
+    inLanguage: "en-GB",
+    ...(post.date && { datePublished: post.date }),
+    image: post.video ? `https://i.ytimg.com/vi/${post.video.id}/hqdefault.jpg` : absolute(defaultOgImage),
+    author: { "@id": orgId },
+    publisher: { "@id": orgId },
+    ...(video && { video: { "@id": video["@id"] } }),
+  };
+  return video ? [posting, video] : [posting];
+});
+
 export default function NewsroomPage() {
   const posts = newsroom.posts;
 
   return (
     <>
+      <JsonLd path="/newsroom" name="Newsroom" description={newsroom.intro} type="CollectionPage" nodes={postNodes} />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={newsroom.eyebrow} title={newsroom.title} intro={newsroom.intro} />

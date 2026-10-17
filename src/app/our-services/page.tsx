@@ -7,6 +7,7 @@ import PageHero from "@/components/PageHero";
 import Services from "@/components/Services";
 import StatsBand from "@/components/StatsBand";
 import { servicesPage } from "@/content/pages";
+import { JsonLd } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Our Services – Rock1 Builders",
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
 export default function ServicesPage() {
   return (
     <>
+      <JsonLd path="/our-services" name="Our Services" description={servicesPage.intro} />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={servicesPage.eyebrow} title={servicesPage.title} intro={servicesPage.intro} image={servicesPage.image} video={servicesPage.video} />

@@ -9,6 +9,7 @@ import PageHero from "@/components/PageHero";
 import RevealWords from "@/components/RevealWords";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
 import { about } from "@/content/pages";
+import { JsonLd, videoNode } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "About Us – Rock1 Builders",
@@ -33,6 +34,18 @@ function Monogram({ name, className = "" }: { name: string; className?: string }
 export default function AboutPage() {
   return (
     <>
+      <JsonLd
+        path="/about-us"
+        name="About Us"
+        description={about.intro}
+        type="AboutPage"
+        nodes={[
+          videoNode(
+            { name: about.film.videoTitle, description: about.film.title, uploadDate: about.film.uploadDate, duration: about.film.duration, youtubeId: about.film.youtubeId },
+            "/about-us",
+          ),
+        ]}
+      />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={about.eyebrow} title={about.title} intro={about.intro} image={about.image} video={about.video} />

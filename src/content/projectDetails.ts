@@ -23,9 +23,10 @@ type ProjectDetail = {
   logo?: { src: string; alt: string; width: number; height: number };
   heroVideo?: { src: string; poster: string };
   bandVideo?: { src: string; poster: string; label: string };
-  film?: { title: string; src: string; poster: string };
+  // uploadDate and duration feed the video's structured data.
+  film?: { title: string; src: string; poster: string; uploadDate: string; duration: string };
   // Films about the project: YouTube (click to play) or a self-hosted MP4 with controls.
-  videos?: { title: string; duration: string; youtubeId?: string; src?: string; poster?: string }[];
+  videos?: { title: string; duration: string; uploadDate: string; youtubeId?: string; src?: string; poster?: string }[];
   stills?: Photo[];
   // Further photographs, in a grid that opens full-screen (The Grand Manor).
   photos?: GalleryImage[];
@@ -85,6 +86,9 @@ export const projectDetails: Record<string, ProjectDetail> = {
       title: "Ocean Crest Adriatic in 3D",
       src: "/videos/ocean-crest-3d.mp4",
       poster: "/images/projects/ocean-crest/frontage.webp",
+      // Date the film was added to the site.
+      uploadDate: "2026-10-04T12:00:00+02:00",
+      duration: "1:28",
     },
     // Stills taken from the client's 3D film (real project renders).
     stills: [
@@ -309,7 +313,7 @@ export const projectDetails: Record<string, ProjectDetail> = {
   },
   "misty-blue": {
     heroImage: "/images/projects/misty-blue/hero.webp",
-    videos: [{ title: "The Legacy of Misty Blue", duration: "5:40", youtubeId: "IWejp-mLw_U" }],
+    videos: [{ title: "The Legacy of Misty Blue", duration: "5:40", uploadDate: "2025-09-22T03:04:37-07:00", youtubeId: "IWejp-mLw_U" }],
     stills: [
       { src: "/images/projects/misty-blue/lake.webp", caption: "Munnar's first lake resort", wide: true },
       { src: "/images/projects/misty-blue/room.webp", caption: "Executive room" },

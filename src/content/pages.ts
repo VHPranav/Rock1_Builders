@@ -55,6 +55,9 @@ export const about = {
     title: "See Rock1 Builders in Montenegro.",
     youtubeId: "PfVaq7U5rBs",
     videoTitle: "Rock 1 Builders Project Video",
+    // From the YouTube video page, for the video's structured data.
+    uploadDate: "2025-10-28T03:47:37-07:00",
+    duration: "2:53",
   },
   ceo: {
     eyebrow: "Leadership",
@@ -182,7 +185,8 @@ export type NewsPost = {
   title: string;
   summary: string;
   paragraphs: string[];
-  video?: { id: string; title: string; duration: string };
+  // uploadDate is the YouTube publish date, for the video's structured data.
+  video?: { id: string; title: string; duration: string; uploadDate: string };
   source?: { label: string; href: string };
 };
 
@@ -208,6 +212,7 @@ export const newsroom = {
         id: "l2hjot_kaBw",
         title: "Ursula von der Leyen: EU Is Already Preparing Montenegro's Accession Treaty",
         duration: "4:52",
+        uploadDate: "2026-10-01T12:17:40-07:00",
       },
       source: { label: "Video: EU Debates (eudebates.tv)", href: "https://www.youtube.com/watch?v=l2hjot_kaBw" },
     },

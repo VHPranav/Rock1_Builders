@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
 import { legalPage } from "@/content/pages";
 import { footer } from "@/content/site";
+import { JsonLd } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Legal – Rock1 Builders",
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
 export default function LegalPage() {
   return (
     <>
+      <JsonLd path="/legal" name="Legal" description={legalPage.intro} />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={legalPage.eyebrow} title={legalPage.title} intro={legalPage.intro} />
