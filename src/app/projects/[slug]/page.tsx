@@ -15,6 +15,7 @@ import YouTubeEmbed from "@/components/YouTubeEmbed";
 import { projects } from "@/content/home";
 import { montenegroMap } from "@/content/montenegroMap";
 import { projectDetails, projectPhoto } from "@/content/projectDetails";
+import { defaultOgImage } from "@/content/site";
 
 const items = projects.items;
 
@@ -30,7 +31,13 @@ export async function generateMetadata({ params }: PageProps<"/projects/[slug]">
   return {
     title: `${item.name} – Rock1 Builders`,
     description: item.summary,
-    openGraph: { type: "website", siteName: "Rock1 Builders", ...(image && { images: [{ url: image, alt: item.name }] }) },
+    openGraph: {
+      type: "website",
+      url: "./",
+      siteName: "Rock1 Builders",
+      locale: "en_GB",
+      images: [image ? { url: image, alt: item.name } : { url: defaultOgImage, width: 1200, height: 630, alt: "Life Bay Montenegro by Rock1 Builders" }],
+    },
   };
 }
 

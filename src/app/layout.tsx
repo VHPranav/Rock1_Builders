@@ -24,6 +24,7 @@ export const metadata: Metadata = {
   description:
     "Luxury residences and Europe's first Ayurvedic wellness resort at Life Bay Montenegro, from Rock1 Builders.",
   openGraph: {
+    url: "./",
     type: "website",
     siteName: "Rock1 Builders",
     locale: "en_GB",
