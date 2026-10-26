@@ -1,16 +1,26 @@
 import type { StructureResolver } from "sanity/structure";
 
-// Sidebar order in the Studio. Home page and Site settings open straight into their one document.
-export const structure: StructureResolver = (S) =>
-  S.list()
+// Sidebar order in the Studio. Single pages (Home, About Us, …, Site settings) open straight into their one document.
+export const structure: StructureResolver = (S) => {
+  const single = (type: string, title: string) =>
+    S.listItem().title(title).id(type).child(S.document().schemaType(type).documentId(type));
+  return S.list()
     .title("Rock1 Builders")
     .items([
-      S.listItem().title("Home page").id("homePage").child(S.document().schemaType("homePage").documentId("homePage")),
+      single("homePage", "Home page"),
+      single("aboutPage", "About Us"),
+      single("servicesPage", "Our Services"),
+      single("montenegroPage", "About Montenegro"),
+      single("contactPage", "Contact Us"),
+      single("legalPage", "Legal"),
+      single("listingPages", "Page headings"),
+      S.divider(),
       S.documentTypeListItem("project").title("Projects"),
       S.documentTypeListItem("newsPost").title("Newsroom"),
       S.documentTypeListItem("galleryGroup").title("Gallery"),
       S.documentTypeListItem("faq").title("FAQs"),
       S.divider(),
       S.documentTypeListItem("pageSeo").title("Page SEO"),
-      S.listItem().title("Site settings").id("siteSettings").child(S.document().schemaType("siteSettings").documentId("siteSettings")),
+      single("siteSettings", "Site settings"),
     ]);
+};

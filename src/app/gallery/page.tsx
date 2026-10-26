@@ -3,14 +3,13 @@ import Footer from "@/components/Footer";
 import GalleryBrowser from "@/components/GalleryBrowser";
 import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
-import { galleryPage } from "@/content/pages";
 import { JsonLd } from "@/lib/schema";
-import { getGallery, getSeo, seoMetadata } from "@/sanity/content";
+import { getGallery, getListingHeadings, getSeo, seoMetadata } from "@/sanity/content";
 
 export const generateMetadata = (): Promise<Metadata> => seoMetadata("/gallery");
 
 export default async function GalleryPage() {
-  const [pageSeo, groups] = await Promise.all([getSeo("/gallery"), getGallery()]);
+  const [pageSeo, groups, { gallery: galleryPage }] = await Promise.all([getSeo("/gallery"), getGallery(), getListingHeadings()]);
   return (
     <>
       <JsonLd path="/gallery" name="Gallery" description={pageSeo.description ?? ""} type="CollectionPage" />

@@ -4,10 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import Button from "@/components/Button";
-import { services } from "@/content/home";
+import type { ServicesSection } from "@/sanity/content";
 import RevealWords from "@/components/RevealWords";
 
-const items = services.items;
 // Portion of each transition spent holding still, so every slide rests before the next wipe.
 const HOLD = 0.2;
 
@@ -28,7 +27,8 @@ function Panel({ src, tone, label }: { src: string | null; tone: string; label: 
 
 // `onServicesPage`: rendered on /our-services itself, where links back to that page would go nowhere,
 // so the "Know more" button is dropped and the service bars lead to the contact page instead.
-export default function Services({ onServicesPage = false }: { onServicesPage?: boolean }) {
+export default function Services({ onServicesPage = false, services }: { onServicesPage?: boolean; services: ServicesSection }) {
+  const items = services.items;
   const target = onServicesPage ? "/contact-us" : services.cta.href;
   const trackRef = useRef<HTMLDivElement>(null);
   const leftRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -68,7 +68,7 @@ export default function Services({ onServicesPage = false }: { onServicesPage?: 
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [items.length]);
 
   return (
     <section className="bg-linen text-ink">

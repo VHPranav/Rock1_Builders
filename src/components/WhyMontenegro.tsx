@@ -1,9 +1,10 @@
 import Image from "next/image";
 import ParallaxLayer from "@/components/ParallaxLayer";
-import { whyMontenegro } from "@/content/home";
+import { getWhyMontenegro } from "@/sanity/content";
 import RevealWords from "@/components/RevealWords";
 
-export default function WhyMontenegro() {
+export default async function WhyMontenegro() {
+  const whyMontenegro = await getWhyMontenegro();
   return (
     <section className="bg-linen px-[clamp(1.25rem,6vw,6rem)] py-24 text-ink sm:py-32">
       <div className="grid gap-y-14 md:grid-cols-12 md:gap-x-6">

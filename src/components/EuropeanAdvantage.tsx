@@ -2,10 +2,11 @@ import Image from "next/image";
 import Eyebrow from "@/components/Eyebrow";
 import ParallaxLayer from "@/components/ParallaxLayer";
 import RevealWords from "@/components/RevealWords";
-import { europeanAdvantage } from "@/content/pages";
+import { getEuropeanAdvantage } from "@/sanity/content";
 
 // "The European Advantage": shared by About Us and About Montenegro.
-export default function EuropeanAdvantage() {
+export default async function EuropeanAdvantage() {
+  const europeanAdvantage = await getEuropeanAdvantage();
   return (
     <section className="px-[clamp(1.25rem,6vw,6rem)] py-24 sm:py-32">
       <Eyebrow>{europeanAdvantage.eyebrow}</Eyebrow>

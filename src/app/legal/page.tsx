@@ -4,14 +4,13 @@ import Footer from "@/components/Footer";
 import GalleryGrid from "@/components/GalleryGrid";
 import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
-import { legalPage } from "@/content/pages";
 import { JsonLd } from "@/lib/schema";
-import { getSeo, getSettings, seoMetadata } from "@/sanity/content";
+import { getLegalPage, getSeo, getSettings, seoMetadata } from "@/sanity/content";
 
 export const generateMetadata = (): Promise<Metadata> => seoMetadata("/legal");
 
 export default async function LegalPage() {
-  const [pageSeo, footer] = await Promise.all([getSeo("/legal"), getSettings()]);
+  const [pageSeo, footer, legalPage] = await Promise.all([getSeo("/legal"), getSettings(), getLegalPage()]);
   return (
     <>
       <JsonLd path="/legal" name="Legal" description={pageSeo.description ?? ""} />

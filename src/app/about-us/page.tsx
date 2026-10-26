@@ -8,9 +8,8 @@ import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
 import RevealWords from "@/components/RevealWords";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
-import { about } from "@/content/pages";
 import { JsonLd, videoNode } from "@/lib/schema";
-import { getSeo, seoMetadata } from "@/sanity/content";
+import { getAbout, getSeo, seoMetadata } from "@/sanity/content";
 
 export const generateMetadata = (): Promise<Metadata> => seoMetadata("/about-us");
 
@@ -30,7 +29,7 @@ function Monogram({ name, className = "" }: { name: string; className?: string }
 }
 
 export default async function AboutPage() {
-  const pageSeo = await getSeo("/about-us");
+  const [pageSeo, about] = await Promise.all([getSeo("/about-us"), getAbout()]);
   return (
     <>
       <JsonLd

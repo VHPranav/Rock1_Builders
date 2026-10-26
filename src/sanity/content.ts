@@ -4,11 +4,24 @@
 
 import type { Metadata } from "next";
 import type { GalleryImage } from "@/components/GalleryGrid";
-import { contactCta, faqs, gateway, hero, type ProjectItem, projects, story } from "@/content/home";
-import type { GalleryGroup, NewsPost } from "@/content/pages";
+import { contactCta, faqs, gateway, hero, type ProjectItem, projects, services, story, whyMontenegro } from "@/content/home";
+import { type MapPlace, montenegroMap } from "@/content/montenegroMap";
+import {
+  about,
+  contactPage,
+  europeanAdvantage,
+  type GalleryGroup,
+  galleryPage,
+  legalPage,
+  montenegroPage,
+  type NewsPost,
+  newsroom,
+  servicesPage,
+} from "@/content/pages";
 import type { ProjectDetail } from "@/content/projectDetails";
 import { seo as sheetSeo } from "@/content/seo";
 import { footer } from "@/content/site";
+import { dataset, projectId } from "./env";
 import { sanityFetch } from "./live";
 
 // ---------- helpers
@@ -78,7 +91,8 @@ export async function getProjects(): Promise<Project[]> {
 
 // Projects block text (heading, intro) with the project list from Sanity.
 export async function getProjectsSection() {
-  return { ...projects, items: await getProjects() };
+  const [items, headings] = await Promise.all([getProjects(), getListingHeadings()]);
+  return { ...projects, ...headings.projects, items };
 }
 
 export type ProjectsSection = Awaited<ReturnType<typeof getProjectsSection>>;
@@ -201,5 +215,103 @@ export async function seoMetadata(path: string): Promise<Metadata> {
     ...(page.ogImage
       ? { openGraph: { url: "./", type: "website", siteName: "Rock1 Builders", locale: "en_GB", images: [{ url: page.ogImage }] } }
       : {}),
+  };
+}
+
+// ---------- fixed pages (About Us, Our Services, About Montenegro, Legal, Contact Us, page headings)
+
+// Sanity image → CDN URL, from its asset reference ("image-<id>-<w>x<h>-<ext>").
+const imageUrl = (ref: string) => {
+  const [, id, size, ext] = ref.split("-");
+  return `https://cdn.sanity.io/images/${projectId}/${dataset}/${id}-${size}.${ext}`;
+};
+
+type SanityImage = { _type?: string; asset?: { _ref?: string }; [key: string]: unknown };
+
+// A raw Sanity document in the shape the components expect: images become URL strings, `photo` images
+// become { src, caption, … }, and Sanity's own fields (_type, _key, …) are dropped.
+function toContent(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(toContent).filter((v) => v !== undefined);
+  if (!value || typeof value !== "object") return value;
+  const obj = value as SanityImage;
+  if (obj.asset?._ref) {
+    const src = imageUrl(obj.asset._ref);
+    if (obj._type !== "photo") return src;
+    const { caption, alt, description, ratio, wide } = obj;
+    return stripNulls({ src, caption: caption ?? alt, description, ratio, wide });
+  }
+  if (obj._type === "image" || obj._type === "photo") return undefined; // image field with no file
+  return Object.fromEntries(
+    Object.entries(obj)
+      .filter(([k, v]) => !k.startsWith("_") && v !== null)
+      .map(([k, v]) => [k, toContent(v)])
+      .filter(([, v]) => v !== undefined),
+  );
+}
+
+// Code values first, then every top-level field the Sanity document has.
+async function fromSanity<T extends object>(query: string, fallback: T): Promise<T> {
+  const { data } = await sanityFetch({ query, stega: false });
+  return { ...fallback, ...(toContent(data) as Partial<T> | undefined) };
+}
+
+// The European Advantage section is stored with About Us but loaded on its own (getEuropeanAdvantage).
+export async function getAbout() {
+  return fromSanity(`*[_id == "aboutPage"][0]{..., "europeanAdvantage": null}`, about);
+}
+
+export async function getEuropeanAdvantage() {
+  return fromSanity(`*[_id == "aboutPage"][0].europeanAdvantage`, europeanAdvantage);
+}
+
+export async function getServicesPage() {
+  return fromSanity(`*[_id == "servicesPage"][0]{..., "section": null}`, servicesPage);
+}
+
+// The three services, shown on the Home page and Our Services.
+export async function getServicesSection() {
+  return fromSanity(`*[_id == "servicesPage"][0].section`, services);
+}
+export type ServicesSection = typeof services;
+
+export async function getMontenegroPage() {
+  return fromSanity(`*[_id == "montenegroPage"][0]{eyebrow, title, intro, image, video, body}`, montenegroPage);
+}
+
+// Map heading and places from Sanity; zoom areas, labels and credits stay in src/content/montenegroMap.ts.
+export async function getMontenegroMap() {
+  const data = await fromSanity(`*[_id == "montenegroPage"][0]{"places": places, "heading": map}`, {
+    places: montenegroMap.places as MapPlace[],
+    heading: { eyebrow: montenegroMap.eyebrow, title: montenegroMap.title, intro: montenegroMap.intro },
+  });
+  return { ...montenegroMap, ...data.heading, places: data.places.map((place) => ({ ...place, image: place.image ?? null })) };
+}
+export type MontenegroMapData = Awaited<ReturnType<typeof getMontenegroMap>>;
+
+export async function getLegalPage() {
+  return fromSanity(`*[_id == "legalPage"][0]`, legalPage);
+}
+
+export async function getContactPage() {
+  return fromSanity(`*[_id == "contactPage"][0]`, contactPage);
+}
+
+export async function getWhyMontenegro() {
+  const data = await fromSanity(`*[_id == "homePage"][0].whyMontenegro`, whyMontenegro);
+  return { ...data, reasons: data.reasons.map((reason) => ({ ...reason, image: reason.image ?? null })) };
+}
+
+// Headings above the lists on Projects, Gallery and Newsroom.
+export async function getListingHeadings() {
+  const fallback = {
+    projects: { eyebrow: projects.eyebrow, pageHeading: projects.pageHeading, intro: projects.intro, stripExtras: projects.stripExtras },
+    gallery: { eyebrow: galleryPage.eyebrow, title: galleryPage.title, intro: galleryPage.intro },
+    newsroom: { eyebrow: newsroom.eyebrow, title: newsroom.title, intro: newsroom.intro },
+  };
+  const data = await fromSanity(`*[_id == "listingPages"][0]`, fallback);
+  return {
+    projects: { ...fallback.projects, ...data.projects },
+    gallery: { ...fallback.gallery, ...data.gallery },
+    newsroom: { ...fallback.newsroom, ...data.newsroom },
   };
 }

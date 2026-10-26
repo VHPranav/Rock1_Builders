@@ -5,14 +5,13 @@ import Eyebrow from "@/components/Eyebrow";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
-import { contactPage } from "@/content/pages";
 import { JsonLd } from "@/lib/schema";
-import { getSeo, getSettings, seoMetadata } from "@/sanity/content";
+import { getContactPage, getSeo, getSettings, seoMetadata } from "@/sanity/content";
 
 export const generateMetadata = (): Promise<Metadata> => seoMetadata("/contact-us");
 
 export default async function ContactPage() {
-  const [pageSeo, footer] = await Promise.all([getSeo("/contact-us"), getSettings()]);
+  const [pageSeo, footer, contactPage] = await Promise.all([getSeo("/contact-us"), getSettings(), getContactPage()]);
   return (
     <>
       <JsonLd path="/contact-us" name="Contact" description={pageSeo.description ?? ""} type="ContactPage" />

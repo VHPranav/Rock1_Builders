@@ -6,7 +6,8 @@ import countries from "world-atlas/countries-50m.json";
 import MontenegroMapClient, { type ProjectedPlace, type Rect } from "@/components/MontenegroMapClient";
 import geo from "@/content/geo/montenegro.json";
 import satellite from "@/content/geo/satellite.json";
-import { montenegroMap } from "@/content/montenegroMap";
+import { montenegroMap as mapConfig } from "@/content/montenegroMap";
+import { getMontenegroMap } from "@/sanity/content";
 
 // Server half of the map: projects outlines, places and satellite images once (Web Mercator), so the
 // browser only receives SVG path strings and coordinates. The client half handles the fly-in, zoom,
@@ -22,7 +23,7 @@ const box = ([w, s, e, n]: number[]): Feature<Geometry> => ({
 });
 
 // Base frame: the "All Montenegro" bounds at 1000 units wide.
-const projection = geoMercator().fitWidth(WIDTH, box(montenegroMap.views[0].bounds));
+const projection = geoMercator().fitWidth(WIDTH, box(mapConfig.views[0].bounds));
 const toPath = geoPath(projection);
 
 const rectFor = (bounds: number[]): Rect => {
@@ -37,7 +38,9 @@ type MontenegroMapProps = {
   heading?: { eyebrow: string; title: string; intro: string };
 };
 
-export default function MontenegroMap({ focus, landing, heading }: MontenegroMapProps = {}) {
+// Places and the heading come from Sanity (About Montenegro page); zoom areas and labels from src/content.
+export default async function MontenegroMap({ focus, landing, heading }: MontenegroMapProps = {}) {
+  const montenegroMap = await getMontenegroMap();
   const topology = countries as unknown as Topology<{ countries: GeometryCollection<{ name: string }> }>;
   const neighbours = feature(topology, topology.objects.countries).features.filter((f) =>
     NEIGHBOURS.includes(f.properties?.name ?? ""),
@@ -80,7 +83,7 @@ export default function MontenegroMap({ focus, landing, heading }: MontenegroMap
       rasters={rasters}
       focus={focus}
       landing={landing}
-      heading={heading}
+      heading={heading ?? montenegroMap}
       currentId={focus}
     />
   );

@@ -7,14 +7,13 @@ import Header from "@/components/Header";
 import MontenegroMap from "@/components/MontenegroMap";
 import PageHero from "@/components/PageHero";
 import WhyMontenegro from "@/components/WhyMontenegro";
-import { montenegroPage } from "@/content/pages";
 import { JsonLd } from "@/lib/schema";
-import { getSeo, seoMetadata } from "@/sanity/content";
+import { getMontenegroPage, getSeo, seoMetadata } from "@/sanity/content";
 
 export const generateMetadata = (): Promise<Metadata> => seoMetadata("/about-montenegro");
 
 export default async function MontenegroPage() {
-  const pageSeo = await getSeo("/about-montenegro");
+  const [pageSeo, montenegroPage] = await Promise.all([getSeo("/about-montenegro"), getMontenegroPage()]);
   return (
     <>
       <JsonLd path="/about-montenegro" name="About Montenegro" description={pageSeo.description ?? ""} />

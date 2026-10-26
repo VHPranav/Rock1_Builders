@@ -6,14 +6,13 @@ import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
 import Services from "@/components/Services";
 import StatsBand from "@/components/StatsBand";
-import { servicesPage } from "@/content/pages";
 import { JsonLd } from "@/lib/schema";
-import { getSeo, seoMetadata } from "@/sanity/content";
+import { getSeo, getServicesPage, getServicesSection, seoMetadata } from "@/sanity/content";
 
 export const generateMetadata = (): Promise<Metadata> => seoMetadata("/our-services");
 
 export default async function ServicesPage() {
-  const pageSeo = await getSeo("/our-services");
+  const [pageSeo, servicesPage, services] = await Promise.all([getSeo("/our-services"), getServicesPage(), getServicesSection()]);
   return (
     <>
       <JsonLd path="/our-services" name="Our Services" description={pageSeo.description ?? ""} />
@@ -35,7 +34,7 @@ export default async function ServicesPage() {
         </section>
 
         {/* The homepage's services section: intro plus the pinned split-screen wipe */}
-        <Services onServicesPage />
+        <Services onServicesPage services={services} />
 
         <StatsBand stats={servicesPage.stats} />
         <ContactCta />

@@ -12,10 +12,9 @@ import MontenegroMap from "@/components/MontenegroMap";
 import ParallaxLayer from "@/components/ParallaxLayer";
 import RevealWords from "@/components/RevealWords";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
-import { montenegroMap } from "@/content/montenegroMap";
 import { defaultOgImage } from "@/content/site";
 import { absolute, JsonLd, videoNode } from "@/lib/schema";
-import { getProjectDetail, getProjects, getSeo, seoMetadata } from "@/sanity/content";
+import { getMontenegroMap, getProjectDetail, getProjects, getSeo, seoMetadata } from "@/sanity/content";
 
 // schema.org type for each project category.
 const propertyType: Record<string, string> = {
@@ -57,7 +56,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
   if (index === -1) notFound();
 
   const item = items[index];
-  const [found, pageSeo] = await Promise.all([getProjectDetail(slug), getSeo(`/projects/${slug}`)]);
+  const [found, pageSeo, montenegroMap] = await Promise.all([getProjectDetail(slug), getSeo(`/projects/${slug}`), getMontenegroMap()]);
   const detail = found ?? { overview: [item.description] };
   const previous = items[(index - 1 + items.length) % items.length];
   const next = items[(index + 1) % items.length];

@@ -4,10 +4,10 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
-import { type NewsPost, newsroom } from "@/content/pages";
+import type { NewsPost } from "@/content/pages";
 import { defaultOgImage } from "@/content/site";
 import { absolute, JsonLd, orgId, videoNode } from "@/lib/schema";
-import { getNews, getSeo, seoMetadata } from "@/sanity/content";
+import { getListingHeadings, getNews, getSeo, seoMetadata } from "@/sanity/content";
 
 export const generateMetadata = (): Promise<Metadata> => seoMetadata("/newsroom");
 
@@ -69,7 +69,7 @@ const postNodes = (posts: NewsPost[]) =>
   });
 
 export default async function NewsroomPage() {
-  const [pageSeo, posts] = await Promise.all([getSeo("/newsroom"), getNews()]);
+  const [pageSeo, posts, { newsroom }] = await Promise.all([getSeo("/newsroom"), getNews(), getListingHeadings()]);
 
   return (
     <>

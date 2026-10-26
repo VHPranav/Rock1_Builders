@@ -8,6 +8,7 @@ export const homePage = defineType({
     { name: "hero", title: "Hero", default: true },
     { name: "story", title: "Our story" },
     { name: "gateway", title: "Gateway to Europe" },
+    { name: "why", title: "Why Montenegro" },
     { name: "faqs", title: "FAQs" },
     { name: "contact", title: "Contact block" },
   ],
@@ -84,6 +85,34 @@ export const homePage = defineType({
                 defineField({ name: "image", type: "photo" }),
               ],
               preview: { select: { title: "label", media: "image" } },
+            }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: "whyMontenegro",
+      title: "Why Choose Montenegro",
+      type: "object",
+      group: "why",
+      fields: [
+        defineField({ name: "eyebrow", type: "string" }),
+        defineField({ name: "title", type: "string" }),
+        defineField({ name: "intro", type: "text", rows: 3 }),
+        defineField({
+          name: "reasons",
+          type: "array",
+          of: [
+            defineArrayMember({
+              type: "object",
+              name: "reason",
+              fields: [
+                defineField({ name: "title", type: "string" }),
+                defineField({ name: "description", type: "text", rows: 3 }),
+                defineField({ name: "tone", title: "Placeholder colour", type: "string" }),
+                defineField({ name: "image", type: "image", options: { hotspot: true } }),
+              ],
+              preview: { select: { title: "title", media: "image" } },
             }),
           ],
         }),
