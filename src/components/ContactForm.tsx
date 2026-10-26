@@ -5,8 +5,15 @@ import { type ContactField, type ContactState, sendEnquiry } from "@/app/contact
 
 const initialState: ContactState = { status: "idle", message: "" };
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
 // Enquiry form. Submits to a Server Action that emails the enquiry through Resend
 // (src/app/contact-us/actions.ts); replies go straight to the visitor's address.
+// A successful enquiry is recorded in Google Analytics 4 as a `generate_lead` event.
 export default function ContactForm() {
   const [state, formAction, pending] = useActionState(sendEnquiry, initialState);
   const startedRef = useRef<HTMLInputElement>(null);
@@ -15,6 +22,14 @@ export default function ContactForm() {
   useEffect(() => {
     if (startedRef.current) startedRef.current.value = String(Date.now());
   }, [state.submittedAt]);
+
+  // GA4 lead event, once per real enquiry (spam gets a success message but no `lead`). No personal details are sent.
+  const trackedRef = useRef<number | undefined>(undefined);
+  useEffect(() => {
+    if (!state.lead || trackedRef.current === state.submittedAt) return;
+    trackedRef.current = state.submittedAt;
+    window.gtag?.("event", "generate_lead", { form_name: "contact", interest: state.lead.interest });
+  }, [state.lead, state.submittedAt]);
 
   const field =
     "mt-2 w-full border-b bg-transparent py-3 text-base outline-none transition-colors placeholder:text-ink/35 focus:border-ink";

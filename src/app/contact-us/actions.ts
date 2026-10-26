@@ -18,6 +18,8 @@ export type ContactState = {
   // Echoed back on error so the form keeps what the visitor typed.
   fields?: Partial<Record<ContactField, string>>;
   submittedAt?: number;
+  // Set only when an enquiry was really emailed (not for spam), so the form can record a lead in analytics.
+  lead?: { interest: string };
 };
 
 const interests = ["Life Bay Montenegro", "Ocean Crest villas", "European residency", "Property management", "Something else"];
@@ -98,5 +100,10 @@ export async function sendEnquiry(_previous: ContactState, formData: FormData): 
     };
   }
 
-  return { status: "success", message: "Thank you. Your enquiry has been sent; we'll be in touch shortly.", submittedAt };
+  return {
+    status: "success",
+    message: "Thank you. Your enquiry has been sent; we'll be in touch shortly.",
+    submittedAt,
+    lead: { interest: fields.interest },
+  };
 }
