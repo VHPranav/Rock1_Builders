@@ -2,34 +2,88 @@
 
 import { useActionState, useEffect, useRef } from "react";
 import { type ContactField, type ContactState, sendEnquiry } from "@/app/contact-us/actions";
+import { footer } from "@/content/site";
+import { pushDataLayer } from "@/lib/dataLayer";
 
 const initialState: ContactState = { status: "idle", message: "" };
+const FORM_NAME = "contact_us";
 
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void;
+// A failed request (offline, server down) comes back as an error state instead of breaking the page.
+async function submit(previous: ContactState, formData: FormData): Promise<ContactState> {
+  try {
+    return await sendEnquiry(previous, formData);
+  } catch {
+    // Keep what the visitor typed so they can simply try again.
+    const fields = Object.fromEntries(
+      (["name", "email", "phone", "interest", "message"] as ContactField[]).map((key) => [key, String(formData.get(key) ?? "")]),
+    );
+    return {
+      status: "error",
+      message: `Sorry, your enquiry couldn't be sent. Please try again or email us at ${footer.email}.`,
+      fields,
+      submittedAt: Date.now(),
+    };
   }
 }
 
 // Enquiry form. Submits to a Server Action that emails the enquiry through Resend
 // (src/app/contact-us/actions.ts); replies go straight to the visitor's address.
-// A successful enquiry is recorded in Google Analytics 4 as a `generate_lead` event.
+//
+// dataLayer events for Google Tag Manager (no personal details or field values are sent):
+//   form_start     first focus or typing in a field, once per page view
+//   generate_lead  only after the server confirms the enquiry was emailed (not for spam)
+//   form_error     error_type "validation_error" (browser or server checks block the send)
+//                  or "submission_error" (the email or the request failed)
 export default function ContactForm() {
-  const [state, formAction, pending] = useActionState(sendEnquiry, initialState);
+  const [state, formAction, pending] = useActionState(submit, initialState);
+  const formRef = useRef<HTMLFormElement>(null);
   const startedRef = useRef<HTMLInputElement>(null);
+  const formStarted = useRef(false);
 
   // Time-on-form spam check: stamp when the form becomes usable, and again after each submission.
   useEffect(() => {
     if (startedRef.current) startedRef.current.value = String(Date.now());
   }, [state.submittedAt]);
 
-  // GA4 lead event, once per real enquiry (spam gets a success message but no `lead`). No personal details are sent.
-  const trackedRef = useRef<number | undefined>(undefined);
+  const reportStart = () => {
+    if (formStarted.current) return;
+    formStarted.current = true;
+    pushDataLayer("form_start", { form_name: FORM_NAME });
+  };
+  // Fields only: focusing the Send button doesn't count as starting the form.
+  const onFirstInteraction = (event: React.SyntheticEvent) => {
+    if ((event.target as Element).matches("input, select, textarea")) reportStart();
+  };
+
+  // Result of each submission, reported once: a lead, or why it failed. Spam gets a success message but no `lead`.
+  const reportedRef = useRef<number | undefined>(undefined);
   useEffect(() => {
-    if (!state.lead || trackedRef.current === state.submittedAt) return;
-    trackedRef.current = state.submittedAt;
-    window.gtag?.("event", "generate_lead", { form_name: "contact", interest: state.lead.interest });
-  }, [state.lead, state.submittedAt]);
+    if (!state.submittedAt || reportedRef.current === state.submittedAt) return;
+    reportedRef.current = state.submittedAt;
+    if (state.lead) {
+      pushDataLayer("generate_lead", { form_name: FORM_NAME, form_location: "contact_us_page" });
+    } else if (state.status === "error") {
+      pushDataLayer("form_error", { form_name: FORM_NAME, error_type: state.errors ? "validation_error" : "submission_error" });
+    }
+  }, [state]);
+
+  // The browser's own checks (required fields, email format) block the send before it reaches the server.
+  // `invalid` fires once per bad field and doesn't bubble, so listen in the capture phase and report once per attempt.
+  useEffect(() => {
+    const form = formRef.current;
+    if (!form) return;
+    let reported = false;
+    const onInvalid = () => {
+      if (reported) return;
+      reported = true;
+      // Sending an untouched form still counts as starting it, so form_start always comes first.
+      reportStart();
+      pushDataLayer("form_error", { form_name: FORM_NAME, error_type: "validation_error" });
+      setTimeout(() => (reported = false));
+    };
+    form.addEventListener("invalid", onInvalid, true);
+    return () => form.removeEventListener("invalid", onInvalid, true);
+  }, [state.submittedAt]);
 
   const field =
     "mt-2 w-full border-b bg-transparent py-3 text-base outline-none transition-colors placeholder:text-ink/35 focus:border-ink";
@@ -51,7 +105,14 @@ export default function ContactForm() {
 
   return (
     // Keyed by submission so the echoed values are applied after an error.
-    <form key={state.submittedAt ?? 0} action={formAction} className="grid gap-8 sm:grid-cols-2">
+    <form
+      key={state.submittedAt ?? 0}
+      ref={formRef}
+      action={formAction}
+      onFocus={onFirstInteraction}
+      onInput={onFirstInteraction}
+      className="grid gap-8 sm:grid-cols-2"
+    >
       {/* Spam traps: hidden from people and screen readers */}
       <input ref={startedRef} type="hidden" name="startedAt" defaultValue="" />
       <label aria-hidden="true" className="absolute -left-[9999px] size-px overflow-hidden">

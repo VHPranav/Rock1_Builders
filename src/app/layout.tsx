@@ -16,7 +16,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const gaId = "G-Y97S2DKLRJ";
+// Google Analytics 4 (G-Y97S2DKLRJ) is loaded by this container, along with the form event tags.
+const gtmId = "GTM-NNG37VJG";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -40,17 +41,27 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     // suppressHydrationWarning: the inline script below adds the `js` class before React hydrates.
     <html lang="en" className={`${jakarta.variable} ${geistMono.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
-        {/* Gate the intro-animation hidden states on JS actually running */}
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
-        {/* Google Analytics 4 */}
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+        {/* Google Tag Manager, as high in <head> as possible (GTM's own install instructions; the
+            @next/third-parties component would load it later, after hydration). */}
+        {/* eslint-disable-next-line @next/next/next-script-for-ga */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${gaId}');`,
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`,
           }}
         />
+        {/* Gate the intro-animation hidden states on JS actually running */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
       </head>
       <body className="min-h-full flex flex-col">
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         {children}
         <RevealOnScroll />
         {/* Refreshes cached Sanity content when an editor publishes */}
