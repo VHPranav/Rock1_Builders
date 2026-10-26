@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import Button from "@/components/Button";
-import { gateway } from "@/content/home";
+import type { Home } from "@/sanity/content";
 import RevealWords from "@/components/RevealWords";
 
 // Scattered collection layout on a 12-column grid (desktop). Each tile has its own column,
@@ -41,7 +41,7 @@ function Stat({ value, suffix, label }: { value: string; suffix: string; label: 
   );
 }
 
-export default function Gateway() {
+export default function Gateway({ gateway }: { gateway: Home["gateway"] }) {
   const tileRefs = useRef<(HTMLDivElement | null)[]>([]);
   const innerRefs = useRef<(HTMLDivElement | null)[]>([]);
 

@@ -5,19 +5,20 @@ import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
 import { galleryPage } from "@/content/pages";
 import { JsonLd } from "@/lib/schema";
-import { seo, seoMetadata } from "@/content/seo";
+import { getGallery, getSeo, seoMetadata } from "@/sanity/content";
 
-export const metadata: Metadata = seoMetadata("/gallery");
+export const generateMetadata = (): Promise<Metadata> => seoMetadata("/gallery");
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const [pageSeo, groups] = await Promise.all([getSeo("/gallery"), getGallery()]);
   return (
     <>
-      <JsonLd path="/gallery" name="Gallery" description={seo["/gallery"].description} type="CollectionPage" />
+      <JsonLd path="/gallery" name="Gallery" description={pageSeo.description ?? ""} type="CollectionPage" />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={galleryPage.eyebrow} title={galleryPage.title} intro={galleryPage.intro} />
         <div className="mt-16">
-          <GalleryBrowser groups={galleryPage.groups} />
+          <GalleryBrowser groups={groups} />
         </div>
       </main>
       <Footer />

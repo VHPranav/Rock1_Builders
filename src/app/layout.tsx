@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import RevealOnScroll from "@/components/RevealOnScroll";
 import { defaultOgImage, siteUrl } from "@/content/site";
+import { expireSanityTags } from "@/sanity/actions";
+import { SanityLive } from "@/sanity/live";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -51,6 +53,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         {children}
         <RevealOnScroll />
+        {/* Refreshes cached Sanity content when an editor publishes */}
+        <SanityLive action={expireSanityTags} />
         <div aria-hidden="true" className="grain" />
       </body>
     </html>

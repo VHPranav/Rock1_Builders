@@ -2,7 +2,8 @@
 // Organization and WebSite are defined once per page and every other node points to them by @id,
 // so nothing is repeated.
 
-import { defaultOgImage, footer, siteUrl } from "@/content/site";
+import { defaultOgImage, siteUrl } from "@/content/site";
+import { getSettings, type SiteSettings } from "@/sanity/content";
 
 type Node = Record<string, unknown>;
 
@@ -10,7 +11,7 @@ const orgId = `${siteUrl}/#organization`;
 const websiteId = `${siteUrl}/#website`;
 const absolute = (path: string) => (path.startsWith("http") ? path : `${siteUrl}${path === "/" ? "" : path}`);
 
-const organization: Node = {
+const organizationNode = (footer: SiteSettings): Node => ({
   "@type": "Organization",
   "@id": orgId,
   name: "Rock1 Builders",
@@ -20,7 +21,7 @@ const organization: Node = {
   address: { "@type": "PostalAddress", streetAddress: "Mainski Put BB", addressLocality: "Budva", addressCountry: "ME" },
   contactPoint: footer.phones.map((phone) => ({ "@type": "ContactPoint", telephone: phone.tel, contactType: "sales", areaServed: phone.region })),
   sameAs: footer.socials.filter((social) => social.label !== "YouTube").map((social) => social.href),
-};
+});
 
 const website: Node = {
   "@type": "WebSite",
@@ -73,7 +74,10 @@ export function videoNode(video: VideoInput, pagePath: string): Node {
   };
 }
 
-export function pageGraph({ path, name, description, type = "WebPage", parents = [], image, nodes = [], extra = {} }: PageInput): Node {
+export function pageGraph(
+  { path, name, description, type = "WebPage", parents = [], image, nodes = [], extra = {} }: PageInput,
+  organization: Node,
+): Node {
   const url = absolute(path);
   const crumbs = path === "/" ? [] : [{ name: "Home", path: "/" }, ...parents, { name, path }];
   const breadcrumb: Node | undefined = crumbs.length
@@ -103,9 +107,10 @@ export function pageGraph({ path, name, description, type = "WebPage", parents =
   return { "@context": "https://schema.org", "@graph": [organization, website, webPage, ...(breadcrumb ? [breadcrumb] : []), ...nodes] };
 }
 
-export function JsonLd(props: PageInput) {
+export async function JsonLd(props: PageInput) {
+  const organization = organizationNode(await getSettings());
   // Escape "<" so text can never close the script tag.
-  const json = JSON.stringify(pageGraph(props)).replace(/</g, "\\u003c");
+  const json = JSON.stringify(pageGraph(props, organization)).replace(/</g, "\\u003c");
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />;
 }
 

@@ -4,9 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import RevealWords from "@/components/RevealWords";
-import { story } from "@/content/home";
+import type { Home } from "@/sanity/content";
 
-export default function OurStory() {
+export default function OurStory({ story }: { story: Home["story"] }) {
   const frameRef = useRef<HTMLDivElement>(null);
   const layerRef = useRef<HTMLDivElement>(null);
 

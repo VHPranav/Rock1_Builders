@@ -12,7 +12,7 @@ export type VillaType = {
   plans?: { src: string; caption: string; width: number; height: number }[];
 };
 
-type ProjectDetail = {
+export type ProjectDetail = {
   // Line shown above the old project pages' titles.
   tagline?: string;
   overview: string[];

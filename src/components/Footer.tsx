@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { footer } from "@/content/site";
+import { getSettings } from "@/sanity/content";
 
-export default function Footer() {
+export default async function Footer() {
+  const footer = await getSettings();
   const year = new Date().getFullYear();
 
   return (

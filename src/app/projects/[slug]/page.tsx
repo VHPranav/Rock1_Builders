@@ -12,14 +12,10 @@ import MontenegroMap from "@/components/MontenegroMap";
 import ParallaxLayer from "@/components/ParallaxLayer";
 import RevealWords from "@/components/RevealWords";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
-import { projects } from "@/content/home";
 import { montenegroMap } from "@/content/montenegroMap";
-import { projectDetails, projectPhoto } from "@/content/projectDetails";
-import { seo, seoMetadata } from "@/content/seo";
 import { defaultOgImage } from "@/content/site";
 import { absolute, JsonLd, videoNode } from "@/lib/schema";
-
-const items = projects.items;
+import { getProjectDetail, getProjects, getSeo, seoMetadata } from "@/sanity/content";
 
 // schema.org type for each project category.
 const propertyType: Record<string, string> = {
@@ -28,20 +24,22 @@ const propertyType: Record<string, string> = {
   Resort: "Resort",
 };
 
-export function generateStaticParams() {
-  return items.map((item) => ({ slug: item.slug }));
+export async function generateStaticParams() {
+  return (await getProjects()).map((item) => ({ slug: item.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/projects/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const item = items.find((project) => project.slug === slug);
+  const item = (await getProjects()).find((project) => project.slug === slug);
   if (!item) return {};
-  const image = projectPhoto(slug, item.image);
+  const { ogImage } = await getSeo(`/projects/${slug}`);
+  // A share image set in the project's SEO tab wins over the project photo.
+  const image = ogImage ?? item.photo;
   return {
     title: `${item.name} – Rock1 Builders`,
     description: item.summary,
-    // Sheet values override the defaults above where the SEO team has written them.
-    ...seoMetadata(`/projects/${slug}`),
+    // SEO values (Sanity, else the SEO sheet) override the defaults above.
+    ...(await seoMetadata(`/projects/${slug}`)),
     openGraph: {
       type: "website",
       url: "./",
@@ -54,16 +52,18 @@ export async function generateMetadata({ params }: PageProps<"/projects/[slug]">
 
 export default async function ProjectPage({ params }: PageProps<"/projects/[slug]">) {
   const { slug } = await params;
+  const items = await getProjects();
   const index = items.findIndex((project) => project.slug === slug);
   if (index === -1) notFound();
 
   const item = items[index];
-  const detail = projectDetails[slug] ?? { overview: [item.description] };
+  const [found, pageSeo] = await Promise.all([getProjectDetail(slug), getSeo(`/projects/${slug}`)]);
+  const detail = found ?? { overview: [item.description] };
   const previous = items[(index - 1 + items.length) % items.length];
   const next = items[(index + 1) % items.length];
 
   const path = `/projects/${slug}`;
-  const image = projectPhoto(slug, item.image);
+  const image = item.photo;
   const property = {
     "@type": propertyType[item.category] ?? "SingleFamilyResidence",
     "@id": `${absolute(path)}#property`,
@@ -87,7 +87,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
       <JsonLd
         path={path}
         name={item.name}
-        description={seo[path]?.description ?? item.summary}
+        description={pageSeo.description ?? item.summary}
         parents={[{ name: "Projects", path: "/projects" }]}
         image={image ?? undefined}
         nodes={[property, ...videos]}
@@ -239,11 +239,11 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
               />
             </figure>
           </section>
-        ) : projectPhoto(slug, item.image) && (
+        ) : item.photo && (
           <section className="px-[clamp(1.25rem,6vw,6rem)]">
             <figure data-reveal="image" className="relative aspect-[4/3] overflow-hidden sm:aspect-[21/9]">
               <ParallaxLayer>
-                <Image src={projectPhoto(slug, item.image)!} alt="" fill quality={85} sizes="100vw" className="object-cover object-bottom" />
+                <Image src={item.photo!} alt="" fill quality={85} sizes="100vw" className="object-cover object-bottom" />
               </ParallaxLayer>
             </figure>
           </section>
@@ -488,9 +488,9 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           ].map(({ label, project }) => (
             <Link key={label} href={project.href} data-reveal className="group flex items-center gap-6 border-t border-ink/15 pt-6">
               <div className="relative aspect-[4/3] w-28 shrink-0 overflow-hidden bg-ink/10 sm:w-36">
-                {projectPhoto(project.slug, project.image) && (
+                {project.photo && (
                   <Image
-                    src={projectPhoto(project.slug, project.image)!}
+                    src={project.photo!}
                     alt=""
                     fill
                     quality={85}

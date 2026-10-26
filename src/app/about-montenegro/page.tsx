@@ -9,14 +9,15 @@ import PageHero from "@/components/PageHero";
 import WhyMontenegro from "@/components/WhyMontenegro";
 import { montenegroPage } from "@/content/pages";
 import { JsonLd } from "@/lib/schema";
-import { seo, seoMetadata } from "@/content/seo";
+import { getSeo, seoMetadata } from "@/sanity/content";
 
-export const metadata: Metadata = seoMetadata("/about-montenegro");
+export const generateMetadata = (): Promise<Metadata> => seoMetadata("/about-montenegro");
 
-export default function MontenegroPage() {
+export default async function MontenegroPage() {
+  const pageSeo = await getSeo("/about-montenegro");
   return (
     <>
-      <JsonLd path="/about-montenegro" name="About Montenegro" description={seo["/about-montenegro"].description} />
+      <JsonLd path="/about-montenegro" name="About Montenegro" description={pageSeo.description ?? ""} />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={montenegroPage.eyebrow} title={montenegroPage.title} intro={montenegroPage.intro} image={montenegroPage.image} video={montenegroPage.video} />

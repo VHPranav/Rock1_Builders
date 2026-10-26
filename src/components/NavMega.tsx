@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import Button from "@/components/Button";
-import { projects, projectStatuses } from "@/content/home";
-import { projectDetails } from "@/content/projectDetails";
+import { projectStatuses } from "@/content/home";
+import type { Project } from "@/sanity/content";
 
 // Full-width dropdown under the header: links on the left, a large preview on the right that follows
 // whichever link is hovered or focused. Images mount only once the panel has been opened (`loaded`).
@@ -20,17 +20,14 @@ type NavMegaProps = {
   loaded: boolean;
   pathname: string;
   onNavigate: () => void;
+  projects: Project[];
 };
 
 const EASE = "ease-[cubic-bezier(0.16,1,0.3,1)]";
 
-// Projects use their real photography where the project page has it.
-export const projectPreviews = projects.items.map((item) => ({
-  ...item,
-  preview: projectDetails[item.slug]?.heroImage ?? item.image,
-}));
-
-export default function NavMega({ id, kind, links = [], open, loaded, pathname, onNavigate }: NavMegaProps) {
+export default function NavMega({ id, kind, links = [], open, loaded, pathname, onNavigate, projects }: NavMegaProps) {
+  // Projects use their real photography where the project page has it.
+  const projectPreviews = projects.map((item) => ({ ...item, preview: item.photo }));
   const [active, setActive] = useState(0);
 
   const entries =
@@ -139,7 +136,7 @@ export default function NavMega({ id, kind, links = [], open, loaded, pathname, 
           {kind === "projects" && (
             <div className={`mt-auto pt-2 ${rise}`} style={delay(4)}>
               <Button href="/projects" variant="dark" className="!px-5 !py-3">
-                All projects · {projects.items.length}
+                All projects · {projects.length}
               </Button>
             </div>
           )}

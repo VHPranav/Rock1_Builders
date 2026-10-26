@@ -2,19 +2,19 @@ import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ProjectsIndex from "@/components/ProjectsIndex";
-import { projects } from "@/content/home";
 import { JsonLd, absolute } from "@/lib/schema";
-import { seo, seoMetadata } from "@/content/seo";
+import { getProjectsSection, getSeo, seoMetadata } from "@/sanity/content";
 
-export const metadata: Metadata = seoMetadata("/projects");
+export const generateMetadata = (): Promise<Metadata> => seoMetadata("/projects");
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const [pageSeo, projects] = await Promise.all([getSeo("/projects"), getProjectsSection()]);
   return (
     <>
       <JsonLd
         path="/projects"
         name="Projects"
-        description={seo["/projects"].description}
+        description={pageSeo.description ?? ""}
         type="CollectionPage"
         extra={{
           mainEntity: {
@@ -25,7 +25,7 @@ export default function ProjectsPage() {
       />
       <main className="bg-linen text-ink">
         <Header overLight />
-        <ProjectsIndex />
+        <ProjectsIndex projects={projects} />
       </main>
       <Footer />
     </>

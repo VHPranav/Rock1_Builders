@@ -9,29 +9,30 @@ import OurStory from "@/components/OurStory";
 import Projects from "@/components/Projects";
 import Services from "@/components/Services";
 import WhyMontenegro from "@/components/WhyMontenegro";
-import { seo, seoMetadata } from "@/content/seo";
+import { getHome, getProjectsSection, getSeo, seoMetadata } from "@/sanity/content";
 import { JsonLd } from "@/lib/schema";
 
-export const metadata: Metadata = seoMetadata("/");
+export const generateMetadata = (): Promise<Metadata> => seoMetadata("/");
 
-export default function Home() {
+export default async function Home() {
+  const [pageSeo, home, projects] = await Promise.all([getSeo("/"), getHome(), getProjectsSection()]);
   return (
     <>
       <JsonLd
         path="/"
-        name={seo["/"].title}
-        description={seo["/"].description}
+        name={pageSeo.title ?? ""}
+        description={pageSeo.description ?? ""}
       />
       <main>
         <Header />
-        <Hero />
-        <OurStory />
+        <Hero hero={home.hero} />
+        <OurStory story={home.story} />
         <Services />
-        <Gateway />
+        <Gateway gateway={home.gateway} />
         <WhyMontenegro />
-        <Projects />
+        <Projects projects={projects} />
         <ContactCta brochure />
-        <Faqs />
+        <Faqs faqs={home.faqs} />
       </main>
       <Footer />
     </>

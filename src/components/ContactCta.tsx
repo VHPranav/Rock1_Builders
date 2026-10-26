@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import { contactCta } from "@/content/home";
+import { getContactCta } from "@/sanity/content";
 import RevealWords from "@/components/RevealWords";
 
 // Thin-line drawing of a stepped hillside building in perspective (decorative). It stretches to fill the
@@ -29,7 +29,8 @@ function BuildingLines() {
   );
 }
 
-export default function ContactCta({ brochure = false }: { brochure?: boolean }) {
+export default async function ContactCta({ brochure = false }: { brochure?: boolean }) {
+  const contactCta = await getContactCta();
   return (
     <section className="bg-linen px-[clamp(1.25rem,6vw,6rem)] py-24 text-ink sm:py-32">
       <div className="relative overflow-hidden border border-ink/15">

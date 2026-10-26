@@ -2,10 +2,10 @@
 
 import { useId, useState } from "react";
 import Button from "@/components/Button";
-import { faqs } from "@/content/home";
+import type { Home } from "@/sanity/content";
 import RevealWords from "@/components/RevealWords";
 
-export default function Faqs() {
+export default function Faqs({ faqs }: { faqs: Home["faqs"] }) {
   const [open, setOpen] = useState<number | null>(0);
   const baseId = useId();
 

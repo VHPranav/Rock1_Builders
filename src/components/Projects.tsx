@@ -3,14 +3,13 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Button from "@/components/Button";
-import { projects } from "@/content/home";
-import { projectPhoto } from "@/content/projectDetails";
+import type { ProjectsSection } from "@/sanity/content";
 
-const items = projects.items;
 // Expo-out: quick start, long gentle settle. Shared by the crossfade and the strip slide.
 const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
 
-export default function Projects() {
+export default function Projects({ projects }: { projects: ProjectsSection }) {
+  const items = projects.items;
   const trackRef = useRef<HTMLDivElement>(null);
   const stripRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
@@ -39,7 +38,7 @@ export default function Projects() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [items.length]);
 
   // Slide the strip so the active project sits in the centre.
   const centreStrip = useCallback(() => {
@@ -83,8 +82,8 @@ export default function Projects() {
                 transition: `opacity 900ms ${EASE}, transform 1600ms ${EASE}`,
               }}
             >
-              {projectPhoto(item.slug, item.image) ? (
-                <Image src={projectPhoto(item.slug, item.image)!} alt="" fill quality={85} sizes="100vw" className="object-cover" />
+              {item.photo ? (
+                <Image src={item.photo!} alt="" fill quality={85} sizes="100vw" className="object-cover" />
               ) : (
                 <div
                   className="absolute inset-0"

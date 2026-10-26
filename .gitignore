@@ -55,3 +55,6 @@ design/originals/gallery/
 
 # Large client video masters (too big for GitHub)
 *.mkv
+
+# Sanity import file (scripts/sanity-export.ts)
+/.sanity/

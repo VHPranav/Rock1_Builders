@@ -5,16 +5,16 @@ import GalleryGrid from "@/components/GalleryGrid";
 import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
 import { legalPage } from "@/content/pages";
-import { footer } from "@/content/site";
 import { JsonLd } from "@/lib/schema";
-import { seo, seoMetadata } from "@/content/seo";
+import { getSeo, getSettings, seoMetadata } from "@/sanity/content";
 
-export const metadata: Metadata = seoMetadata("/legal");
+export const generateMetadata = (): Promise<Metadata> => seoMetadata("/legal");
 
-export default function LegalPage() {
+export default async function LegalPage() {
+  const [pageSeo, footer] = await Promise.all([getSeo("/legal"), getSettings()]);
   return (
     <>
-      <JsonLd path="/legal" name="Legal" description={seo["/legal"].description} />
+      <JsonLd path="/legal" name="Legal" description={pageSeo.description ?? ""} />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={legalPage.eyebrow} title={legalPage.title} intro={legalPage.intro} />

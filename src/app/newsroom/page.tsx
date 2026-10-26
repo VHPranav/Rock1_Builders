@@ -7,9 +7,9 @@ import YouTubeEmbed from "@/components/YouTubeEmbed";
 import { type NewsPost, newsroom } from "@/content/pages";
 import { defaultOgImage } from "@/content/site";
 import { absolute, JsonLd, orgId, videoNode } from "@/lib/schema";
-import { seo, seoMetadata } from "@/content/seo";
+import { getNews, getSeo, seoMetadata } from "@/sanity/content";
 
-export const metadata: Metadata = seoMetadata("/newsroom");
+export const generateMetadata = (): Promise<Metadata> => seoMetadata("/newsroom");
 
 const formatDate = (iso: string) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
@@ -45,7 +45,8 @@ function Actions({ post }: { post: NewsPost }) {
 }
 
 // One BlogPosting per update; the posts have no pages of their own, so each URL is its card's anchor.
-const postNodes = newsroom.posts.flatMap((post) => {
+const postNodes = (posts: NewsPost[]) =>
+  posts.flatMap((post) => {
   const url = absolute(`/newsroom#${post.slug}`);
   const video = post.video && videoNode({ name: post.video.title, description: post.summary, uploadDate: post.video.uploadDate, duration: post.video.duration, youtubeId: post.video.id }, "/newsroom");
   const posting = {
@@ -65,14 +66,14 @@ const postNodes = newsroom.posts.flatMap((post) => {
     ...(video && { video: { "@id": video["@id"] } }),
   };
   return video ? [posting, video] : [posting];
-});
+  });
 
-export default function NewsroomPage() {
-  const posts = newsroom.posts;
+export default async function NewsroomPage() {
+  const [pageSeo, posts] = await Promise.all([getSeo("/newsroom"), getNews()]);
 
   return (
     <>
-      <JsonLd path="/newsroom" name="Newsroom" description={seo["/newsroom"].description} type="CollectionPage" nodes={postNodes} />
+      <JsonLd path="/newsroom" name="Newsroom" description={pageSeo.description ?? ""} type="CollectionPage" nodes={postNodes(posts)} />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={newsroom.eyebrow} title={newsroom.title} intro={newsroom.intro} />

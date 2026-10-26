@@ -5,9 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type CSSProperties, type RefObject, useEffect, useRef, useState } from "react";
 import Button from "@/components/Button";
-import { projectPreviews } from "@/components/NavMega";
-import { projects, projectStatuses } from "@/content/home";
-import { footer, menu, nav } from "@/content/site";
+import { projectStatuses } from "@/content/home";
+import { menu, nav } from "@/content/site";
+import type { Project, SiteSettings } from "@/sanity/content";
 
 type SiteMenuProps = {
   open: boolean;
@@ -15,6 +15,9 @@ type SiteMenuProps = {
   loadImages: boolean;
   onClose: () => void;
   toggleRef: RefObject<HTMLButtonElement | null>;
+  projects: Project[];
+  // Contact details shown at the foot of the menu.
+  footer: SiteSettings;
 };
 
 const EASE = "ease-[cubic-bezier(0.16,1,0.3,1)]";
@@ -24,7 +27,8 @@ const items = nav;
 
 // Full-screen menu below lg, styled like the desktop dropdown panels: linen, thin rules, About and
 // Projects expand in place (pages with a thumbnail and description; projects as swipeable photo cards).
-export default function SiteMenu({ open, loadImages, onClose, toggleRef }: SiteMenuProps) {
+export default function SiteMenu({ open, loadImages, onClose, toggleRef, projects, footer }: SiteMenuProps) {
+  const projectPreviews = projects.map((item) => ({ ...item, preview: item.photo }));
   const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -192,7 +196,7 @@ export default function SiteMenu({ open, loadImages, onClose, toggleRef }: SiteM
                             </ul>
                             <div className="mt-5">
                               <Button href="/projects" variant="dark" className="!px-5 !py-3" onClick={onClose}>
-                                All projects · {projects.items.length}
+                                All projects · {projects.length}
                               </Button>
                             </div>
                           </>

@@ -8,14 +8,15 @@ import Services from "@/components/Services";
 import StatsBand from "@/components/StatsBand";
 import { servicesPage } from "@/content/pages";
 import { JsonLd } from "@/lib/schema";
-import { seo, seoMetadata } from "@/content/seo";
+import { getSeo, seoMetadata } from "@/sanity/content";
 
-export const metadata: Metadata = seoMetadata("/our-services");
+export const generateMetadata = (): Promise<Metadata> => seoMetadata("/our-services");
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const pageSeo = await getSeo("/our-services");
   return (
     <>
-      <JsonLd path="/our-services" name="Our Services" description={seo["/our-services"].description} />
+      <JsonLd path="/our-services" name="Our Services" description={pageSeo.description ?? ""} />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={servicesPage.eyebrow} title={servicesPage.title} intro={servicesPage.intro} image={servicesPage.image} video={servicesPage.video} />

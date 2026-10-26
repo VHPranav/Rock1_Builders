@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Button from "@/components/Button";
-import { hero } from "@/content/home";
+import type { Home } from "@/sanity/content";
 import RevealWords from "@/components/RevealWords";
 
-export default function Hero() {
+export default function Hero({ hero }: { hero: Home["hero"] }) {
   const [videoReady, setVideoReady] = useState(false);
 
   return (

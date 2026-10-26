@@ -6,16 +6,16 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
 import { contactPage } from "@/content/pages";
-import { footer } from "@/content/site";
 import { JsonLd } from "@/lib/schema";
-import { seo, seoMetadata } from "@/content/seo";
+import { getSeo, getSettings, seoMetadata } from "@/sanity/content";
 
-export const metadata: Metadata = seoMetadata("/contact-us");
+export const generateMetadata = (): Promise<Metadata> => seoMetadata("/contact-us");
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const [pageSeo, footer] = await Promise.all([getSeo("/contact-us"), getSettings()]);
   return (
     <>
-      <JsonLd path="/contact-us" name="Contact" description={seo["/contact-us"].description} type="ContactPage" />
+      <JsonLd path="/contact-us" name="Contact" description={pageSeo.description ?? ""} type="ContactPage" />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={contactPage.eyebrow} title={contactPage.title} intro={contactPage.intro} />

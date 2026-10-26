@@ -10,9 +10,9 @@ import RevealWords from "@/components/RevealWords";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
 import { about } from "@/content/pages";
 import { JsonLd, videoNode } from "@/lib/schema";
-import { seo, seoMetadata } from "@/content/seo";
+import { getSeo, seoMetadata } from "@/sanity/content";
 
-export const metadata: Metadata = seoMetadata("/about-us");
+export const generateMetadata = (): Promise<Metadata> => seoMetadata("/about-us");
 
 // Initials tile, kept for any team member without a portrait.
 function Monogram({ name, className = "" }: { name: string; className?: string }) {
@@ -29,13 +29,14 @@ function Monogram({ name, className = "" }: { name: string; className?: string }
   );
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const pageSeo = await getSeo("/about-us");
   return (
     <>
       <JsonLd
         path="/about-us"
         name="About Us"
-        description={seo["/about-us"].description}
+        description={pageSeo.description ?? ""}
         type="AboutPage"
         nodes={[
           videoNode(

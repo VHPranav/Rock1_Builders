@@ -4,10 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useLayoutEffect, useRef } from "react";
 import RevealWords from "@/components/RevealWords";
-import { type ProjectStatus, projects, projectStatuses } from "@/content/home";
-import { projectPhoto } from "@/content/projectDetails";
+import { type ProjectStatus, projectStatuses } from "@/content/home";
+import type { Project, ProjectsSection } from "@/sanity/content";
 
-type Item = (typeof projects.items)[number];
+type Item = Project;
 
 const EASE = "cubic-bezier(0.19, 1, 0.22, 1)";
 const FLY_MS = 1450;
@@ -58,7 +58,7 @@ function slotSize(count: number) {
   return { width, height };
 }
 
-export default function ProjectsIndex() {
+export default function ProjectsIndex({ projects }: { projects: ProjectsSection }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Intro: the hero shows a strip of 10 portrait thumbnails along the bottom of the screen: the six
@@ -290,9 +290,9 @@ export default function ProjectsIndex() {
                         )}
                         <Link href={item.href} className="group block">
                           <figure data-tile className={`relative overflow-hidden bg-ink/10 ${layout.aspect}`}>
-                            {projectPhoto(item.slug, item.image) ? (
+                            {item.photo ? (
                               <Image
-                                src={projectPhoto(item.slug, item.image)!}
+                                src={item.photo!}
                                 alt={`${item.name}, ${item.location}`}
                                 fill
                                 quality={85}
