@@ -275,7 +275,7 @@ export const listingPages = defineType({
   name: "listingPages",
   title: "Page headings",
   type: "document",
-  description: "Headings above the lists on Projects, Gallery and Newsroom.",
+  description: "Headings above the lists on Projects, Gallery, Newsroom and Blog.",
   fields: [
     defineField({
       name: "projects",
@@ -296,6 +296,7 @@ export const listingPages = defineType({
     }),
     defineField({ name: "gallery", type: "object", fields: heading }),
     defineField({ name: "newsroom", type: "object", fields: heading }),
+    defineField({ name: "blog", type: "object", fields: heading }),
   ],
   preview: preview("Page headings"),
 });

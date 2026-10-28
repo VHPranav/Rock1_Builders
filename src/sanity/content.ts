@@ -3,11 +3,13 @@
 // Text that is not in the CMS (navigation, About, Services, Montenegro pages, legal) still comes from src/content/.
 
 import type { Metadata } from "next";
+import type { PortableTextBlock } from "next-sanity";
 import type { GalleryImage } from "@/components/GalleryGrid";
 import { contactCta, faqs, gateway, hero, type ProjectItem, projects, services, story, whyMontenegro } from "@/content/home";
 import { type MapPlace, montenegroMap } from "@/content/montenegroMap";
 import {
   about,
+  blogPage,
   contactPage,
   europeanAdvantage,
   type GalleryGroup,
@@ -189,6 +191,43 @@ export async function getGallery(): Promise<GalleryGroup[]> {
   ).map((group) => ({ ...group, images: group.images.filter((image): image is GalleryImage => !!image.src) }));
 }
 
+// ---------- blog
+
+export type BlogImage = { src: string; alt?: string; caption?: string; width: number; height: number };
+
+export type BlogPost = {
+  slug: string;
+  title: string;
+  category?: string;
+  // ISO date
+  date: string;
+  excerpt: string;
+  image?: BlogImage;
+};
+
+export type BlogPostDetail = BlogPost & { body: PortableTextBlock[] };
+
+const blogCard = `"slug": slug.current, title, category, date, excerpt, "image": image${sized}`;
+
+// Newest first.
+export async function getBlogPosts(): Promise<BlogPost[]> {
+  return (
+    (await fetchContent<BlogPost[]>(`*[_type == "blogPost" && defined(slug.current)] | order(date desc, _createdAt desc){${blogCard}}`)) ?? []
+  ).map((post) => (post.image?.src ? post : { ...post, image: undefined }));
+}
+
+export async function getBlogPost(slug: string): Promise<BlogPostDetail | undefined> {
+  const post = await fetchContent<BlogPostDetail>(
+    `*[_type == "blogPost" && slug.current == $slug][0]{
+      ${blogCard},
+      "body": coalesce(body[]{..., _type == "photo" => ${sized}}, [])
+    }`,
+    { slug },
+  );
+  if (!post) return undefined;
+  return post.image?.src ? post : { ...post, image: undefined };
+}
+
 // ---------- SEO
 
 type PageSeo = { title?: string; description?: string; focusKeyword?: string; ogImage?: string };
@@ -198,7 +237,8 @@ export async function getSeo(path: string): Promise<PageSeo> {
   const data = await fetchContent<PageSeo>(
     `coalesce(
       *[_type == "pageSeo" && path == $path][0].seo,
-      *[_type == "project" && "/projects/" + slug.current == $path][0].seo
+      *[_type == "project" && "/projects/" + slug.current == $path][0].seo,
+      *[_type == "blogPost" && "/blog/" + slug.current == $path][0].seo
     ){title, description, focusKeyword, "ogImage": ogImage.asset->url}`,
     { path },
   );
@@ -301,17 +341,19 @@ export async function getWhyMontenegro() {
   return { ...data, reasons: data.reasons.map((reason) => ({ ...reason, image: reason.image ?? null })) };
 }
 
-// Headings above the lists on Projects, Gallery and Newsroom.
+// Headings above the lists on Projects, Gallery, Newsroom and Blog.
 export async function getListingHeadings() {
   const fallback = {
     projects: { eyebrow: projects.eyebrow, pageHeading: projects.pageHeading, intro: projects.intro, stripExtras: projects.stripExtras },
     gallery: { eyebrow: galleryPage.eyebrow, title: galleryPage.title, intro: galleryPage.intro },
     newsroom: { eyebrow: newsroom.eyebrow, title: newsroom.title, intro: newsroom.intro },
+    blog: blogPage,
   };
   const data = await fromSanity(`*[_id == "listingPages"][0]`, fallback);
   return {
     projects: { ...fallback.projects, ...data.projects },
     gallery: { ...fallback.gallery, ...data.gallery },
     newsroom: { ...fallback.newsroom, ...data.newsroom },
+    blog: { ...fallback.blog, ...data.blog },
   };
 }

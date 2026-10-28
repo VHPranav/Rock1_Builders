@@ -17,6 +17,7 @@ export const structure: StructureResolver = (S) => {
       S.divider(),
       S.documentTypeListItem("project").title("Projects"),
       S.documentTypeListItem("newsPost").title("Newsroom"),
+      S.documentTypeListItem("blogPost").title("Blog"),
       S.documentTypeListItem("galleryGroup").title("Gallery"),
       S.documentTypeListItem("faq").title("FAQs"),
       S.divider(),

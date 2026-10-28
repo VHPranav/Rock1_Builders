@@ -1,3 +1,4 @@
+import { blogPost } from "./blogPost";
 import { faq } from "./faq";
 import { galleryGroup } from "./galleryGroup";
 import { homePage } from "./homePage";
@@ -20,4 +21,4 @@ export const singletonTypes = new Set([
   "listingPages",
 ]);
 
-export const schemaTypes = [...objectTypes, siteSettings, homePage, project, newsPost, galleryGroup, faq, pageSeo, ...pageTypes];
+export const schemaTypes = [...objectTypes, siteSettings, homePage, project, newsPost, blogPost, galleryGroup, faq, pageSeo, ...pageTypes];

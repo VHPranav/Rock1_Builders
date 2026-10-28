@@ -92,6 +92,12 @@ export const seo: Record<string, PageSeo> = {
     description:
       "Stay updated on Montenegro's property market, EU accession progress, residency regulations and the latest developments shaping real estate investment.",
   },
+  "/blog": {
+    focusKeyword: "montenegro property insights",
+    title: "Insights on Montenegro Property & Investment | Rock1 Builders",
+    description:
+      "Articles and guides from Rock1 Builders on buying property in Montenegro, residency, the Adriatic market and Mediterranean living.",
+  },
   "/contact-us": {
     focusKeyword: "Contact Rock 1 Builders",
     title: "Montenegro Property Enquiries & Consultations | Rock1 Builders",

@@ -59,6 +59,7 @@ export const nav: NavItem[] = [
   },
   { label: "Gallery", href: "/gallery" },
   { label: "Newsroom", href: "/newsroom" },
+  { label: "Insights", href: "/blog" },
   { label: "Contact Us", href: "/contact-us" },
 ];
 
@@ -82,6 +83,7 @@ export const footer = {
     { label: "Gallery", href: "/gallery" },
     { label: "Newsroom", href: "/newsroom" },
     { label: "Legal", href: "/legal" },
+    { label: "Insights", href: "/blog" },
   ],
   prompt: "Would you like to learn more about our projects and expertise?",
   cta: { label: "Contact us", href: "/contact-us" },

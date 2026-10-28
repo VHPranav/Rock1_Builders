@@ -190,6 +190,13 @@ export type NewsPost = {
   source?: { label: string; href: string };
 };
 
+// Blog listing heading; the posts themselves live only in Sanity.
+export const blogPage = {
+  eyebrow: "Insights",
+  title: "Notes on building, buying and living by the Adriatic.",
+  intro: "Articles and guides from our team on Montenegro property, residency and Mediterranean living.",
+};
+
 export const newsroom = {
   eyebrow: "Newsroom",
   title: "Updates for buyers and investors.",
