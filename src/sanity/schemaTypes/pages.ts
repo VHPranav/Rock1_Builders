@@ -297,6 +297,41 @@ export const listingPages = defineType({
     defineField({ name: "gallery", type: "object", fields: heading }),
     defineField({ name: "newsroom", type: "object", fields: heading }),
     defineField({ name: "blog", type: "object", fields: heading }),
+    defineField({
+      name: "instagram",
+      title: "Newsroom: Instagram reels",
+      description: "Shown below the updates on the Newsroom page. Leave the list empty to hide the section.",
+      type: "object",
+      fields: [
+        ...heading,
+        defineField({ name: "cta", title: "Button", description: "e.g. Follow us on Instagram.", type: "link" }),
+        defineField({
+          name: "posts",
+          title: "Reels and posts",
+          type: "array",
+          of: [
+            defineArrayMember({
+              type: "object",
+              name: "instagramPost",
+              fields: [
+                defineField({
+                  name: "url",
+                  title: "Instagram link",
+                  description: "Copy the link from Instagram (Share → Copy link). Must be a public post or reel.",
+                  type: "url",
+                  validation: (r) =>
+                    r.required().custom((url) =>
+                      !url || /instagram\.com\/(p|reel|reels)\/[\w-]+/.test(url) ? true : "Use a link to an Instagram post or reel.",
+                    ),
+                }),
+                str("caption", "Note", "Only for you in the Studio; not shown on the site."),
+              ],
+              preview: { select: { title: "caption", subtitle: "url" } },
+            }),
+          ],
+        }),
+      ],
+    }),
   ],
   preview: preview("Page headings"),
 });

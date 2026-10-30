@@ -4,10 +4,13 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
+import InstagramEmbeds from "@/components/InstagramEmbeds";
+import Eyebrow from "@/components/Eyebrow";
+import RevealWords from "@/components/RevealWords";
 import type { NewsPost } from "@/content/pages";
 import { defaultOgImage } from "@/content/site";
 import { absolute, JsonLd, orgId, videoNode } from "@/lib/schema";
-import { getListingHeadings, getNews, getSeo, seoMetadata } from "@/sanity/content";
+import { getListingHeadings, getNews, getNewsroomInstagram, getSeo, seoMetadata } from "@/sanity/content";
 
 export const generateMetadata = (): Promise<Metadata> => seoMetadata("/newsroom");
 
@@ -69,7 +72,12 @@ const postNodes = (posts: NewsPost[]) =>
   });
 
 export default async function NewsroomPage() {
-  const [pageSeo, posts, { newsroom }] = await Promise.all([getSeo("/newsroom"), getNews(), getListingHeadings()]);
+  const [pageSeo, posts, { newsroom }, instagram] = await Promise.all([
+    getSeo("/newsroom"),
+    getNews(),
+    getListingHeadings(),
+    getNewsroomInstagram(),
+  ]);
 
   return (
     <>
@@ -103,7 +111,7 @@ export default async function NewsroomPage() {
         </nav>
 
         {/* Updates */}
-        <div className="space-y-6 px-[clamp(1.25rem,6vw,6rem)] pb-32 pt-16 sm:space-y-8">
+        <div className={`space-y-6 px-[clamp(1.25rem,6vw,6rem)] pt-16 sm:space-y-8 ${instagram.posts.length ? "pb-20" : "pb-32"}`}>
           {posts.map((post) =>
             post.video ? (
               // Video update: player beside the headline, full text underneath
@@ -161,6 +169,33 @@ export default async function NewsroomPage() {
             ),
           )}
         </div>
+
+        {/* Instagram reels, managed in Sanity (Page headings → Newsroom: Instagram reels) */}
+        {instagram.posts.length > 0 && (
+          <section aria-labelledby="instagram-heading" className="border-t border-ink/15 px-[clamp(1.25rem,6vw,6rem)] pb-32 pt-20">
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <div className="max-w-2xl">
+                <Eyebrow>{instagram.eyebrow}</Eyebrow>
+                <h2 id="instagram-heading" data-reveal="words" className="mt-5 text-balance text-[clamp(2rem,4vw,3.5rem)] leading-[1.05] tracking-[-0.02em]">
+                  <RevealWords text={instagram.title} />
+                </h2>
+                {instagram.intro && (
+                  <p data-reveal className="mt-5 text-lg leading-relaxed text-ink/70">
+                    {instagram.intro}
+                  </p>
+                )}
+              </div>
+              {instagram.cta && (
+                <Button href={instagram.cta.href} variant="ghost" file={/^https?:/.test(instagram.cta.href)}>
+                  {instagram.cta.label}
+                </Button>
+              )}
+            </div>
+            <div className="mt-12">
+              <InstagramEmbeds posts={instagram.posts} />
+            </div>
+          </section>
+        )}
       </main>
       <Footer />
     </>

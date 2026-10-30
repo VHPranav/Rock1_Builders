@@ -357,3 +357,19 @@ export async function getListingHeadings() {
     blog: { ...fallback.blog, ...data.blog },
   };
 }
+
+// Instagram reels section on the Newsroom page. Links are cleaned to https://www.instagram.com/<p|reel>/<code>/.
+export async function getNewsroomInstagram() {
+  const data = await fromSanity(`*[_id == "listingPages"][0].instagram`, {
+    eyebrow: "Instagram",
+    title: "From our Instagram",
+    intro: "",
+    cta: { label: "Follow @rock1global", href: "https://www.instagram.com/rock1global" } as { label: string; href: string } | undefined,
+    posts: [] as { url: string }[],
+  });
+  const posts = data.posts
+    .map(({ url }) => url?.match(/instagram\.com\/(p|reels?)\/([\w-]+)/))
+    .filter((m): m is RegExpMatchArray => !!m)
+    .map(([, kind, code]) => ({ code, url: `https://www.instagram.com/${kind === "p" ? "p" : "reel"}/${code}/` }));
+  return { ...data, posts };
+}
