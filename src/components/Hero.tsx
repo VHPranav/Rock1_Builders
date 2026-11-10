@@ -31,10 +31,15 @@ export default function Hero({ hero }: { hero: Home["hero"] }) {
         <p data-reveal className="text-[0.7rem] uppercase tracking-[0.12em] text-white/85 sm:text-xs">
           {hero.eyebrow.join(" - ")}
         </p>
-        <h1 data-reveal="words" className="mt-3 max-w-5xl text-4xl font-medium uppercase leading-[1.05] tracking-[-0.01em] sm:text-5xl lg:text-7xl">
-          <RevealWords text={hero.title} />
+        <h1 data-reveal className="mt-3 text-sm font-medium text-white/90 sm:text-base">
+          {hero.heading}
         </h1>
+        {/* Styled tagline, not a heading */}
+        <p data-reveal="words" className="mt-3 max-w-5xl text-4xl font-medium uppercase leading-[1.05] tracking-[-0.01em] sm:text-5xl lg:text-7xl">
+          <RevealWords text={hero.title} />
+        </p>
         <p data-reveal className="mt-4 max-w-md text-sm font-light text-white/80 sm:text-base">{hero.subtitle}</p>
+        {hero.intro && <p data-reveal className="mt-2 max-w-md text-sm font-light text-white/70 sm:text-base">{hero.intro}</p>}
         <div data-reveal className="mt-7">
           <Button href={hero.cta.href} variant="light">
             {hero.cta.label}

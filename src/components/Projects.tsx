@@ -104,6 +104,7 @@ export default function Projects({ projects }: { projects: ProjectsSection }) {
                   <span aria-hidden="true" className="size-1.5 rotate-45 bg-current" />
                   {projects.eyebrow}
                 </p>
+                <h2 className="mt-3 text-[clamp(1.25rem,2.2vw,1.875rem)] font-light leading-tight tracking-[-0.01em]">{projects.homeHeading}</h2>
               </div>
               <p data-reveal className="hidden max-w-sm text-right text-base leading-relaxed text-white/75 md:block">{projects.intro}</p>
             </div>
@@ -122,7 +123,7 @@ export default function Projects({ projects }: { projects: ProjectsSection }) {
                     {current.subtitle}
                   </p>
                 )}
-                <p className="mt-4 max-w-lg text-base text-white/85 sm:text-lg">{current.summary}</p>
+                <p className="mt-4 max-w-lg text-base text-white/85 sm:text-lg">{current.cardSummary ?? current.summary}</p>
                 <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-5">
                   <p className="flex items-baseline gap-3">
                     <span className="text-4xl font-light tracking-[-0.02em] sm:text-5xl">{current.stat.value}</span>

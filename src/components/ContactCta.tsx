@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import { getContactCta } from "@/sanity/content";
+import { getContactCta, getSettings } from "@/sanity/content";
 import RevealWords from "@/components/RevealWords";
 
 // Thin-line drawing of a stepped hillside building in perspective (decorative). It stretches to fill the
@@ -30,7 +30,11 @@ function BuildingLines() {
 }
 
 export default async function ContactCta({ brochure = false }: { brochure?: boolean }) {
-  const contactCta = await getContactCta();
+  const [contactCta, settings] = await Promise.all([getContactCta(), getSettings()]);
+  const details = [
+    ...settings.phones.map((phone) => ({ label: `Call us (${phone.region})`, value: phone.display, href: `tel:${phone.tel}` as string | null })),
+    ...contactCta.details,
+  ];
   return (
     <section className="bg-linen px-[clamp(1.25rem,6vw,6rem)] py-24 text-ink sm:py-32">
       <div className="relative overflow-hidden border border-ink/15">
@@ -50,6 +54,9 @@ export default async function ContactCta({ brochure = false }: { brochure?: bool
 
           <div data-reveal className="mt-10 flex flex-wrap items-center gap-2">
             <Button href={contactCta.primary.href}>{contactCta.primary.label}</Button>
+            <Button href={contactCta.whatsapp.href} variant="ghost" file>
+              {contactCta.whatsapp.label}
+            </Button>
             {contactCta.secondary.map((link) => (
               <Button key={link.label} href={link.href} variant="ghost">
                 {link.label}
@@ -63,9 +70,9 @@ export default async function ContactCta({ brochure = false }: { brochure?: bool
           </div>
 
           <dl className="mt-[clamp(4rem,8vw,7rem)] grid gap-6 border-t border-ink/15 pt-8 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-x-12">
-            {contactCta.details.map((item, i) => (
-              // Phone and email share a row; the longer head office address gets its own.
-              <div data-reveal key={item.label} className={i === 2 ? "sm:col-span-2" : undefined}>
+            {details.map((item) => (
+              // Phones and email sit two to a row; the longer head office address gets its own.
+              <div data-reveal key={item.label} className={item.href ? undefined : "sm:col-span-2"}>
                 <dt className="font-mono text-xs uppercase tracking-[0.14em] text-ink/55">{item.label}</dt>
                 <dd className="mt-2 text-base leading-snug">
                   {item.href ? (

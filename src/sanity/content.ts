@@ -83,7 +83,7 @@ export type Project = ProjectItem & {
 export async function getProjects(): Promise<Project[]> {
   const items =
     (await fetchContent<Omit<Project, "href">[]>(`*[_type == "project" && defined(slug.current)] | order(order asc, name asc){
-      name, subtitle, location, region, status, category, stat, summary, description, tone,
+      name, subtitle, location, region, status, category, stat, summary, cardSummary, description, tone,
       "slug": slug.current,
       "image": image.asset->url,
       "photo": coalesce(heroImage.asset->url, image.asset->url)
@@ -133,7 +133,7 @@ export async function getHome() {
     faqs?: Partial<typeof faqs>;
     contactCta?: Partial<typeof contactCta>;
   }>(`*[_id == "homePage"][0]{
-    hero{eyebrow, title, subtitle, "cta": cta${link}, videoSrc},
+    hero{eyebrow, heading, title, subtitle, intro, "cta": cta${link}, videoSrc},
     story{eyebrow, heading, body1, body2, "cta": cta${link}},
     gateway{
       eyebrow, question, questionSub, "cta": cta${link}, intro, body, "readMore": readMore${link},
@@ -205,7 +205,7 @@ export type BlogPost = {
   image?: BlogImage;
 };
 
-export type BlogPostDetail = BlogPost & { body: PortableTextBlock[] };
+export type BlogPostDetail = BlogPost & { body: PortableTextBlock[]; faqs: { question: string; answer: string }[] };
 
 const blogCard = `"slug": slug.current, title, category, date, excerpt, "image": image${sized}`;
 
@@ -220,7 +220,8 @@ export async function getBlogPost(slug: string): Promise<BlogPostDetail | undefi
   const post = await fetchContent<BlogPostDetail>(
     `*[_type == "blogPost" && slug.current == $slug][0]{
       ${blogCard},
-      "body": coalesce(body[]{..., _type == "photo" => ${sized}}, [])
+      "body": coalesce(body[]{..., _type == "photo" => ${sized}}, []),
+      "faqs": coalesce(faqs[defined(question) && defined(answer)]{question, answer}, [])
     }`,
     { slug },
   );
@@ -344,7 +345,13 @@ export async function getWhyMontenegro() {
 // Headings above the lists on Projects, Gallery, Newsroom and Blog.
 export async function getListingHeadings() {
   const fallback = {
-    projects: { eyebrow: projects.eyebrow, pageHeading: projects.pageHeading, intro: projects.intro, stripExtras: projects.stripExtras },
+    projects: {
+      eyebrow: projects.eyebrow,
+      pageHeading: projects.pageHeading,
+      homeHeading: projects.homeHeading,
+      intro: projects.intro,
+      stripExtras: projects.stripExtras,
+    },
     gallery: { eyebrow: galleryPage.eyebrow, title: galleryPage.title, intro: galleryPage.intro },
     newsroom: { eyebrow: newsroom.eyebrow, title: newsroom.title, intro: newsroom.intro },
     blog: blogPage,

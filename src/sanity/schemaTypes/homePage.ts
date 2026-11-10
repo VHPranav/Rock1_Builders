@@ -19,8 +19,10 @@ export const homePage = defineType({
       group: "hero",
       fields: [
         defineField({ name: "eyebrow", type: "array", of: [defineArrayMember({ type: "string" })] }),
-        defineField({ name: "title", type: "string" }),
+        defineField({ name: "heading", title: "Page heading (H1)", description: "The page's main heading for Google.", type: "string" }),
+        defineField({ name: "title", title: "Tagline", description: "The large styled line.", type: "string" }),
         defineField({ name: "subtitle", type: "string" }),
+        defineField({ name: "intro", description: "Short line under the subtitle.", type: "text", rows: 2 }),
         defineField({ name: "cta", title: "Button", type: "link" }),
         defineField({ name: "videoSrc", title: "Background video URL", type: "url" }),
       ],

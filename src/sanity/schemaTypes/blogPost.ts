@@ -48,6 +48,25 @@ export const blogPost = defineType({
         defineArrayMember({ type: "photo" }),
       ],
     }),
+    defineField({
+      name: "faqs",
+      title: "FAQs",
+      description: "Questions and answers shown as an accordion at the end of the post.",
+      type: "array",
+      group: "post",
+      of: [
+        defineArrayMember({
+          type: "object",
+          name: "faqItem",
+          title: "FAQ",
+          fields: [
+            defineField({ name: "question", type: "string", validation: (r) => r.required() }),
+            defineField({ name: "answer", type: "text", rows: 4, validation: (r) => r.required() }),
+          ],
+          preview: { select: { title: "question", subtitle: "answer" } },
+        }),
+      ],
+    }),
     defineField({ name: "seo", type: "seo", group: "seo" }),
   ],
   orderings: [{ title: "Newest first", name: "dateDesc", by: [{ field: "date", direction: "desc" }] }],

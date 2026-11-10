@@ -283,6 +283,7 @@ export const listingPages = defineType({
       fields: [
         str("eyebrow"),
         str("pageHeading", "Projects page heading"),
+        str("homeHeading", "Home page section heading"),
         text("intro", "Intro (Projects page and Home page section)"),
         defineField({
           name: "stripExtras",

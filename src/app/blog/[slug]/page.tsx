@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { formatDate } from "@/components/BlogCard";
+import BlogFaqs from "@/components/BlogFaqs";
 import Button from "@/components/Button";
 import Eyebrow from "@/components/Eyebrow";
 import Footer from "@/components/Footer";
@@ -168,6 +169,11 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
     author: { "@id": orgId },
     publisher: { "@id": orgId },
   };
+  const faqPage = {
+    "@type": "FAQPage",
+    "@id": `${absolute(path)}#faq`,
+    mainEntity: post.faqs.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })),
+  };
 
   return (
     <>
@@ -177,7 +183,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
         description={post.excerpt}
         parents={[{ name: "Insights", path: "/blog" }]}
         image={post.image?.src}
-        nodes={[posting]}
+        nodes={post.faqs.length ? [posting, faqPage] : [posting]}
         extra={{ mainEntity: { "@id": posting["@id"] } }}
       />
       <main className="bg-linen text-ink">
@@ -225,6 +231,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
             <div className="mt-8 space-y-6">
               <PortableText value={post.body} components={bodyComponents(ids)} />
             </div>
+            {post.faqs.length > 0 && <BlogFaqs items={post.faqs} />}
             <div className="mt-14 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-ink/15 pt-8">
               <Button href="/contact-us">Contact our office</Button>
               <Button href="/blog" variant="ghost">
