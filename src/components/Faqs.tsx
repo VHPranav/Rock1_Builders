@@ -21,7 +21,7 @@ export default function Faqs({ faqs }: { faqs: Home["faqs"] }) {
           <h2 data-reveal="words" className="mt-6 text-balance text-[clamp(2.25rem,4.4vw,4rem)] leading-[1.08] tracking-[-0.02em]">
             <RevealWords text={faqs.title} />
           </h2>
-          <p data-reveal className="mt-6 max-w-sm text-base leading-relaxed text-ink/70 sm:text-lg">{faqs.intro}</p>
+          {faqs.intro && <p data-reveal className="mt-6 max-w-sm text-base leading-relaxed text-ink/70 sm:text-lg">{faqs.intro}</p>}
           <div data-reveal className="mt-8">
             <Button href={faqs.cta.href}>{faqs.cta.label}</Button>
           </div>

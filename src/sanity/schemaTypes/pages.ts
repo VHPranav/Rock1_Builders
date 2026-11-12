@@ -26,9 +26,11 @@ export const aboutPage = defineType({
     { name: "trust", title: "Trust" },
     { name: "people", title: "Leadership & team" },
     { name: "advantage", title: "European Advantage" },
+    { name: "faq", title: "FAQs & contact" },
   ],
   fields: [
     ...heading.map((f) => ({ ...f, group: "intro" })),
+    { ...str("heading", "Page heading (H1)", "The page's main heading for Google, shown above the title."), group: "intro" },
     { ...img("image", "Header image"), group: "intro" },
     { ...pageFilm, group: "intro" },
     { ...paragraphs("story", "Our story"), group: "intro" },
@@ -54,6 +56,7 @@ export const aboutPage = defineType({
       fields: [
         str("eyebrow"),
         str("title"),
+        text("description", "Description", 2),
         str("youtubeId", "YouTube ID", "The part after watch?v= in the YouTube link."),
         str("videoTitle", "Video title"),
         str("uploadDate", "Upload date", "e.g. 2025-10-28T03:47:37-07:00. Used by Google."),
@@ -88,6 +91,30 @@ export const aboutPage = defineType({
         }),
       ],
     }),
+    defineField({
+      name: "faqs",
+      title: "FAQs",
+      type: "object",
+      group: "faq",
+      fields: [
+        ...heading,
+        defineField({ name: "cta", title: "Button", type: "link" }),
+        defineField({
+          name: "items",
+          title: "Questions",
+          type: "array",
+          of: [
+            defineArrayMember({
+              type: "object",
+              name: "faqItem",
+              fields: [str("question"), text("answer", "Answer", 4)],
+              preview: { select: { title: "question", subtitle: "answer" } },
+            }),
+          ],
+        }),
+      ],
+    }),
+    { ...text("contactIntro", "Contact block intro", 2), group: "faq" },
     defineField({
       name: "europeanAdvantage",
       title: "European Advantage",
@@ -182,13 +209,92 @@ export const montenegroPage = defineType({
   groups: [
     { name: "page", title: "Page", default: true },
     { name: "map", title: "Map" },
+    { name: "sections", title: "Property types & facts" },
   ],
   fields: [
     ...heading.map((f) => ({ ...f, group: "page" })),
     { ...img("image", "Header image"), group: "page" },
     { ...pageFilm, group: "page" },
     { ...paragraphs("body"), group: "page" },
-    defineField({ name: "map", title: "Map heading", type: "object", group: "map", fields: heading }),
+    defineField({
+      name: "map",
+      title: "Map heading",
+      type: "object",
+      group: "map",
+      fields: [...heading, text("note", "Line under the map", 2)],
+    }),
+    defineField({
+      name: "propertyTypes",
+      title: "Types of property",
+      type: "object",
+      group: "sections",
+      fields: [
+        ...heading,
+        defineField({
+          name: "reasons",
+          title: "Cards",
+          type: "array",
+          of: [
+            defineArrayMember({
+              type: "object",
+              name: "card",
+              fields: [str("title"), text("description"), img("image")],
+              preview: { select: { title: "title", media: "image" } },
+            }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: "glance",
+      title: "Montenegro at a glance",
+      type: "object",
+      group: "sections",
+      fields: [
+        ...heading,
+        defineField({
+          name: "pillars",
+          title: "Cards",
+          type: "array",
+          of: [
+            defineArrayMember({
+              type: "object",
+              name: "pillar",
+              fields: [str("title"), text("text"), img("image")],
+              preview: { select: { title: "title", media: "image" } },
+            }),
+          ],
+        }),
+        defineField({
+          name: "facts",
+          title: "Key facts table",
+          type: "array",
+          of: [
+            defineArrayMember({
+              type: "object",
+              name: "fact",
+              fields: [str("label"), str("value")],
+              preview: { select: { title: "label", subtitle: "value" } },
+            }),
+          ],
+        }),
+        defineField({
+          name: "faqs",
+          title: "FAQs",
+          description: "Shown beside the facts table.",
+          type: "array",
+          of: [
+            defineArrayMember({
+              type: "object",
+              name: "faqItem",
+              fields: [str("question"), text("answer", "Answer", 4)],
+              preview: { select: { title: "question", subtitle: "answer" } },
+            }),
+          ],
+        }),
+      ],
+    }),
+    { ...text("contactIntro", "Contact block intro", 2), group: "sections" },
     defineField({
       name: "places",
       title: "Map places",

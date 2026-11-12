@@ -3,8 +3,11 @@ import ParallaxLayer from "@/components/ParallaxLayer";
 import { getWhyMontenegro } from "@/sanity/content";
 import RevealWords from "@/components/RevealWords";
 
-export default async function WhyMontenegro() {
-  const whyMontenegro = await getWhyMontenegro();
+type WhyMontenegroData = Awaited<ReturnType<typeof getWhyMontenegro>>;
+
+// `data` reuses this section's design for other content (About Montenegro's property types).
+export default async function WhyMontenegro({ data }: { data?: WhyMontenegroData }) {
+  const whyMontenegro = data ?? (await getWhyMontenegro());
   return (
     <section className="bg-linen px-[clamp(1.25rem,6vw,6rem)] py-24 text-ink sm:py-32">
       <div className="grid gap-y-14 md:grid-cols-12 md:gap-x-6">

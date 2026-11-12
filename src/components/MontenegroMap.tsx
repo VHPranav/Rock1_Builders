@@ -35,7 +35,7 @@ type MontenegroMapProps = {
   // Project page variant: the project's place id, the view to land on and its own heading.
   focus?: string;
   landing?: string;
-  heading?: { eyebrow: string; title: string; intro: string };
+  heading?: { eyebrow: string; title: string; intro: string; note?: string };
 };
 
 // Places and the heading come from Sanity (About Montenegro page); zoom areas and labels from src/content.

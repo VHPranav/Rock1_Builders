@@ -33,7 +33,9 @@ export const montenegroMap = {
   eyebrow: "Explore Montenegro",
   title: "Where we build, and what's around it.",
   intro:
-    "Our developments sit on the Bar Riviera, within easy reach of the Bay of Kotor, the mountains of the north and two international airports. Select a place to see it.",
+    "Our developments sit on the Bar Riviera, in Dobra Voda (Dobre Vode), just south of Bar, within easy reach of the Bay of Kotor, the mountains of the north and two international airports. Select a place to see it.",
+  // Line under the map, About Montenegro page only (project pages pass their own heading).
+  note: "Nearby: Dobra Voda beach, Bar Old Town, Podgorica Airport (about an hour) and Tivat Airport (about 1.5 hours).",
   // Wider area the map flies in from (the "Europe" step of the breadcrumb): [west, south, east, north].
   region: [13.6, 39.6, 24.4, 45.6] as [number, number, number, number],
   // Zoom presets: [west, south, east, north] in degrees.

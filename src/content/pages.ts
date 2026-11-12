@@ -13,19 +13,22 @@ export type GalleryGroup = { id: string; label: string; place: string; descripti
 
 export const about = {
   eyebrow: "About Us",
-  title: "Twenty five years of trust. Your gateway to global wealth.",
+  // Nov 2026 brief: the H1 carries the search phrase; the tagline stays the large styled line.
+  heading: "Rock1 Builders: Real Estate & Property Developer in Montenegro",
+  title: "Twenty-five years of trust.",
   intro:
-    "For over 25 years, Rock1 Builders has been more than a property developer. We have been a custodian of trust and a pioneer of architectural quality.",
+    "We have been property developers since 1996, with 50+ projects in South India and now offer Montenegro property for sale in Dobra Voda, Bar.",
   image: "/images/why/stability.webp",
   // 8 s Google Flow film made from the image above (watermark cropped); see content/image-prompts.md.
   video: { src: "/videos/about-us.mp4", poster: "/images/pages/about-us-film-poster.webp" } as { src: string; poster: string } | undefined,
   story: [
-    "Our unblemished track record spans South India, where we have successfully promoted and delivered townships, residential apartments, and commercial spaces. This sustained effort has resulted in over 50 landmark projects, shaping the urban landscape and creating lasting value for countless families and investors.",
-    "We believe that true development is not merely about constructing buildings; it is about crafting enduring ecosystems where life can thrive. This core philosophy, a relentless passion for excellence, is what drives us to look beyond established borders.",
+    "Our proven track record spans South India, where we have successfully promoted and delivered townships, residential apartments, and commercial spaces. This sustained effort has resulted in over 50 landmark projects, shaping the urban landscape and creating lasting value for countless families and investors.",
+    "We believe that true development is not merely about constructing buildings; it is about crafting enduring ecosystems where life can thrive. This core philosophy, together with a relentless passion for excellence, is what drives us to look beyond established borders.",
+    "Today, that experience is focused on the Adriatic coast. In Dobra Voda, near Bar, we are building two projects: Life Bay, with 17 sea-view Montenegro apartments, and Ocean Crest, a collection of Montenegro villas for sale with private sea-view infinity pools. Both are managed by our team in Budva.",
   ],
   trust: {
     eyebrow: "Trust",
-    title: "A pioneering developer with a 25-year unblemished record.",
+    title: "A pioneering real estate & property developer with a 25-year proven record.",
     intro:
       "Our commitment is to develop a long-lasting relationship with every client, providing a full set of services to secure your financial future.",
     pillars: [
@@ -35,15 +38,15 @@ export const about = {
       },
       {
         title: "Global quality",
-        text: "We bring our passion for excellence to the world stage. Projects like Life Bay Montenegro cultivate spaces that lift the spirit, built to international standards.",
+        text: "We bring our passion for excellence to the world stage. Projects like Life Bay and Ocean Crest in Montenegro cultivate spaces that lift the spirit, built to international standards.",
       },
       {
         title: "Complete solution",
-        text: "End-to-end asset management, legal compliance, and full support for securing your family's European residency.",
+        text: "End-to-end asset management, legal compliance, and full support for international buyers, from choosing where to buy a house in Montenegro to applying for a residence permit.",
       },
     ],
     facts: [
-      "A globally owned company with offices in Montenegro, Dubai, and India.",
+      "An international company with offices in Budva (Montenegro), Dubai, and India.",
       "Local expertise and on-ground project management in Montenegro.",
       "Complete legal and documentation support for every international transaction.",
       "Over 25 years in business, delivering communities built with care and trust.",
@@ -53,6 +56,7 @@ export const about = {
   film: {
     eyebrow: "The film",
     title: "See Rock1 Builders in Montenegro.",
+    description: "A short film about Rock1 Builders and our projects in Dobra Voda, Bar.",
     youtubeId: "PfVaq7U5rBs",
     videoTitle: "Rock 1 Builders Project Video",
     // From the YouTube video page, for the video's structured data.
@@ -65,9 +69,9 @@ export const about = {
     name: "K. Bawa Salim",
     photo: "/images/team/bawa-salim-portrait.webp",
     bio: [
-      "Salim Bawa is a multifaceted entrepreneur from Kerala, the southernmost state in India. Kerala is one of the world's most sought-after tourism destinations and enjoys human development indices comparable to many developed nations.",
-      "His entrepreneurial journey in tourism and real estate spans 25 years of innovative thinking and success, beginning with the launch of Vintage Properties Pvt. Ltd. in 1996.",
-      "He holds a Bachelor's degree in Economics, an Integrated Management Certification from the District Industrial Centre, Government of India, and an Export Import Certificate from a reputed institute in Ahmedabad, Gujarat.",
+      "K. Bawa Salim is a multifaceted entrepreneur from Kerala, the southernmost state in India. Kerala is one of the world's most sought-after tourism destinations and enjoys human development indices comparable to many developed nations.",
+      "His entrepreneurial journey in tourism and real estate spans more than 25 years of innovative thinking and success, beginning with the launch of Vintage Properties Pvt. Ltd. in 1996. Today, he leads Rock1 Builders and its expansion into Montenegro.",
+      "He holds a Bachelor's degree in Economics, an Integrated Management Certification from the District Industrial Centre, Government of India, and an Export-Import Certificate from a reputed institute in Ahmedabad, Gujarat.",
     ],
   },
   team: {
@@ -83,16 +87,46 @@ export const about = {
         name: "Shahid Salim",
         photo: "/images/team/shahid-salim-portrait.webp",
         role: "Regional Manager",
-        bio: "Ensures operational excellence and seamless project delivery across all teams. His leadership, strategic planning, and commitment to efficiency keep projects running smoothly, deadlines met, and client expectations consistently achieved across the region.",
+        bio: "He ensures operational excellence and seamless project delivery across all teams. His leadership, strategic planning, and commitment to efficiency keep projects running smoothly, deadlines met, and client expectations consistently achieved across the region.",
       },
       {
         name: "Mahmut Vukovic",
         photo: "/images/team/mahmut-vukovic-portrait.webp",
         role: "Project Advisor",
-        bio: "Provides local expertise and strategic guidance, supporting project planning and execution with deep industry knowledge to ensure smooth coordination, informed decisions, and adherence to global standards. Through careful analysis and practical experience, he contributes to delivering efficient, high-quality projects that meet organisational and client expectations.",
+        bio: "He provides local expertise and strategic guidance, supporting project planning and execution with deep industry knowledge to ensure smooth coordination, informed decisions, and adherence to global standards. Through careful analysis and practical experience, he contributes to delivering efficient, high-quality projects that meet organisational and client expectations.",
       },
     ],
   },
+  // Nov 2026 brief: FAQ section before the contact block.
+  faqs: {
+    eyebrow: "FAQs",
+    title: "Frequently asked questions",
+    intro: "",
+    cta: { label: "Speak with our advisor", href: "/contact-us" },
+    items: [
+      {
+        question: "Who is Rock1 Builders?",
+        answer:
+          "Rock1 Builders is a real estate and property developer with roots going back to 1996. It has completed more than 50 projects in South India and is now building Life Bay and Ocean Crest in Dobra Voda, Bar, Montenegro, with its head office in Budva.",
+      },
+      {
+        question: "What Montenegro property for sale does Rock1 Builders offer?",
+        answer:
+          "Sea-view Montenegro apartments at Life Bay (17 apartments) and Montenegro villas for sale at Ocean Crest (23 villas and townhouses), both in Dobra Voda, near Bar.",
+      },
+      {
+        question: "Can foreigners buy a house in Montenegro?",
+        answer:
+          "Yes, foreign buyers can own apartments and houses in Montenegro on the same terms as locals, with full ownership once the purchase is registered in the cadastre. Our team supports international buyers at every step.",
+      },
+      {
+        question: "Where are Rock1 Builders' offices?",
+        answer: "Our head office is in Budva, Montenegro, and we also have offices in Dubai and India.",
+      },
+    ],
+  },
+  // Contact block intro on this page (the other pages use the Home page's).
+  contactIntro: "Reach out to us, we're here to help you find the right home in Montenegro.",
 };
 
 // Shared by About Us and About Montenegro.
@@ -100,21 +134,21 @@ export const europeanAdvantage = {
   eyebrow: "The European Advantage",
   title: "Montenegro is the smart investment in Europe.",
   intro:
-    "A high-yield financial return and a smooth, supported pathway to European residency. Backed by Rock1's 25 years of trust, this is your world-class asset on the tax-friendly Adriatic coast.",
+    "A tangible asset in a euro-using country on the path to EU membership, and a smooth, supported pathway to a Montenegrin residence permit. Backed by Rock1's 25 years of trust, this is your world-class asset on the tax-friendly Adriatic coast.",
   pillars: [
     {
-      title: "The gateway to European residency",
-      text: "Secure your family's European future. Property ownership provides eligibility for a European Residency Permit, and we support the entire process with full legal and immigration assistance: a smooth route to a permanent base in a strategically connected European country.",
+      title: "A pathway to residency in Montenegro",
+      text: "Secure your family's future in Europe. Owning property in Montenegro can make you eligible for a temporary residence permit, and we support the entire process with full legal and immigration assistance: a smooth route to a base in a strategically connected European country.",
       image: "/images/gateway/connectivity.webp",
     },
     {
-      title: "High-yield European investment",
-      text: "A secure, high-performing financial asset in an emerging European market. We project annual gross yields of 8% to 12% through our professional, hassle-free property management, leveraging Montenegro's booming tourism and its path toward EU accession.",
+      title: "Rental income potential",
+      text: "A secure, tangible asset in an emerging European market. Our professional, hassle-free property management helps you earn rental income from Montenegro's booming tourism and its path toward EU accession.",
       image: "/images/why/economy.webp",
     },
     {
       title: "World-class Adriatic lifestyle",
-      text: "Invest in a life of quality, backed by Rock1's 25 years of trusted delivery. Minutes from the stunning Dobra Voda beach and historic Bar Old Town: a world-class asset with timeless design, in a country known for its magnificent climate, culture, and natural beauty.",
+      text: "Invest in a life of quality, minutes from the stunning Dobra Voda beach and historic Bar Old Town, our Montenegro apartments and villas offer timeless design in a country known for its magnificent climate, culture, and natural beauty.",
       image: "/images/why/climate.webp",
     },
   ],
@@ -141,15 +175,120 @@ export const servicesPage = {
 
 export const montenegroPage = {
   eyebrow: "About Montenegro",
-  title: "Montenegro real estate investment guide.",
+  // The page's H1 (Nov 2026 brief).
+  title: "Property in Montenegro: Living on the Adriatic Coast",
   intro:
     "Montenegro, the Black Mountain, is an exquisite jewel on the Adriatic coast: dramatic fjords, UNESCO-protected medieval towns, and sun-drenched beaches.",
   image: "/images/gateway/wellness.webp",
   video: { src: "/videos/about-montenegro.mp4", poster: "/images/pages/about-montenegro-film-poster.webp" } as { src: string; poster: string } | undefined,
   body: [
-    "More than a breathtaking destination, Montenegro stands as Europe's most compelling investment frontier. As a long-term candidate for EU membership with an economy that uses the Euro, it offers a rare blend of stability, low taxation, and growth potential.",
-    "For the discerning investor, buying property here is not simply buying a home; it is securing a profitable, world-class asset and a valuable European residency.",
+    "More than a breathtaking destination, Montenegro stands as one of Europe's most promising property markets. As a long-term candidate for EU membership with an economy that uses the Euro, it offers a rare blend of stability, low taxation, and growth potential.",
+    "For buyers, property in Montenegro is not simply a home; it is a long-term asset and a pathway to a Montenegrin residence permit.",
   ],
+  // Replaces "Why Choose Montenegro" on this page (Nov 2026 brief); same card design and images.
+  propertyTypes: {
+    eyebrow: "Property types",
+    title: "Types of Property in Montenegro",
+    intro:
+      "Montenegro's coast offers everything from entry-level apartments in towns like Bar to luxury coastal properties around the Bay of Kotor.",
+    reasons: [
+      {
+        title: "Contemporary and modern apartments",
+        description:
+          "Modern apartments are a popular first purchase on the coast. Many are contemporary apartments in new buildings with sea views, pools and parking, while modern luxury apartments add wellness and concierge services.",
+        tone: "#5b6b73",
+        image: "/images/why/economy.webp" as string | null,
+      },
+      {
+        title: "Entry-level and first-time buyer homes",
+        description:
+          "Studios and one-bedroom apartments make good entry-level homes. As first-time buyer homes, they are easier to furnish, rent out and look after from abroad.",
+        tone: "#9c5b3c",
+        image: "/images/why/tax-living.webp" as string | null,
+      },
+      {
+        title: "Mediterranean villas and houses",
+        description:
+          "Traditional stone Mediterranean homes and modern Mediterranean villas, often with terraces, gardens and pools, line the hillsides above the sea. A classic Mediterranean house among olive trees is part of the coast's charm.",
+        tone: "#8a7a64",
+        image: "/images/why/stability.webp" as string | null,
+      },
+      {
+        title: "Luxury coastal homes and beach houses",
+        description:
+          "Luxury coastal homes and luxury beach houses for sale are concentrated around Budva, Tivat and the Bay of Kotor, close to marinas and five-star resorts.",
+        tone: "#6b6f4e",
+        image: "/images/why/nature.webp" as string | null,
+      },
+      {
+        title: "Seaside residences",
+        description:
+          "Seaside residences close to the beach attract summer visitors, giving owners the option of holiday rental income when they are not using the home.",
+        tone: "#46596a",
+        image: "/images/why/tourism.webp" as string | null,
+      },
+      {
+        title: "Modern coastal homes on the Bar Riviera",
+        description:
+          "In Dobra Voda, Rock1 Builders offers modern coastal homes: sea-view apartments at Life Bay and villas with private infinity pools at Ocean Crest.",
+        tone: "#7d6a5a",
+        image: "/images/why/climate.webp" as string | null,
+      },
+    ],
+  },
+  // Replaces "The European Advantage" on this page (Nov 2026 brief). The three cards keep the live site's
+  // wording ("no change" in the brief), so they are this page's own copy, not the shared About Us block.
+  glance: {
+    eyebrow: "Montenegro at a glance",
+    title: "Key facts for international buyers",
+    intro: "The essentials buyers ask about before choosing property in Montenegro.",
+    pillars: [
+      {
+        title: "The gateway to European residency",
+        text: "Secure your family's European future. Property ownership provides eligibility for a European Residency Permit, and we support the entire process with full legal and immigration assistance: a smooth route to a permanent base in a strategically connected European country.",
+        image: "/images/gateway/connectivity.webp",
+      },
+      {
+        title: "High-yield European investment",
+        text: "A secure, high-performing financial asset in an emerging European market. We project annual gross yields of 8% to 12% through our professional, hassle-free property management, leveraging Montenegro's booming tourism and its path toward EU accession.",
+        image: "/images/why/economy.webp",
+      },
+      {
+        title: "World-class Adriatic lifestyle",
+        text: "Invest in a life of quality, backed by Rock1's 25 years of trusted delivery. Minutes from the stunning Dobra Voda beach and historic Bar Old Town: a world-class asset with timeless design, in a country known for its magnificent climate, culture, and natural beauty.",
+        image: "/images/why/climate.webp",
+      },
+    ],
+    facts: [
+      { label: "Currency", value: "Euro (€)" },
+      { label: "EU status", value: "Candidate country; membership targeted for 2028" },
+      { label: "Location", value: "Adriatic coast, between Croatia and Albania" },
+      { label: "Capital", value: "Podgorica" },
+      { label: "International airports", value: "Podgorica and Tivat" },
+      { label: "Climate", value: "250+ sunny days a year" },
+      { label: "Foreign ownership", value: "Foreigners can buy apartments and houses on the same terms as locals" },
+      { label: "Residency", value: "Owning property can support an application for a temporary residence permit" },
+    ],
+    // Shown beside the facts table, in the same section.
+    faqs: [
+      {
+        question: "Can foreigners buy property in Montenegro?",
+        answer:
+          "Yes, foreign buyers can own apartments and houses on the same terms as locals, with full ownership once the purchase is registered in the cadastre.",
+      },
+      {
+        question: "What types of property in Montenegro can I buy?",
+        answer:
+          "Apartments of every size, from studios to modern luxury apartments, as well as houses and villas. Some land, such as agricultural land, has restrictions for foreign buyers.",
+      },
+      {
+        question: "Where is Dobra Voda?",
+        answer: "Dobra Voda (Dobre Vode) is a coastal village on the Bar Riviera, just south of the town of Bar in southern Montenegro.",
+      },
+    ],
+  },
+  // Contact block intro on this page (the other pages use the Home page's).
+  contactIntro: "Reach out to us. We're here to help you find the right home in Montenegro.",
 };
 
 export const galleryPage = {

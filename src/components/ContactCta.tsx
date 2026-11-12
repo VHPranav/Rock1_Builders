@@ -29,7 +29,8 @@ function BuildingLines() {
   );
 }
 
-export default async function ContactCta({ brochure = false }: { brochure?: boolean }) {
+// `intro` replaces the shared intro on pages that have their own.
+export default async function ContactCta({ brochure = false, intro }: { brochure?: boolean; intro?: string }) {
   const [contactCta, settings] = await Promise.all([getContactCta(), getSettings()]);
   const details = [
     ...settings.phones.map((phone) => ({ label: `Call us (${phone.region})`, value: phone.display, href: `tel:${phone.tel}` as string | null })),
@@ -50,7 +51,7 @@ export default async function ContactCta({ brochure = false }: { brochure?: bool
           <h2 data-reveal="words" className="mt-6 max-w-[22ch] text-balance text-[clamp(2.25rem,4.6vw,4.25rem)] leading-[1.08] tracking-[-0.02em]">
             <RevealWords text={contactCta.title} />
           </h2>
-          <p data-reveal className="mt-6 max-w-md text-base leading-relaxed text-ink/70 sm:text-lg">{contactCta.intro}</p>
+          <p data-reveal className="mt-6 max-w-md text-base leading-relaxed text-ink/70 sm:text-lg">{intro || contactCta.intro}</p>
 
           <div data-reveal className="mt-10 flex flex-wrap items-center gap-2">
             <Button href={contactCta.primary.href}>{contactCta.primary.label}</Button>

@@ -4,9 +4,12 @@ import ParallaxLayer from "@/components/ParallaxLayer";
 import RevealWords from "@/components/RevealWords";
 import { getEuropeanAdvantage } from "@/sanity/content";
 
-// "The European Advantage": shared by About Us and About Montenegro.
-export default async function EuropeanAdvantage() {
-  const europeanAdvantage = await getEuropeanAdvantage();
+type EuropeanAdvantageData = Awaited<ReturnType<typeof getEuropeanAdvantage>>;
+
+// "The European Advantage" on About Us. `data` reuses the design for other content (About Montenegro's
+// "at a glance"), and `children` render at the end of the section.
+export default async function EuropeanAdvantage({ data, children }: { data?: EuropeanAdvantageData; children?: React.ReactNode }) {
+  const europeanAdvantage = data ?? (await getEuropeanAdvantage());
   return (
     <section className="px-[clamp(1.25rem,6vw,6rem)] py-24 sm:py-32">
       <Eyebrow>{europeanAdvantage.eyebrow}</Eyebrow>
@@ -46,6 +49,7 @@ export default async function EuropeanAdvantage() {
           </li>
         ))}
       </ul>
+      {children}
     </section>
   );
 }

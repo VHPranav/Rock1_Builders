@@ -3,12 +3,13 @@ import Image from "next/image";
 import ContactCta from "@/components/ContactCta";
 import EuropeanAdvantage from "@/components/EuropeanAdvantage";
 import Eyebrow from "@/components/Eyebrow";
+import Faqs from "@/components/Faqs";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import PageHero from "@/components/PageHero";
 import RevealWords from "@/components/RevealWords";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
-import { JsonLd, videoNode } from "@/lib/schema";
+import { absolute, JsonLd, videoNode } from "@/lib/schema";
 import { getAbout, getSeo, seoMetadata } from "@/sanity/content";
 
 export const generateMetadata = (): Promise<Metadata> => seoMetadata("/about-us");
@@ -39,14 +40,29 @@ export default async function AboutPage() {
         type="AboutPage"
         nodes={[
           videoNode(
-            { name: about.film.videoTitle, description: about.film.title, uploadDate: about.film.uploadDate, duration: about.film.duration, youtubeId: about.film.youtubeId },
+            {
+              name: about.film.videoTitle,
+              description: about.film.description ?? about.film.title,
+              uploadDate: about.film.uploadDate,
+              duration: about.film.duration,
+              youtubeId: about.film.youtubeId,
+            },
             "/about-us",
           ),
+          ...(about.faqs.items.length
+            ? [
+                {
+                  "@type": "FAQPage",
+                  "@id": `${absolute("/about-us")}#faq`,
+                  mainEntity: about.faqs.items.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })),
+                },
+              ]
+            : []),
         ]}
       />
       <main className="bg-linen text-ink">
         <Header overLight />
-        <PageHero eyebrow={about.eyebrow} title={about.title} intro={about.intro} image={about.image} video={about.video} />
+        <PageHero eyebrow={about.eyebrow} heading={about.heading} title={about.title} intro={about.intro} image={about.image} video={about.video} />
 
         {/* Story */}
         <section className="px-[clamp(1.25rem,6vw,6rem)] py-24 sm:py-32">
@@ -66,9 +82,16 @@ export default async function AboutPage() {
         <section className="px-[clamp(1.25rem,6vw,6rem)] pb-24 sm:pb-32">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
             <Eyebrow>{about.film.eyebrow}</Eyebrow>
-            <h2 data-reveal="words" className="text-[clamp(1.75rem,3.5vw,3rem)] leading-[1.08] tracking-[-0.02em]">
-              <RevealWords text={about.film.title} />
-            </h2>
+            <div className="max-w-xl">
+              <h2 data-reveal="words" className="text-[clamp(1.75rem,3.5vw,3rem)] leading-[1.08] tracking-[-0.02em]">
+                <RevealWords text={about.film.title} />
+              </h2>
+              {about.film.description && (
+                <p data-reveal className="mt-4 text-base leading-relaxed text-ink/70 sm:text-lg">
+                  {about.film.description}
+                </p>
+              )}
+            </div>
           </div>
           <YouTubeEmbed id={about.film.youtubeId} title={about.film.videoTitle} />
         </section>
@@ -166,7 +189,9 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        <ContactCta brochure />
+        {about.faqs.items.length > 0 && <Faqs faqs={about.faqs} />}
+
+        <ContactCta brochure intro={about.contactIntro} />
       </main>
       <Footer />
     </>

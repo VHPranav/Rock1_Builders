@@ -19,7 +19,7 @@ type Props = {
   // On a project page: start on that project, measure distances from it and land on `landing`.
   focus?: string;
   landing?: string;
-  heading?: { eyebrow: string; title: string; intro: string };
+  heading?: { eyebrow: string; title: string; intro: string; note?: string };
   // The place whose page this map is on: its card skips the link back to the same page.
   currentId?: string;
 };
@@ -542,6 +542,12 @@ export default function MontenegroMapClient({
           {montenegroMap.credit}
         </p>
       </div>
+
+      {heading.note && (
+        <p data-reveal className="px-[clamp(1.25rem,6vw,6rem)] py-6 text-sm leading-relaxed text-white/65 sm:text-base">
+          {heading.note}
+        </p>
+      )}
 
       {/* Card below the map on smaller screens */}
       <aside aria-live="polite" className="border-t border-white/10 lg:hidden">

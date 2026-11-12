@@ -316,14 +316,33 @@ export async function getServicesSection() {
 export type ServicesSection = typeof services;
 
 export async function getMontenegroPage() {
-  return fromSanity(`*[_id == "montenegroPage"][0]{eyebrow, title, intro, image, video, body}`, montenegroPage);
+  const data = await fromSanity(
+    `*[_id == "montenegroPage"][0]{eyebrow, title, intro, image, video, body, propertyTypes, glance, contactIntro}`,
+    montenegroPage,
+  );
+  // Cards without an image in Sanity keep the code's image in the same position.
+  return {
+    ...data,
+    propertyTypes: {
+      ...data.propertyTypes,
+      reasons: data.propertyTypes.reasons.map((card, i) => ({
+        ...card,
+        tone: montenegroPage.propertyTypes.reasons[i]?.tone ?? "#46596a",
+        image: card.image ?? montenegroPage.propertyTypes.reasons[i]?.image ?? null,
+      })),
+    },
+    glance: {
+      ...data.glance,
+      pillars: data.glance.pillars.map((pillar, i) => ({ ...pillar, image: pillar.image ?? montenegroPage.glance.pillars[i]?.image })),
+    },
+  };
 }
 
 // Map heading and places from Sanity; zoom areas, labels and credits stay in src/content/montenegroMap.ts.
 export async function getMontenegroMap() {
   const data = await fromSanity(`*[_id == "montenegroPage"][0]{"places": places, "heading": map}`, {
     places: montenegroMap.places as MapPlace[],
-    heading: { eyebrow: montenegroMap.eyebrow, title: montenegroMap.title, intro: montenegroMap.intro },
+    heading: { eyebrow: montenegroMap.eyebrow, title: montenegroMap.title, intro: montenegroMap.intro, note: montenegroMap.note },
   });
   return { ...montenegroMap, ...data.heading, places: data.places.map((place) => ({ ...place, image: place.image ?? null })) };
 }
