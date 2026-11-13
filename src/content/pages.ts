@@ -324,6 +324,9 @@ export type NewsPost = {
   title: string;
   summary: string;
   paragraphs: string[];
+  image?: { src: string; alt?: string };
+  // Line on the dark panel when the post has no image or video.
+  panelText?: string;
   // uploadDate is the YouTube publish date, for the video's structured data.
   video?: { id: string; title: string; duration: string; uploadDate: string };
   source?: { label: string; href: string };
@@ -337,9 +340,9 @@ export const blogPage = {
 };
 
 export const newsroom = {
-  eyebrow: "Newsroom",
-  title: "Updates for buyers and investors.",
-  intro: "Announcements on our projects, regulations and the Montenegrin market.",
+  eyebrow: "Rock1 Builders",
+  title: "Newsroom",
+  intro: "Company news, project updates and events from Rock1 Builders in Montenegro, the UAE and India.",
   // Newest first.
   posts: [
     {

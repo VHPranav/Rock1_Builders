@@ -175,7 +175,8 @@ export async function getNews(): Promise<NewsPost[]> {
   // Undated notices sort after dated posts.
   return (
     (await fetchContent<NewsPost[]>(`*[_type == "newsPost" && defined(slug.current)] | order(coalesce(date, "0000") desc){
-      "slug": slug.current, category, date, title, summary, "paragraphs": coalesce(paragraphs, []),
+      "slug": slug.current, category, date, title, summary, panelText, "paragraphs": coalesce(paragraphs, []),
+      "image": image{"src": asset->url, alt},
       "video": video{"id": youtubeId, title, duration, uploadDate},
       "source": source${link}
     }`)) ?? []
@@ -385,17 +386,27 @@ export async function getListingHeadings() {
 }
 
 // Instagram reels section on the Newsroom page. Links are cleaned to https://www.instagram.com/<p|reel>/<code>/.
-export async function getNewsroomInstagram() {
+export type NewsEvent = {
+  // Instagram post or reel (embedded), else the poster image.
+  instagram?: { code: string; url: string };
+  image?: string;
+  title?: string;
+  // ISO dates
+  startDate?: string;
+  endDate?: string;
+  venue?: string;
+};
+
+// Newsroom "Events & exhibitions": the Instagram list in Page headings, one card per item, in Studio order.
+export async function getEvents(): Promise<NewsEvent[]> {
   const data = await fromSanity(`*[_id == "listingPages"][0].instagram`, {
-    eyebrow: "Instagram",
-    title: "From our Instagram",
-    intro: "",
-    cta: { label: "Follow @rock1global", href: "https://www.instagram.com/rock1global" } as { label: string; href: string } | undefined,
-    posts: [] as { url: string }[],
+    posts: [] as (Omit<NewsEvent, "instagram"> & { url?: string })[],
   });
-  const posts = data.posts
-    .map(({ url }) => url?.match(/instagram\.com\/(p|reels?)\/([\w-]+)/))
-    .filter((m): m is RegExpMatchArray => !!m)
-    .map(([, kind, code]) => ({ code, url: `https://www.instagram.com/${kind === "p" ? "p" : "reel"}/${code}/` }));
-  return { ...data, posts };
+  return data.posts
+    .map(({ url, ...event }) => {
+      const match = url?.match(/instagram\.com\/(p|reels?)\/([\w-]+)/);
+      const instagram = match && { code: match[2], url: `https://www.instagram.com/${match[1] === "p" ? "p" : "reel"}/${match[2]}/` };
+      return { ...event, ...(instagram && { instagram }) };
+    })
+    .filter((event) => event.instagram || event.image);
 }

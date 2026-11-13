@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Button from "@/components/Button";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import NewsEvents from "@/components/NewsEvents";
 import PageHero from "@/components/PageHero";
-import YouTubeEmbed from "@/components/YouTubeEmbed";
-import InstagramEmbeds from "@/components/InstagramEmbeds";
-import Eyebrow from "@/components/Eyebrow";
 import RevealWords from "@/components/RevealWords";
+import YouTubeEmbed from "@/components/YouTubeEmbed";
+import { contactCta } from "@/content/home";
 import type { NewsPost } from "@/content/pages";
 import { defaultOgImage } from "@/content/site";
 import { absolute, JsonLd, orgId, videoNode } from "@/lib/schema";
-import { getListingHeadings, getNews, getNewsroomInstagram, getSeo, seoMetadata } from "@/sanity/content";
+import { getEvents, getListingHeadings, getNews, getSeo, type NewsEvent, seoMetadata } from "@/sanity/content";
 
 export const generateMetadata = (): Promise<Metadata> => seoMetadata("/newsroom");
 
@@ -18,34 +19,7 @@ const formatDate = (iso: string) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 
 const mono = "font-mono text-xs uppercase tracking-[0.14em]";
-
-function Meta({ post }: { post: NewsPost }) {
-  return (
-    <p data-reveal className={`flex flex-wrap items-center gap-x-3 gap-y-2 text-ink/60 ${mono}`}>
-      <span className="bg-ink-deep px-2 py-1 text-[0.65rem] text-white">{post.category}</span>
-      {post.date ? <time dateTime={post.date}>{formatDate(post.date)}</time> : <span>Notice</span>}
-      {post.video && <span className="text-ink/45">· Video {post.video.duration}</span>}
-    </p>
-  );
-}
-
-function Actions({ post }: { post: NewsPost }) {
-  return (
-    <div data-reveal className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-ink/15 pt-6">
-      <Button href="/contact-us">Contact our office</Button>
-      {post.source && (
-        <a
-          href={post.source.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`text-ink/60 underline-offset-4 transition-colors hover:text-ink hover:underline ${mono}`}
-        >
-          {post.source.label} ↗
-        </a>
-      )}
-    </div>
-  );
-}
+const gutter = "px-[clamp(1.25rem,6vw,6rem)]";
 
 // One BlogPosting per update; the posts have no pages of their own, so each URL is its card's anchor.
 const postNodes = (posts: NewsPost[]) =>
@@ -63,7 +37,7 @@ const postNodes = (posts: NewsPost[]) =>
     articleSection: post.category,
     inLanguage: "en-GB",
     ...(post.date && { datePublished: post.date }),
-    image: post.video ? `https://i.ytimg.com/vi/${post.video.id}/hqdefault.jpg` : absolute(defaultOgImage),
+    image: post.image ? post.image.src : post.video ? `https://i.ytimg.com/vi/${post.video.id}/hqdefault.jpg` : absolute(defaultOgImage),
     author: { "@id": orgId },
     publisher: { "@id": orgId },
     ...(video && { video: { "@id": video["@id"] } }),
@@ -71,131 +45,184 @@ const postNodes = (posts: NewsPost[]) =>
   return video ? [posting, video] : [posting];
   });
 
+// Only events with a name and a date qualify as schema.org Events.
+const eventNodes = (events: NewsEvent[]) =>
+  events
+    .filter((event) => event.title && event.startDate)
+    .map((event, i) => ({
+      "@type": "Event",
+      "@id": absolute(`/newsroom#event-${i + 1}`),
+      name: event.title,
+      startDate: event.startDate,
+      ...(event.endDate && { endDate: event.endDate }),
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      ...(event.venue && { location: { "@type": "Place", name: event.venue, address: event.venue } }),
+      ...(event.image && { image: event.image }),
+      ...(event.instagram && { url: event.instagram.url }),
+      organizer: { "@id": orgId },
+    }));
+
+// Image, video or a dark panel beside each post.
+function PostMedia({ post }: { post: NewsPost }) {
+  if (post.video) {
+    return (
+      <div className="flex items-center bg-ink-deep">
+        <div className="w-full">
+          <YouTubeEmbed id={post.video.id} title={post.video.title} label={`Watch · ${post.video.duration}`} />
+        </div>
+      </div>
+    );
+  }
+  if (post.image) {
+    return (
+      <div className="relative aspect-[3/2] md:aspect-auto md:min-h-72">
+        <Image src={post.image.src} alt={post.image.alt ?? ""} fill quality={85} sizes="(min-width: 768px) 40vw, 100vw" className="object-cover" />
+      </div>
+    );
+  }
+  return (
+    <div className="flex min-h-56 flex-col justify-between gap-10 bg-ink-deep p-6 text-white sm:p-8">
+      <p className={`text-[0.65rem] text-white/70 ${mono}`}>Rock1 Builders · {post.category || "Announcement"}</p>
+      <p className="text-balance text-[clamp(1.5rem,2.4vw,2rem)] leading-[1.15] tracking-[-0.01em]">{post.panelText ?? post.title}</p>
+    </div>
+  );
+}
+
+function PostCard({ post }: { post: NewsPost }) {
+  const hasMore = post.paragraphs.length > 0 || post.source;
+  return (
+    <article id={post.slug} data-reveal className="grid scroll-mt-28 overflow-hidden bg-white md:grid-cols-[2fr_3fr]">
+      <PostMedia post={post} />
+      <div className="p-6 sm:p-8 lg:p-10">
+        <p className={`flex flex-wrap gap-x-3 text-ink/60 ${mono}`}>
+          <span>{post.category}</span>
+          {post.date ? <time dateTime={post.date}>{formatDate(post.date)}</time> : <span>Notice</span>}
+        </p>
+        <h3 className="mt-4 text-balance text-[clamp(1.5rem,2.4vw,2.125rem)] leading-[1.12] tracking-[-0.02em]">{post.title}</h3>
+        <p className="mt-4 text-base leading-relaxed text-ink/70 sm:text-lg">{post.summary}</p>
+        {hasMore && (
+          // The full update opens in place: posts have no pages of their own.
+          <details className="group/more mt-6">
+            <summary className="w-fit cursor-pointer list-none text-sm text-ink underline underline-offset-4 transition-colors hover:text-ink/60 [&::-webkit-details-marker]:hidden">
+              <span className="group-open/more:hidden">Read more →</span>
+              <span className="hidden group-open/more:inline">Show less ↑</span>
+            </summary>
+            <div className="mt-6 space-y-4 border-t border-ink/15 pt-6">
+              {post.paragraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 24)} className="text-base leading-relaxed text-ink/75">
+                  {paragraph}
+                </p>
+              ))}
+              {post.source && (
+                <a
+                  href={post.source.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-block text-ink/60 underline-offset-4 transition-colors hover:text-ink hover:underline ${mono}`}
+                >
+                  {post.source.label} ↗
+                </a>
+              )}
+            </div>
+          </details>
+        )}
+      </div>
+    </article>
+  );
+}
+
 export default async function NewsroomPage() {
-  const [pageSeo, posts, { newsroom }, instagram] = await Promise.all([
-    getSeo("/newsroom"),
-    getNews(),
-    getListingHeadings(),
-    getNewsroomInstagram(),
-  ]);
+  const [pageSeo, posts, events, { newsroom }] = await Promise.all([getSeo("/newsroom"), getNews(), getEvents(), getListingHeadings()]);
+
+  // Events first, then company news; both always listed.
+  const sections = [
+    { id: "events", label: "Events & exhibitions" },
+    { id: "company-news", label: "Company news" },
+  ];
+  const number = (id: string) => String(sections.findIndex((section) => section.id === id) + 1).padStart(2, "0");
 
   return (
     <>
-      <JsonLd path="/newsroom" name="Newsroom" description={pageSeo.description ?? ""} type="CollectionPage" nodes={postNodes(posts)} />
+      <JsonLd
+        path="/newsroom"
+        name="Newsroom"
+        description={pageSeo.description ?? ""}
+        type="CollectionPage"
+        nodes={[...postNodes(posts), ...eventNodes(events)]}
+      />
       <main className="bg-linen text-ink">
         <Header overLight />
         <PageHero eyebrow={newsroom.eyebrow} title={newsroom.title} intro={newsroom.intro} />
 
-        {/* Contents: every update at a glance, linking to its card */}
-        <nav aria-label="Updates" className="px-[clamp(1.25rem,6vw,6rem)] pt-20">
-          <p className={`text-ink/50 ${mono}`}>
-            {posts.length} {posts.length === 1 ? "update" : "updates"}
-          </p>
-          <ol className="mt-4 border-t border-ink/15">
-            {posts.map((post) => (
-              <li key={post.slug} data-reveal className="border-b border-ink/15">
-                <a
-                  href={`#${post.slug}`}
-                  className="group grid gap-1 py-4 sm:grid-cols-[11rem_9rem_1fr_auto] sm:items-baseline sm:gap-6"
-                >
-                  <span className={`text-ink/50 ${mono}`}>{post.date ? formatDate(post.date) : "Notice"}</span>
-                  <span className={`text-ink/60 ${mono}`}>{post.category}</span>
-                  <span className="text-lg tracking-[-0.01em] transition-colors group-hover:text-ink sm:text-xl">{post.title}</span>
-                  <span aria-hidden="true" className="hidden text-ink/40 transition-transform duration-300 group-hover:translate-y-0.5 sm:block">
-                    ↓
-                  </span>
+        {/* Contents: one link per section, under the heading */}
+        <nav aria-label="Newsroom sections" className={`${gutter} pt-16`}>
+          <ol className="grid border-b border-t border-b-ink/15 border-t-ink/50 sm:grid-cols-2">
+            {sections.map((section, i) => (
+              <li key={section.id} className={i ? "border-t border-ink/15 sm:border-t-0" : undefined}>
+                <a href={`#${section.id}`} className="group block py-5 sm:pr-6">
+                  <span className="font-mono text-xs text-ink/50">{number(section.id)}</span>
+                  <span className="mt-2 block text-lg tracking-[-0.01em] transition-colors group-hover:text-ink/60">{section.label}</span>
                 </a>
               </li>
             ))}
           </ol>
         </nav>
 
-        {/* Updates */}
-        <div className={`space-y-6 px-[clamp(1.25rem,6vw,6rem)] pt-16 sm:space-y-8 ${instagram.posts.length ? "pb-20" : "pb-32"}`}>
-          {posts.map((post) =>
-            post.video ? (
-              // Video update: player beside the headline, full text underneath
-              <article key={post.slug} id={post.slug} className="scroll-mt-28 border border-ink/15 bg-white/40 p-5 sm:p-8 lg:p-10">
-                <div className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-10">
-                  <div className="lg:col-span-7">
-                    <YouTubeEmbed id={post.video.id} title={post.video.title} label={`Watch · ${post.video.duration}`} />
-                  </div>
-                  <div className="lg:col-span-5">
-                    <Meta post={post} />
-                    <h2 data-reveal className="mt-5 text-balance text-[clamp(1.75rem,3vw,2.75rem)] leading-[1.08] tracking-[-0.02em]">
-                      {post.title}
-                    </h2>
-                    <p data-reveal className="mt-5 text-lg leading-relaxed text-ink/75">
-                      {post.summary}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-10 grid gap-x-10 gap-y-5 border-t border-ink/15 pt-8 md:grid-cols-2">
-                  {post.paragraphs.map((paragraph) => (
-                    <p key={paragraph.slice(0, 24)} data-reveal className="text-base leading-relaxed text-ink/75">
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
-                <Actions post={post} />
-              </article>
-            ) : (
-              // Text update: date column and a lead summary
-              <article
-                key={post.slug}
-                id={post.slug}
-                className="grid scroll-mt-28 gap-8 border border-ink/15 bg-white/40 p-5 sm:p-8 md:grid-cols-12 md:gap-6 lg:p-10"
-              >
-                <div className="md:col-span-3">
-                  <Meta post={post} />
-                </div>
-                <div className="md:col-span-9 lg:col-span-8">
-                  <h2 data-reveal className="text-balance text-[clamp(1.75rem,3vw,2.75rem)] leading-[1.08] tracking-[-0.02em]">
-                    {post.title}
-                  </h2>
-                  <p data-reveal className="mt-5 text-lg leading-relaxed text-ink">
-                    {post.summary}
-                  </p>
-                  <div className="mt-6 space-y-5">
-                    {post.paragraphs.map((paragraph) => (
-                      <p key={paragraph.slice(0, 24)} data-reveal className="max-w-2xl text-base leading-relaxed text-ink/70">
-                        {paragraph}
-                      </p>
-                    ))}
-                  </div>
-                  <Actions post={post} />
-                </div>
-              </article>
-            ),
-          )}
-        </div>
-
-        {/* Instagram reels, managed in Sanity (Page headings → Newsroom: Instagram reels) */}
-        {instagram.posts.length > 0 && (
-          <section aria-labelledby="instagram-heading" className="border-t border-ink/15 px-[clamp(1.25rem,6vw,6rem)] pb-32 pt-20">
-            <div className="flex flex-wrap items-end justify-between gap-6">
-              <div className="max-w-2xl">
-                <Eyebrow>{instagram.eyebrow}</Eyebrow>
-                <h2 id="instagram-heading" data-reveal="words" className="mt-5 text-balance text-[clamp(2rem,4vw,3.5rem)] leading-[1.05] tracking-[-0.02em]">
-                  <RevealWords text={instagram.title} />
-                </h2>
-                {instagram.intro && (
-                  <p data-reveal className="mt-5 text-lg leading-relaxed text-ink/70">
-                    {instagram.intro}
-                  </p>
-                )}
-              </div>
-              {instagram.cta && (
-                <Button href={instagram.cta.href} variant="ghost" file={/^https?:/.test(instagram.cta.href)}>
-                  {instagram.cta.label}
-                </Button>
-              )}
+        {/* Events and exhibitions */}
+        <section id="events" aria-labelledby="events-heading" className={`mt-20 scroll-mt-20 bg-ink/[0.04] ${gutter} py-24 sm:py-28`}>
+          <div className="grid grid-cols-1 items-end gap-6 sm:grid-cols-[1fr_auto]">
+            <div>
+              <p className={`text-ink/55 ${mono}`}>{number("events")} · Events</p>
+              <h2 id="events-heading" data-reveal="words" className="mt-4 text-balance text-[clamp(2rem,4vw,3.25rem)] leading-[1.05] tracking-[-0.02em]">
+                <RevealWords text="Events & exhibitions" />
+              </h2>
             </div>
-            <div className="mt-12">
-              <InstagramEmbeds posts={instagram.posts} />
+            {events.length > 0 && <NewsEvents events={events} today={new Date().toISOString().slice(0, 10)} />}
+          </div>
+          {!events.length && (
+            <p data-reveal className="mt-10 max-w-xl text-base leading-relaxed text-ink/70 sm:text-lg">
+              Our upcoming property expos and events will be announced here.
+            </p>
+          )}
+        </section>
+
+        {/* Company news */}
+        {posts.length > 0 && (
+          <section id="company-news" aria-labelledby="news-heading" className={`scroll-mt-20 ${gutter} py-24 sm:py-28`}>
+            <p className={`text-ink/55 ${mono}`}>{number("company-news")} · Company news</p>
+            <h2 id="news-heading" data-reveal="words" className="mt-4 text-balance text-[clamp(2rem,4vw,3.25rem)] leading-[1.05] tracking-[-0.02em]">
+              <RevealWords text="Announcements & project updates" />
+            </h2>
+            <div className="mt-12 space-y-8">
+              {posts.map((post) => (
+                <PostCard key={post.slug} post={post} />
+              ))}
             </div>
           </section>
         )}
+
+        {/* Enquiry band */}
+        <section className={`${gutter} pb-32`}>
+          <div data-reveal className="flex flex-col gap-8 bg-ink-deep px-6 py-12 text-white sm:px-12 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h2 className="text-[clamp(1.75rem,3vw,2.5rem)] leading-[1.1] tracking-[-0.02em]">Interested in a property?</h2>
+              <p className="mt-3 text-base leading-relaxed text-white/70">Ask about Life Bay or Ocean Crest and our team will get back to you.</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Button href="/contact-us" variant="light">
+                Send an enquiry
+              </Button>
+              <a
+                href={contactCta.whatsapp.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 border border-white/30 px-6 py-3.5 font-mono text-xs font-medium uppercase tracking-[0.12em] text-white transition-colors hover:bg-white/10"
+              >
+                {contactCta.whatsapp.label}
+              </a>
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </>

@@ -406,15 +406,15 @@ export const listingPages = defineType({
     defineField({ name: "blog", type: "object", fields: heading }),
     defineField({
       name: "instagram",
-      title: "Newsroom: Instagram reels",
-      description: "Shown below the updates on the Newsroom page. Leave the list empty to hide the section.",
+      title: "Newsroom: Events & exhibitions",
+      description: "Cards in the Newsroom's Events & exhibitions section: an Instagram post or reel, or a poster, with the event details below.",
       type: "object",
       fields: [
         ...heading,
         defineField({ name: "cta", title: "Button", description: "e.g. Follow us on Instagram.", type: "link" }),
         defineField({
           name: "posts",
-          title: "Reels and posts",
+          title: "Events (reels, posts and posters)",
           type: "array",
           of: [
             defineArrayMember({
@@ -424,16 +424,29 @@ export const listingPages = defineType({
                 defineField({
                   name: "url",
                   title: "Instagram link",
-                  description: "Copy the link from Instagram (Share → Copy link). Must be a public post or reel.",
+                  description: "Copy the link from Instagram (Share → Copy link). Must be a public post or reel. Leave empty to show the poster below instead.",
                   type: "url",
                   validation: (r) =>
-                    r.required().custom((url) =>
-                      !url || /instagram\.com\/(p|reel|reels)\/[\w-]+/.test(url) ? true : "Use a link to an Instagram post or reel.",
-                    ),
+                    r.custom((url, context) => {
+                      const parent = context.parent as { image?: unknown } | undefined;
+                      if (!url) return parent?.image ? true : "Add an Instagram link or a poster.";
+                      return /instagram\.com\/(p|reel|reels)\/[\w-]+/.test(url) ? true : "Use a link to an Instagram post or reel.";
+                    }),
                 }),
+                defineField({
+                  name: "image",
+                  title: "Poster",
+                  description: "Shown instead of the Instagram post when there is no link (portrait, 4:5).",
+                  type: "image",
+                  options: { hotspot: true },
+                }),
+                str("title", "Event name", "e.g. UAE Property Expo."),
+                defineField({ name: "startDate", title: "Start date", description: "Sorts the event into Upcoming or Past events.", type: "date" }),
+                defineField({ name: "endDate", title: "End date", description: "Leave empty for a one-day event.", type: "date" }),
+                str("venue", "Venue", "e.g. JRC Conventions, Hyderabad · Stall G5."),
                 str("caption", "Note", "Only for you in the Studio; not shown on the site."),
               ],
-              preview: { select: { title: "caption", subtitle: "url" } },
+              preview: { select: { title: "title", subtitle: "startDate", caption: "caption", url: "url", media: "image" }, prepare: ({ title, subtitle, caption, url, media }) => ({ title: title ?? caption ?? url, subtitle, media }) },
             }),
           ],
         }),
